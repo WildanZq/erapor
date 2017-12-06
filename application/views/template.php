@@ -58,8 +58,8 @@
     <ul class="nav navbar-nav ml-auto mr-3">
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-          <img src="<?php echo base_url(); ?>assets/img/blank.jpg" class="img-avatar">
-          <span class="d-md-down-none">admin</span>
+          <img src="<?php echo base_url(); ?>assets/img/upload/profile/<?php if ($this->session->userdata('foto')): echo $this->session->userdata('foto'); else: ?>blank.jpg<?php endif ?>" class="img-avatar">
+          <span class="d-md-down-none"><?php echo $this->session->userdata('username'); ?></span>
         </a>
         <div class="dropdown-menu dropdown-menu-right">
           <a class="dropdown-item" href="#"><i class="fa fa-user"></i> Profile</a>
@@ -107,13 +107,13 @@
         <small class="text-muted"><i class="icon-home"></i>&nbsp; On-line </small>
         <div class="avatars-stack mt-2">
           <div class="avatar avatar-xs">
-            <img src="<?php echo base_url(); ?>assets/img/blank.jpg" class="img-avatar" alt="admin@bootstrapmaster.com">
+            <img src="<?php echo base_url(); ?>assets/img/upload/profile/blank.jpg" class="img-avatar" alt="admin@bootstrapmaster.com">
           </div>
           <div class="avatar avatar-xs">
-            <img src="<?php echo base_url(); ?>assets/img/blank.jpg" class="img-avatar" alt="admin@bootstrapmaster.com">
+            <img src="<?php echo base_url(); ?>assets/img/upload/profile/blank.jpg" class="img-avatar" alt="admin@bootstrapmaster.com">
           </div>
           <div class="avatar avatar-xs">
-            <img src="<?php echo base_url(); ?>assets/img/blank.jpg" class="img-avatar" alt="admin@bootstrapmaster.com">
+            <img src="<?php echo base_url(); ?>assets/img/upload/profile/blank.jpg" class="img-avatar" alt="admin@bootstrapmaster.com">
           </div>
         </div>
       </div>

@@ -58,7 +58,6 @@
         dataType: 'json',
         data: $('#login-form').serialize(),
         success: function(r) {
-          console.log(r.status);
           if (r.status) {
             $('.alert-danger').slideUp();
             $('.alert-success').slideDown();
