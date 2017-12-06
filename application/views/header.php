@@ -11,6 +11,7 @@
   <!-- Icons -->
   <link href="<?php echo base_url(); ?>assets/vendors/css/font-awesome.min.css" rel="stylesheet">
   <link href="<?php echo base_url(); ?>assets/vendors/css/simple-line-icons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="<?php echo base_url(); ?>assets/vendors/css/pace-theme-corner-indicator.css">
 
   <!-- Main styles for this application -->
   <link href="<?php echo base_url(); ?>assets/css/style.css" rel="stylesheet">
