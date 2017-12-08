@@ -22,6 +22,7 @@ class Mapel extends CI_Controller {
 		if(! $this->input->is_ajax_request()) {
 			$data['title'] = '404 Page Not Found';
     		$this->load->view('error404_view',$data);
+    		return;
 		}
 		if (! $this->input->post('userid')) {
 			redirect('authorization/logout');
@@ -31,6 +32,28 @@ class Mapel extends CI_Controller {
 
 		if (! $data = $this->mapel_model->getMapelGuru($this->input->post('userid'))) {
 			$r = array('error' => 'You don&#39;t have any mapel yet');
+		} else {
+			$r = $data;
+		}
+
+		echo json_encode($r);
+	}
+
+	public function getMapelSiswa()
+	{
+		if(! $this->input->is_ajax_request()) {
+			$data['title'] = '404 Page Not Found';
+    		$this->load->view('error404_view',$data);
+    		return;
+		}
+		if (! $this->input->post('userid')) {
+			redirect('authorization/logout');
+		}
+
+		$r = array();
+
+		if (! $data = $this->mapel_model->getMapelSiswa($this->input->post('userid'))) {
+			$r = array('error' => 'You don&#39;t have any mapel in your class');
 		} else {
 			$r = $data;
 		}

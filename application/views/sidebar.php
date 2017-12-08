@@ -9,13 +9,19 @@
           Manage
         </li>
         <li class="nav-item">
+          <a class="nav-link" href="siswa"><i class="icon-graduation"></i> Siswa</a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" href="guru"><i class="icon-people"></i> Guru</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="kurikulum"><i class="icon-book-open"></i> Kurikulum</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="mapel"><i class="icon-notebook"></i> Mapel</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="siswa"><i class="icon-graduation"></i> Siswa</a>
+          <a class="nav-link" href="kelas"><i class="icon-home"></i> Kelas</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="admin"><i class="icon-user"></i> Admin</a>
@@ -61,9 +67,32 @@
         <li class="nav-title">
           Mapel
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="mapel/"><i class="icon-notebook"></i> Matematika</a>
-        </li>
+        <div class="nav-mapel"></div>
+        <script type="text/javascript">
+          $.ajax({
+              url: '<?php echo base_url('mapel/getMapelSiswa'); ?>',
+              type: 'POST',
+              dataType: 'json',
+              data: 'userid=<?php echo $this->session->userdata('userid'); ?>',
+              success: function(r) {
+                if (r.error) {
+                  data = '<li class="nav-item">\
+                            <a class="nav-link" href="#">'+r.error+'</a>\
+                          </li>';
+                  $('.nav-mapel').html(data);
+                  return;
+                }
+
+                data = '';
+                $.each(r, function(key,val) {
+                  data += '<li class="nav-item">\
+                            <a class="nav-link" href="mapel/'+val.id_mapel+'"><i class="icon-notebook"></i> '+val.nama_mapel+'</a>\
+                          </li>';
+                });
+                $('.nav-mapel').html(data);
+              }
+            });
+        </script>
       <?php endif ?>
     </ul>
   </nav>

@@ -57,7 +57,8 @@ class Login_model extends CI_Model {
 				'logged_in' => TRUE,
 				'role' => 'admin',
 				'userid' => $admin['id_admin'],
-				'username' => $admin['username']
+				'username' => $admin['nama_admin'],
+				'foto' => $admin['foto_admin']
 			);
 			$this->session->set_userdata($session);
 
