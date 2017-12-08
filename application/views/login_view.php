@@ -59,17 +59,14 @@
         data: $('#login-form').serialize(),
         success: function(r) {
           if (r.status) {
-            $('.alert-danger').slideUp();
-            $('.alert-success').slideDown();
+            toastr.remove();
+            toastr["success"]("Login Success");
             setTimeout(function() {
               location.reload();
             },500);
           } else {
-            $('.alert-danger').slideUp();
-            $('.alert-danger').slideDown();
-            setTimeout(function() {
-              $('.alert-danger').html(r.error);
-            },300);
+            toastr.remove();
+            toastr["error"](r.error);
           }
         }
       });
