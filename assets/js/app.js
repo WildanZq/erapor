@@ -145,3 +145,17 @@ function init(url) {
   $('[rel="popover"],[data-rel="popover"],[data-toggle="popover"]').popover();
 
 }
+
+function updateModal(title, body, action, onclick, param, size, type) {
+  $('.modal-dialog').attr('class', 'modal-dialog');
+  $('.modal-btn-action').attr('class', 'btn modal-btn-action');
+  $('.modal-title').html(title);
+  $('.modal-body').html(body);
+  $('.modal-form').attr('action', action);
+  $('.modal-btn-action').attr('onclick', onclick+'('+param+')');
+  $('.modal-btn-action').addClass('btn-'+type);
+  $('.modal-dialog').addClass('modal-'+size);
+  $('.modal-dialog').addClass('modal-'+type);
+  $('.select2').select2();
+  $('.select2').css('width','100%');
+}

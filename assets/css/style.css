@@ -9458,3 +9458,7 @@ hr.transparent {
       float: left; }
   *[dir="rtl"] .callout-default {
     border-right-color: #536c79; }
+.modal-body {
+  max-height: 70vh;
+  overflow-y: auto;
+}

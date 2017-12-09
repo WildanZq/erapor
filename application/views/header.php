@@ -13,7 +13,10 @@
   <link href="<?php echo base_url(); ?>assets/vendors/css/simple-line-icons.min.css" rel="stylesheet">
   <link rel="stylesheet" href="<?php echo base_url(); ?>assets/vendors/css/pace-theme-corner-indicator.css">
 
-  <link rel="stylesheet" href="<?php echo base_url(); ?>assets/vendors/css/toastr.css">  
+  <link rel="stylesheet" href="<?php echo base_url(); ?>assets/vendors/css/toastr.css">
+  <link rel="stylesheet" href="<?php echo base_url(); ?>assets/vendors/css/datatables.min.css">
+  <link rel="stylesheet" href="<?php echo base_url(); ?>assets/vendors/css/select2.min.css">
+  <link rel="stylesheet" href="<?php echo base_url(); ?>assets/vendors/css/select2-bootstrap.min.css">
 
   <!-- Main styles for this application -->
   <link href="<?php echo base_url(); ?>assets/css/style.css" rel="stylesheet">
@@ -24,5 +27,9 @@
   <script src="<?php echo base_url(); ?>assets/vendors/js/bootstrap.min.js"></script>
   <script src="<?php echo base_url(); ?>assets/vendors/js/pace.min.js"></script>
   <script src="<?php echo base_url(); ?>assets/vendors/js/toastr.min.js"></script>
+  <script src="<?php echo base_url(); ?>assets/vendors/js/datatables.min.js"></script>
+  <script src="<?php echo base_url(); ?>assets/vendors/js/select2.min.js"></script>
+
+  <script src="<?php echo base_url(); ?>assets/js/constants.js"></script>
 
 </head>

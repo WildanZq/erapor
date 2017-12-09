@@ -80,8 +80,8 @@
 
     <!-- Main content -->
     <main class="main">
-      <div class="container-fluid">
-        <?php // $this->load->view($main); ?>
+      <div class="container-fluid px-3 pt-3">
+        <?php $this->load->view($main); ?>
       </div>
       <!-- /.conainer-fluid -->
     </main>
@@ -120,6 +120,24 @@
     </aside>
 
   </div>
+
+<div class="modal fade" id="modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title"></h4>
+        <button class="close" data-dismiss="modal"><span aria-hidden="true">×</span></button>
+      </div>
+      <form class="modal-form" action="" method="POST">
+        <div class="modal-body"></div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary text-white" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn modal-btn-action"><i class="fa fa-save"></i>&nbsp;Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
 
 <?php $this->load->view('footer'); ?>
 
