@@ -88,6 +88,50 @@ class Siswa extends CI_Controller {
 		echo json_encode($r);
 	}
 
+	public function editSiswa()
+	{
+		if(! $this->input->is_ajax_request()) {
+			$data['title'] = '404 Page Not Found';
+    		$this->load->view('error404_view',$data);
+    		return;
+		}
+
+		$r = array('status' => false, 'error' => '');
+		$data = array(
+			'nisn' => $this->input->post('nisn'),
+			'nis' => $this->input->post('nis'),
+			'nama_siswa' => $this->input->post('nama'),
+			'jk' => $this->input->post('jk'),
+			'tempat_lahir' => $this->input->post('tempat_lahir'),
+			'tgl_lahir' => $this->input->post('tgl_lahir'),
+			'password' => $this->input->post('nisn')
+		);
+
+		if ($this->input->post('id') == '' || $data['nisn'] == '' || $data['nis'] == '' || $data['nama_siswa'] == '' || $data['jk'] == '' || $data['tempat_lahir'] == '' || $data['tgl_lahir'] == '') {
+			$r['error'] = 'Isi semua data yang diperlukan!';
+			echo json_encode($r);
+			return;
+		}
+		if ($this->input->post('kelas')) {
+			$data['id_kelas'] = $this->input->post('kelas');
+		} else {
+			$data['id_kelas'] = null;
+		}
+		if ($this->input->post('guru')) {
+			$data['id_guru'] = $this->input->post('guru');
+		} else {
+			$data['id_guru'] = null;
+		}
+
+		if ($this->siswa_model->editSiswa($this->input->post('id'), $data)) {
+			$r['status'] = true;
+		} else {
+			$r['error'] = 'Gagal mengedit siswa';
+		}
+
+		echo json_encode($r);
+	}
+
 }
 
 /* End of file siswa.php */

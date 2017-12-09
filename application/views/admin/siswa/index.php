@@ -138,6 +138,23 @@
 
 	function editSiswa(idSiswa) {
 		event.preventDefault();
+		$.ajax({
+			url: $('.modal-form').attr('action'),
+      type: 'POST',
+      dataType: 'json',
+      data: $('.modal-form').serialize()+'&id='+idSiswa,
+      success: function(r) {
+        if (r.status) {
+          toastr.remove();
+          toastr["success"]("Data siswa berhasil diedit");
+          refreshTabelSiswa();
+          $('.modal').modal('hide');
+        } else {
+          toastr.remove();
+          toastr["error"](r.error);
+        }
+      }
+		});
 	}
 
 </script>

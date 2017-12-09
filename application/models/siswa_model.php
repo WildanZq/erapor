@@ -6,8 +6,9 @@ class Siswa_model extends CI_Model {
 	public function getAllSiswa()
 	{
 		return $this->db
-		->join('kelas', 'kelas.id_kelas = siswa.id_kelas')
-		->join('kelompok_kelas', 'kelompok_kelas.id_kelompok_kelas = kelas.id_kelompok_kelas')
+		->join('guru', 'guru.id_guru = siswa.id_guru', 'left')
+		->join('kelas', 'kelas.id_kelas = siswa.id_kelas', 'left')
+		->join('kelompok_kelas', 'kelompok_kelas.id_kelompok_kelas = kelas.id_kelompok_kelas', 'left')
 		->get('siswa')->result();
 	}
 
@@ -21,6 +22,17 @@ class Siswa_model extends CI_Model {
 	public function addSiswa($data)
 	{
 		$this->db->insert('siswa', $data);
+		if ($this->db->affected_rows() == 0) {
+			return false;
+		}
+		return true;
+	}
+
+	public function editSiswa($id, $data)
+	{
+		$this->db
+		->where('id_siswa', $id)
+		->update('siswa', $data);
 		if ($this->db->affected_rows() == 0) {
 			return false;
 		}
