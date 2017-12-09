@@ -43,7 +43,7 @@
       		render: function(data, type, full) {
         		return '<div class="d-flex">\
       				<button onclick="showModalEditSiswa('+data+')" data-target="#modal" data-toggle="modal" class="btn btn-primary text-white mr-1"><i class="fa fa-pencil"></i>&nbsp;Edit</button>\
-      				<button onclick="deleteSiswa('+data+')" class="btn btn-danger text-white"><i class="fa fa-trash"></i></button>\
+      				<button onclick="showModalDeleteSiswa('+data+')" data-target="#modal" data-toggle="modal" class="btn btn-danger text-white"><i class="fa fa-trash"></i></button>\
       			</div>';
       		}
     		}
@@ -83,6 +83,10 @@
 				}
 			});
 		},100);
+	}
+
+	function showModalDeleteSiswa(idSiswa) {
+		updateModal('Delete Siswa?', '', '<?php echo base_url('siswa/deleteSiswa'); ?>', 'deleteSiswa', idSiswa, 'sm', 'danger', 'Yes');
 	}
 
 	function refreshPilihanKelas() {
@@ -169,6 +173,7 @@
           toastr.remove();
           toastr["success"]("Data siswa berhasil dihapus");
           refreshTabelSiswa();
+          $('.modal').modal('hide');
         } else {
           toastr.remove();
           toastr["error"](r.error);

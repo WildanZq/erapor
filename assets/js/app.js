@@ -146,7 +146,7 @@ function init(url) {
 
 }
 
-function updateModal(title, body, action, onclick, param, size, type) {
+function updateModal(title, body, action, onclick, param, size, type, button) {
   $('.modal-dialog').attr('class', 'modal-dialog');
   $('.modal-btn-action').attr('class', 'btn modal-btn-action');
   $('.modal-title').html(title);
@@ -158,4 +158,9 @@ function updateModal(title, body, action, onclick, param, size, type) {
   $('.modal-dialog').addClass('modal-'+type);
   $('.select2').select2();
   $('.select2').css('width','100%');
+  if (button) {
+    $('.modal-btn-action').html(button);
+  } else {
+    $('.modal-btn-action').html('<i class="fa fa-save"></i>&nbsp;Save');
+  }
 }
