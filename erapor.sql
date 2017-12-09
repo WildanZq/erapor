@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 08 Des 2017 pada 23.34
+-- Generation Time: 09 Des 2017 pada 07.34
 -- Versi Server: 10.1.21-MariaDB
 -- PHP Version: 7.1.1
 
@@ -51,18 +51,18 @@ CREATE TABLE `guru` (
   `id_guru` int(11) NOT NULL,
   `nik` varchar(50) NOT NULL,
   `nama_guru` varchar(100) NOT NULL,
-  `jk` int(1) NOT NULL,
+  `jk_guru` int(1) NOT NULL,
   `foto_guru` text,
-  `password` text NOT NULL,
-  `telp` varchar(20) DEFAULT NULL,
-  `alamat` text
+  `password_guru` text NOT NULL,
+  `telp_guru` varchar(20) DEFAULT NULL,
+  `alamat_guru` text
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data untuk tabel `guru`
 --
 
-INSERT INTO `guru` (`id_guru`, `nik`, `nama_guru`, `jk`, `foto_guru`, `password`, `telp`, `alamat`) VALUES
+INSERT INTO `guru` (`id_guru`, `nik`, `nama_guru`, `jk_guru`, `foto_guru`, `password_guru`, `telp_guru`, `alamat_guru`) VALUES
 (1, 'nik1', 'Zxc Vbn', 1, NULL, 'nik1', NULL, NULL),
 (2, 'nik2', 'Asd Fgh', 0, NULL, 'nik2', NULL, NULL);
 
@@ -285,8 +285,10 @@ CREATE TABLE `siswa` (
 --
 
 INSERT INTO `siswa` (`id_siswa`, `nisn`, `nis`, `nama_siswa`, `tempat_lahir`, `tgl_lahir`, `jk`, `foto_siswa`, `id_kelas`, `id_guru`, `password`, `th_kelulusan`) VALUES
-(1, 'nisn1', 'nis1', 'Abc Def', 'Malang', '2000-12-04', 1, NULL, 1, NULL, 'nisn1', NULL),
-(2, 'nisn2', 'nis2', 'Ghi Jkl', 'Surabaya', '1999-12-28', 0, NULL, 2, NULL, 'nisn2', NULL);
+(1, 'nisn1', 'nis1', 'Abc Def', 'Malang', '2000-12-04', 1, NULL, 1, 2, 'nisn1', NULL),
+(2, 'nisn2', 'nis2', 'Ghi Jkl', 'Surabaya', '1999-12-28', 0, NULL, 2, NULL, 'nisn2', NULL),
+(7, 'nisn3', 'nis3', 'Mno Pqr', 'Bandung', '2017-12-04', 0, NULL, 1, NULL, 'nisn3', NULL),
+(8, 'nisn4', 'nis4', 'Stu Vwx', 'Bogor', '2000-06-14', 1, NULL, 2, NULL, 'nisn4', NULL);
 
 --
 -- Indexes for dumped tables
@@ -452,7 +454,7 @@ ALTER TABLE `semester`
 -- AUTO_INCREMENT for table `siswa`
 --
 ALTER TABLE `siswa`
-  MODIFY `id_siswa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_siswa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
 --
