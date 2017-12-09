@@ -9,6 +9,7 @@ class Siswa extends CI_Controller {
 		if (! $this->session->userdata('logged_in') || $this->session->userdata('logged_in') == null) {
 			redirect('/');
 		}
+		$this->load->model('service_model');
 		$this->load->model('siswa_model');
 	}
 
@@ -79,6 +80,7 @@ class Siswa extends CI_Controller {
 			$data['id_guru'] = $this->input->post('guru');
 		}
 
+		$data = $this->service_model->escape_array($data);
 		if ($this->siswa_model->addSiswa($data)) {
 			$r['status'] = true;
 		} else {
@@ -123,10 +125,36 @@ class Siswa extends CI_Controller {
 			$data['id_guru'] = null;
 		}
 
+		$data = $this->service_model->escape_array($data);
 		if ($this->siswa_model->editSiswa($this->input->post('id'), $data)) {
 			$r['status'] = true;
 		} else {
 			$r['error'] = 'Gagal mengedit siswa';
+		}
+
+		echo json_encode($r);
+	}
+
+	public function deleteSiswa()
+	{
+		if(! $this->input->is_ajax_request()) {
+			$data['title'] = '404 Page Not Found';
+    		$this->load->view('error404_view',$data);
+    		return;
+		}
+
+		$r = array('status' => false, 'error' => '');
+
+		if ($this->input->post('id') == '') {
+			$r['error'] = 'Id tidak ada!';
+			echo json_encode($r);
+			return;
+		}
+
+		if ($this->siswa_model->deleteSiswa($this->input->post('id'))) {
+			$r['status'] = true;
+		} else {
+			$r['error'] = 'Gagal menghapus siswa';
 		}
 
 		echo json_encode($r);

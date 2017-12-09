@@ -12,10 +12,10 @@ class Siswa_model extends CI_Model {
 		->get('siswa')->result();
 	}
 
-	public function getSiswaById($idSiswa)
+	public function getSiswaById($id)
 	{
 		return $this->db
-		->where('id_siswa', $this->db->escape_str($idSiswa))
+		->where('id_siswa', $this->db->escape_str($id))
 		->get('siswa')->result();
 	}
 
@@ -31,8 +31,19 @@ class Siswa_model extends CI_Model {
 	public function editSiswa($id, $data)
 	{
 		$this->db
-		->where('id_siswa', $id)
+		->where('id_siswa', $this->db->escape_str($id))
 		->update('siswa', $data);
+		if ($this->db->affected_rows() == 0) {
+			return false;
+		}
+		return true;
+	}
+
+	public function deleteSiswa($id)
+	{
+		$this->db
+		->where('id_siswa', $this->db->escape_str($id))
+		->delete('siswa');
 		if ($this->db->affected_rows() == 0) {
 			return false;
 		}

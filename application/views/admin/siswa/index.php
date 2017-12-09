@@ -157,4 +157,24 @@
 		});
 	}
 
+	function deleteSiswa(idSiswa) {
+		event.preventDefault();
+		$.ajax({
+			url: '<?php echo base_url('siswa/deleteSiswa'); ?>',
+      type: 'POST',
+      dataType: 'json',
+      data: 'id='+idSiswa,
+      success: function(r) {
+        if (r.status) {
+          toastr.remove();
+          toastr["success"]("Data siswa berhasil dihapus");
+          refreshTabelSiswa();
+        } else {
+          toastr.remove();
+          toastr["error"](r.error);
+        }
+      }
+		});
+	}
+
 </script>
