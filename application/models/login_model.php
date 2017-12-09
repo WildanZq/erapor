@@ -30,7 +30,7 @@ class Login_model extends CI_Model {
 		}
 
 		$query = $this->db->where('nik', $this->db->escape_str($username))
-		->where('password', $this->db->escape_str($password))
+		->where('password_guru', $this->db->escape_str($password))
 		->get('guru');
 		if ($this->db->affected_rows() == 1) {
 			$guru = $query->row_array();

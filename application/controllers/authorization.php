@@ -24,6 +24,7 @@ class Authorization extends CI_Controller {
 		if(! $this->input->is_ajax_request()) {
 			$data['title'] = '404 Page Not Found';
     		$this->load->view('error404_view',$data);
+    		return;
 		}
 		if ($this->session->userdata('logged_in')) {
 			redirect('dashboard');
