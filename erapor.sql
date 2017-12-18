@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 09 Des 2017 pada 07.34
+-- Generation Time: 19 Des 2017 pada 00.32
 -- Versi Server: 10.1.21-MariaDB
 -- PHP Version: 7.1.1
 
@@ -65,6 +65,25 @@ CREATE TABLE `guru` (
 INSERT INTO `guru` (`id_guru`, `nik`, `nama_guru`, `jk_guru`, `foto_guru`, `password_guru`, `telp_guru`, `alamat_guru`) VALUES
 (1, 'nik1', 'Zxc Vbn', 1, NULL, 'nik1', NULL, NULL),
 (2, 'nik2', 'Asd Fgh', 0, NULL, 'nik2', NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `jenis_mapel`
+--
+
+CREATE TABLE `jenis_mapel` (
+  `id_jenis_mapel` int(11) NOT NULL,
+  `nama_jenis_mapel` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `jenis_mapel`
+--
+
+INSERT INTO `jenis_mapel` (`id_jenis_mapel`, `nama_jenis_mapel`) VALUES
+(1, 'Umum'),
+(2, 'Kejuruan');
 
 -- --------------------------------------------------------
 
@@ -148,6 +167,7 @@ INSERT INTO `kurikulum` (`id_kurikulum`, `nama_kurikulum`) VALUES
 CREATE TABLE `mapel` (
   `id_mapel` int(11) NOT NULL,
   `id_kurikulum` int(11) NOT NULL,
+  `id_jenis_mapel` int(11) DEFAULT NULL,
   `nama_mapel` varchar(50) NOT NULL,
   `kkm` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -156,10 +176,12 @@ CREATE TABLE `mapel` (
 -- Dumping data untuk tabel `mapel`
 --
 
-INSERT INTO `mapel` (`id_mapel`, `id_kurikulum`, `nama_mapel`, `kkm`) VALUES
-(1, 1, 'Matematika', 75),
-(2, 1, 'Bahasa Inggris', 75),
-(5, 1, 'Bahasa Indonesia', 75);
+INSERT INTO `mapel` (`id_mapel`, `id_kurikulum`, `id_jenis_mapel`, `nama_mapel`, `kkm`) VALUES
+(1, 1, 1, 'Matematika', 75),
+(2, 1, 1, 'Bahasa Inggris', 75),
+(5, 1, 1, 'Bahasa Indonesia', 75),
+(6, 1, 2, 'Pemrograman Dasar', 70),
+(7, 1, 2, 'Jaringan Dasar', 70);
 
 -- --------------------------------------------------------
 
@@ -202,7 +224,11 @@ INSERT INTO `mapel_kelas` (`id_mapel_kelas`, `id_mapel`, `id_kelas`) VALUES
 (1, 1, 1),
 (2, 1, 2),
 (3, 2, 1),
-(4, 5, 2);
+(4, 5, 2),
+(5, 6, 1),
+(6, 6, 3),
+(7, 7, 2),
+(8, 7, 4);
 
 -- --------------------------------------------------------
 
@@ -307,6 +333,12 @@ ALTER TABLE `guru`
   ADD PRIMARY KEY (`id_guru`);
 
 --
+-- Indexes for table `jenis_mapel`
+--
+ALTER TABLE `jenis_mapel`
+  ADD PRIMARY KEY (`id_jenis_mapel`);
+
+--
 -- Indexes for table `kd`
 --
 ALTER TABLE `kd`
@@ -337,7 +369,8 @@ ALTER TABLE `kurikulum`
 --
 ALTER TABLE `mapel`
   ADD PRIMARY KEY (`id_mapel`),
-  ADD KEY `id_kurikulum` (`id_kurikulum`);
+  ADD KEY `id_kurikulum` (`id_kurikulum`),
+  ADD KEY `id_jenis_mapel` (`id_jenis_mapel`);
 
 --
 -- Indexes for table `mapel_guru`
@@ -401,6 +434,11 @@ ALTER TABLE `admin`
 ALTER TABLE `guru`
   MODIFY `id_guru` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
+-- AUTO_INCREMENT for table `jenis_mapel`
+--
+ALTER TABLE `jenis_mapel`
+  MODIFY `id_jenis_mapel` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
 -- AUTO_INCREMENT for table `kd`
 --
 ALTER TABLE `kd`
@@ -424,7 +462,7 @@ ALTER TABLE `kurikulum`
 -- AUTO_INCREMENT for table `mapel`
 --
 ALTER TABLE `mapel`
-  MODIFY `id_mapel` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_mapel` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT for table `mapel_guru`
 --
@@ -434,7 +472,7 @@ ALTER TABLE `mapel_guru`
 -- AUTO_INCREMENT for table `mapel_kelas`
 --
 ALTER TABLE `mapel_kelas`
-  MODIFY `id_mapel_kelas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_mapel_kelas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT for table `nilai`
 --
@@ -475,7 +513,8 @@ ALTER TABLE `kelas`
 -- Ketidakleluasaan untuk tabel `mapel`
 --
 ALTER TABLE `mapel`
-  ADD CONSTRAINT `mapel_ibfk_1` FOREIGN KEY (`id_kurikulum`) REFERENCES `kurikulum` (`id_kurikulum`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `mapel_ibfk_1` FOREIGN KEY (`id_kurikulum`) REFERENCES `kurikulum` (`id_kurikulum`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `mapel_ibfk_2` FOREIGN KEY (`id_jenis_mapel`) REFERENCES `jenis_mapel` (`id_jenis_mapel`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Ketidakleluasaan untuk tabel `mapel_guru`
