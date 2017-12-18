@@ -84,10 +84,17 @@
                 }
 
                 data = '';
+                r = groupBy(r,'nama_jenis_mapel');
                 $.each(r, function(key,val) {
-                  data += '<li class="nav-item">\
-                            <a class="nav-link" href="mapel/'+val.id_mapel+'"><i class="icon-notebook"></i> '+val.nama_mapel+'</a>\
-                          </li>';
+                  data += '<li class="nav-item nav-dropdown">\
+                              <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-notebook"></i> '+key+'</a>\
+                                <ul class="nav-dropdown-items">';
+                  $.each(val, function(key,val) {
+                    data += '<li class="nav-item">\
+                          <a class="nav-link" href="mapel/'+val.id_mapel+'">'+val.nama_mapel+'</a>\
+                        </li>';
+                  });
+                  data += '</ul></li>';
                 });
                 $('.nav-mapel').html(data);
               }
