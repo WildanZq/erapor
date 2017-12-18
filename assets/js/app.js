@@ -164,3 +164,12 @@ function updateModal(title, body, action, onclick, param, size, type, button) {
     $('.modal-btn-action').html('<i class="fa fa-save"></i>&nbsp;Save');
   }
 }
+
+function getRandomColor() {
+  var letters = '0123456789ABCDEF';
+  var color = '#';
+  for (var i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+}

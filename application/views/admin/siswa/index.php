@@ -1,4 +1,3 @@
-<div class="main-container"></div>
 <script type="text/javascript">
 	$(document).ready(function() {
 		manageSiswa();
@@ -12,42 +11,42 @@
 	function refreshTabelSiswa() {
 		$('#tabel-siswa').DataTable({
 			destroy: true,
-  		ajax: '<?php echo base_url('siswa/getAllSiswa'); ?>',
-  		deferRender: true,
-      columns: [
-      	{ data: 'nama_siswa' },
-      	{ data: 'nisn' },
-      	{ data: 'nis' },
-      	{ data: 'tempat_lahir' },
-      	{ data: 'tgl_lahir' },
-      	{ data: 'jk' },
-      	{ data: 'nama_kelas' }
-  		],
-  		columnDefs: [
-  			{
-    			targets: 4,
-    			render: function(data, type, full) {
-    				date = new Date(data);
-    				return date.getDate()+'-'+monthShort[date.getMonth()]+'-'+date.getFullYear();
-    			}
-    		},
-    		{
-    			targets: 5,
-    			render: function(data, type, full) {
-    				return jk[data];
-    			}
-    		},
-  			{
-      		targets: 7,
-      		data: 'id_siswa',
-      		render: function(data, type, full) {
-        		return '<div class="d-flex">\
-      				<button onclick="showModalEditSiswa('+data+')" data-target="#modal" data-toggle="modal" class="btn btn-primary text-white mr-1"><i class="fa fa-pencil"></i>&nbsp;Edit</button>\
-      				<button onclick="showModalDeleteSiswa('+data+')" data-target="#modal" data-toggle="modal" class="btn btn-danger text-white"><i class="fa fa-trash"></i></button>\
-      			</div>';
-      		}
-    		}
-    	]
+	  		ajax: '<?php echo base_url('siswa/getAllSiswa'); ?>',
+	  		deferRender: true,
+		    columns: [
+		      	{ data: 'nama_siswa' },
+		      	{ data: 'nisn' },
+		      	{ data: 'nis' },
+		      	{ data: 'tempat_lahir' },
+		      	{ data: 'tgl_lahir' },
+		      	{ data: 'jk' },
+		      	{ data: 'nama_kelas' }
+  			],
+	  		columnDefs: [
+	  			{
+	    			targets: 4,
+	    			render: function(data, type, full) {
+	    				date = new Date(data);
+	    				return date.getDate()+'-'+monthShort[date.getMonth()]+'-'+date.getFullYear();
+	    			}
+	    		},
+	    		{
+	    			targets: 5,
+	    			render: function(data, type, full) {
+	    				return jk[data];
+	    			}
+	    		},
+	  			{
+		      		targets: 7,
+		      		data: 'id_siswa',
+		      		render: function(data, type, full) {
+		        		return '<div class="d-flex">\
+		      				<button onclick="showModalEditSiswa('+data+')" data-target="#modal" data-toggle="modal" class="btn btn-primary text-white mr-1"><i class="fa fa-pencil"></i>&nbsp;Edit</button>\
+		      				<button onclick="showModalDeleteSiswa('+data+')" data-target="#modal" data-toggle="modal" class="btn btn-danger text-white"><i class="fa fa-trash"></i></button>\
+		      			</div>';
+		      		}
+	    		}
+	    	]
 		});
 	}
 
@@ -123,20 +122,20 @@
 		event.preventDefault();
 		$.ajax({
 			url: $('.modal-form').attr('action'),
-      type: 'POST',
-      dataType: 'json',
-      data: $('.modal-form').serialize(),
-      success: function(r) {
-        if (r.status) {
-          toastr.remove();
-          toastr["success"]("Data siswa berhasil ditambahkan");
-          refreshTabelSiswa();
-          $('.modal').modal('hide');
-        } else {
-          toastr.remove();
-          toastr["error"](r.error);
-        }
-      }
+		    type: 'POST',
+		    dataType: 'json',
+		    data: $('.modal-form').serialize(),
+		    success: function(r) {
+		    	if (r.status) {
+		        	toastr.remove();
+		        	toastr["success"]("Data siswa berhasil ditambahkan");
+		        	refreshTabelSiswa();
+			        $('.modal').modal('hide');
+		    	} else {
+		        	toastr.remove();
+		        	toastr["error"](r.error);
+		    	}
+		    }
 		});
 	}
 
@@ -144,20 +143,20 @@
 		event.preventDefault();
 		$.ajax({
 			url: $('.modal-form').attr('action'),
-      type: 'POST',
-      dataType: 'json',
-      data: $('.modal-form').serialize()+'&id='+idSiswa,
-      success: function(r) {
-        if (r.status) {
-          toastr.remove();
-          toastr["success"]("Data siswa berhasil diedit");
-          refreshTabelSiswa();
-          $('.modal').modal('hide');
-        } else {
-          toastr.remove();
-          toastr["error"](r.error);
-        }
-      }
+	      	type: 'POST',
+	      	dataType: 'json',
+	      	data: $('.modal-form').serialize()+'&id='+idSiswa,
+	      	success: function(r) {
+	        	if (r.status) {
+		          	toastr.remove();
+		          	toastr["success"]("Data siswa berhasil diedit");
+		          	refreshTabelSiswa();
+		          	$('.modal').modal('hide');
+	        	} else {
+		          	toastr.remove();
+		          	toastr["error"](r.error);
+	        	}
+	      	}
 		});
 	}
 
@@ -165,20 +164,20 @@
 		event.preventDefault();
 		$.ajax({
 			url: '<?php echo base_url('siswa/deleteSiswa'); ?>',
-      type: 'POST',
-      dataType: 'json',
-      data: 'id='+idSiswa,
-      success: function(r) {
-        if (r.status) {
-          toastr.remove();
-          toastr["success"]("Data siswa berhasil dihapus");
-          refreshTabelSiswa();
-          $('.modal').modal('hide');
-        } else {
-          toastr.remove();
-          toastr["error"](r.error);
-        }
-      }
+	      	type: 'POST',
+	      	dataType: 'json',
+	      	data: 'id='+idSiswa,
+	      	success: function(r) {
+		        if (r.status) {
+		          	toastr.remove();
+		          	toastr["success"]("Data siswa berhasil dihapus");
+		          	refreshTabelSiswa();
+		          	$('.modal').modal('hide');
+	        	} else {
+		          	toastr.remove();
+		          	toastr["error"](r.error);
+	        	}
+	      	}
 		});
 	}
 

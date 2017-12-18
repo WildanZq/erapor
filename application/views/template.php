@@ -81,6 +81,7 @@
     <!-- Main content -->
     <main class="main">
       <div class="container-fluid px-3 pt-3">
+        <div class="main-container"></div>
         <?php $this->load->view($main); ?>
       </div>
       <!-- /.conainer-fluid -->

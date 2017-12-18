@@ -15,9 +15,6 @@
           <a class="nav-link" href="guru"><i class="icon-people"></i> Guru</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="kurikulum"><i class="icon-book-open"></i> Kurikulum</a>
-        </li>
-        <li class="nav-item">
           <a class="nav-link" href="mapel"><i class="icon-notebook"></i> Mapel</a>
         </li>
         <li class="nav-item">
@@ -25,6 +22,9 @@
         </li>
         <li class="nav-item">
           <a class="nav-link" href="admin"><i class="icon-user"></i> Admin</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="kurikulum"><i class="icon-book-open"></i> Rumus</a>
         </li>
       <?php endif ?>
       <?php if ($this->session->userdata('role') == 'guru'): ?>
