@@ -7,6 +7,12 @@
       </select>\
     </div>\
     <div class="form-group">\
+      <label>Jenis Mapel</label>\
+      <select name="jenis_mapel" class="form-control select2" id="jenis_mapel">\
+        <option value="">-Pilih jenis mapel-</option>\
+      </select>\
+    </div>\
+    <div class="form-group">\
       <label>Nama Mapel</label>\
       <input type="text" name="nama_mapel" class="form-control" id="nama_mapel">\
     </div>\

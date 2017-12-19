@@ -74,9 +74,10 @@ class Mapel extends CI_Controller {
 		$r = array('status' => false, 'error' => '');
 		$data = array(
 			//'id_mapel'		=> $this->input->post('id_mapel'),
-			'id_kurikulum'	=> $this->input->post('id_kurikulum'),
-			'nama_mapel'	=> $this->input->post('nama_mapel'),
-			'kkm'			=> $this->input->post('kkm')
+			'id_kurikulum'		=> $this->input->post('id_kurikulum'),
+			'id_jenis_mapel'	=> $this->input->post('id_jenis_mapel'),
+			'nama_mapel'		=> $this->input->post('nama_mapel'),
+			'kkm'				=> $this->input->post('kkm')
 		);
 
 		if (
@@ -90,6 +91,10 @@ class Mapel extends CI_Controller {
 
 		if ($this->input->post('kurikulum')) {
 			$data['id_kurikulum'] = $this->input->post('kurikulum');
+		}
+
+		if ($this->input->post('jenis_mapel')) {
+			$data['id_jenis_mapel'] = $this->input->post('jenis_mapel');
 		}
 
 		//$data = $this->service_model->escape_array($data);
@@ -127,6 +132,7 @@ class Mapel extends CI_Controller {
 		$r = array('status' => false, 'error' => '');
 		$data = array(
 			'id_kurikulum' => $this->input->post('kurikulum'),
+			'id_jenis_mapel' => $this->input->post('jenis_mapel'),
 			'nama_mapel' => $this->input->post('nama_mapel'),
 			'kkm' => $this->input->post('kkm')
 		);
@@ -140,6 +146,11 @@ class Mapel extends CI_Controller {
 			$data['id_kurikulum'] = $this->input->post('kurikulum');
 		} else {
 			$data['id_kurikulum'] = null;
+		}
+		if ($this->input->post('jenis_mapel')) {
+			$data['id_jenis_mapel'] = $this->input->post('jenis_mapel');
+		} else {
+			$data['id_jenis_mapel'] = null;
 		}
 
 		if ($this->mapel_model->editMapel($this->input->post('id'), $data)) {
@@ -164,6 +175,30 @@ class Mapel extends CI_Controller {
 		echo json_encode($r[0]);
 	}
 
+	public function deleteMapel()
+	{
+		if(! $this->input->is_ajax_request()) {
+			$data['title'] = '404 Page Not Found';
+    		$this->load->view('error404_view',$data);
+    		return;
+		}
+
+		$r = array('status' => false, 'error' => '');
+
+		if ($this->input->post('id') == '') {
+			$r['error'] = 'Id tidak ada!';
+			echo json_encode($r);
+			return;
+		}
+
+		if ($this->mapel_model->deleteMapel($this->input->post('id'))) {
+			$r['status'] = true;
+		} else {
+			$r['error'] = 'Gagal menghapus mapel';
+		}
+
+		echo json_encode($r);
+	}
 }
 
 /* End of file mapel.php */

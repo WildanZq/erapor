@@ -8,6 +8,7 @@
 		<table id="tabel-mapel" class="table table-striped table-hover" width="100%">\
 			<thead>\
 				<th>Id Kurikulum</th>\
+				<th>Jenis Mapel</th>\
 				<th>Nama Mapel</th>\
 				<th>KKM</th>\
 				<th></th>\
