@@ -25,6 +25,39 @@ class Mapel_model extends CI_Model {
 		->get('siswa')->result();
 	}
 
+	public function addMapel($data)
+	{
+		$this->db->insert('mapel', $data);
+		if ($this->db->affected_rows() == 0) {
+			return false;
+		}
+		return true;
+	}
+
+	public function getAllMapel()
+	{
+		return $this->db->get('mapel')
+						->result();
+	}
+
+	public function getMapelById($idMapel)
+	{
+		return $this->db
+		->where('id_mapel', $this->db->escape_str($idMapel))
+		->get('mapel')->result();
+	}
+
+	public function editMapel($id, $data)
+	{
+		$this->db
+		->where('id_mapel', $id)
+		->update('mapel', $data);
+		if ($this->db->affected_rows() == 0) {
+			return false;
+		}
+		return true;
+	}
+
 }
 
 /* End of file mapel_model.php */
