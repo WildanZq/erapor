@@ -14,7 +14,18 @@ class Mapel extends CI_Controller {
 
 	public function index()
 	{
-		
+		if ($this->session->userdata('role') == 'guru') {
+			$this->load->model('mapel_guru_model');
+			if (! $this->mapel_guru_model->cekMapelGuru( $this->uri->segment(3), $this->session->userdata('userid') )) {
+				$data['title'] = '404 Page Not Found';
+    			$this->load->view('error404_view',$data);
+				return;
+			}
+
+			$data['title'] = 'Nilai';
+			$data['main'] = 'guru/mapel/index';
+			$this->load->view('template', $data);
+		}
 	}
 
 	public function getMapelGuru()
