@@ -2,34 +2,34 @@
   <nav class="sidebar-nav">
     <ul class="nav">
       <li class="nav-item">
-        <a class="nav-link" href="dashboard"><i class="icon-graph"></i> Dashboard</a>
+        <a class="nav-link" href="<?php echo base_url('dashboard'); ?>"><i class="icon-graph"></i> Dashboard</a>
       </li>
       <?php if ($this->session->userdata('role') == 'admin'): ?>
         <li class="nav-title">
           Manage
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="siswa"><i class="icon-graduation"></i> Siswa</a>
+          <a class="nav-link" href="<?php echo base_url('siswa'); ?>"><i class="icon-graduation"></i> Siswa</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="guru"><i class="icon-people"></i> Guru</a>
+          <a class="nav-link" href="<?php echo base_url('guru'); ?>"><i class="icon-people"></i> Guru</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="mapel"><i class="icon-notebook"></i> Mapel</a>
+          <a class="nav-link" href="<?php echo base_url('mapel'); ?>"><i class="icon-notebook"></i> Mapel</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="kelas"><i class="icon-home"></i> Kelas</a>
+          <a class="nav-link" href="<?php echo base_url('kelas'); ?>"><i class="icon-home"></i> Kelas</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="admin"><i class="icon-user"></i> Admin</a>
+          <a class="nav-link" href="<?php echo base_url('admin'); ?>"><i class="icon-user"></i> Admin</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="kurikulum"><i class="icon-book-open"></i> Rumus</a>
+          <a class="nav-link" href="<?php echo base_url('rumus'); ?>"><i class="icon-book-open"></i> Rumus</a>
         </li>
       <?php endif ?>
       <?php if ($this->session->userdata('role') == 'guru'): ?>
         <li class="nav-item">
-          <a class="nav-link" href="wasis"><i class="icon-people"></i> Wali Siswa</a>
+          <a class="nav-link" href="<?php echo base_url('wasis'); ?>"><i class="icon-people"></i> Wali Siswa</a>
         </li>
         <li class="nav-title">
           Mapel
@@ -54,7 +54,7 @@
                 data = '';
                 $.each(r, function(key,val) {
                   data += '<li class="nav-item">\
-                            <a class="nav-link" href="mapel/'+val.id_mapel+'"><i class="icon-notebook"></i> '+val.nama_mapel+'</a>\
+                            <a class="nav-link" href="<?php echo base_url('mapel/index/'); ?>'+val.id_mapel+'"><i class="icon-notebook"></i> '+val.nama_mapel+'</a>\
                           </li>';
                 });
                 $('.nav-mapel').html(data);
@@ -91,7 +91,7 @@
                                 <ul class="nav-dropdown-items">';
                   $.each(val, function(key,val) {
                     data += '<li class="nav-item">\
-                          <a class="nav-link" href="mapel/'+val.id_mapel+'">'+val.nama_mapel+'</a>\
+                          <a class="nav-link" href="<?php echo base_url('mapel/'); ?>'+val.id_mapel+'">'+val.nama_mapel+'</a>\
                         </li>';
                   });
                   data += '</ul></li>';

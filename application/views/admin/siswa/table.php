@@ -1,5 +1,5 @@
 <div class="card">\
-	<div class="card-header">List Siswa\
+	<div class="card-header font-weight-bold">List Siswa\
 		<button onclick="showModalAddSiswa()" data-target="#modal" data-toggle="modal" class="btn btn-sm btn-success float-right">\
 			<i class="fa fa-plus"></i>&nbsp;Tambah Siswa\
 		</button>\
