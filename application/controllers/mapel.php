@@ -10,6 +10,7 @@ class Mapel extends CI_Controller {
 			redirect('/');
 		}
 		$this->load->model('mapel_model');
+		$this->load->model('service_model');
 	}
 
 	public function index()
@@ -112,7 +113,7 @@ class Mapel extends CI_Controller {
 			$data['id_jenis_mapel'] = $this->input->post('jenis_mapel');
 		}
 
-		//$data = $this->service_model->escape_array($data);
+		$data = $this->service_model->escape_array($data);
 		if ($this->mapel_model->addMapel($data)) {
 			$r['status'] = true;
 		} else {

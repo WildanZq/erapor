@@ -1,5 +1,5 @@
 <div class="card">\
-	<div class="card-header">List Mapel\
+	<div class="card-header font-weight-bold">List Mapel\
 		<button onclick="showModalAddMapel()" data-target="#modal" data-toggle="modal" class="btn btn-sm btn-success float-right">\
 			<i class="fa fa-plus"></i>&nbsp;Tambah Mapel\
 		</button>\

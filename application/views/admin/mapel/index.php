@@ -32,7 +32,7 @@ $(document).ready(function() {
 
 	function showModalAddMapel() {
 			body = '<?php echo $this->load->view('admin/mapel/modal_body', '', TRUE); ?>';
-			updateModal('Tambah Mapel', body, '<?php echo base_url('mapel/addMapel'); ?>', 'addMapel', null, 'lg', 'success');
+			updateModal('Tambah Mapel', body, '<?php echo base_url('mapel/addMapel'); ?>', 'addMapel', null, 'md', 'success');
 
 			refreshPilihanKurikulum();
 			refreshPilihanJenisMapel();
