@@ -1,5 +1,5 @@
 <div class="row">\
-  <div class="col-lg-6">\
+  <div class="col-sm-6">\
     <div class="form-group">\
       <label>Kurikulum</label>\
       <select name="kurikulum" class="form-control select2" id="kurikulum">\

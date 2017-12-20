@@ -36,8 +36,11 @@ class Mapel_model extends CI_Model {
 
 	public function getAllMapel()
 	{
-		return $this->db->get('mapel')
-						->result();
+		return $this->db
+		->join('kurikulum', 'kurikulum.id_kurikulum = mapel.id_kurikulum', 'left')
+		->join('jenis_mapel', 'jenis_mapel.id_jenis_mapel = mapel.id_jenis_mapel', 'left')
+		->get('mapel')
+		->result();
 	}
 
 	public function getMapelById($idMapel)

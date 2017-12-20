@@ -44,8 +44,8 @@ $(document).ready(function() {
 			ajax: '<?php echo base_url('mapel/getAllMapel'); ?>',
 			deferRender: true,
 	 	columns: [
-	  	{ data: 'id_kurikulum' },
-	  	{ data: 'id_jenis_mapel' },
+	  	{ data: 'nama_kurikulum' },
+	  	{ data: 'nama_jenis_mapel' },
 	  	{ data: 'nama_mapel' },
 	  	{ data: 'kkm' }
 			],
