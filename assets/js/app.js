@@ -27,8 +27,7 @@ $.grayLightest =  '#f8f9fa';
 * MAIN NAVIGATION
 */
 
-$(document).ready(function($){
-
+function setActiveCurNav() {
   // Add class .active to current link
   $.navigation.find('a').each(function(){
 
@@ -46,6 +45,11 @@ $(document).ready(function($){
       });
     }
   });
+}
+
+$(document).ready(function($){
+
+  setActiveCurNav();
 
   // Dropdown Menu
   $.navigation.on('click', 'a', function(e){
@@ -148,7 +152,7 @@ function init(url) {
 
 function updateModal(title, body, action, onclick, param, size, type, button) {
   $('.modal-dialog').attr('class', 'modal-dialog');
-  $('.modal-btn-action').attr('class', 'btn modal-btn-action');
+  $('.modal-btn-action').attr('class', 'btn modal-btn-action ml-1 mr-0');
   $('.modal-title').html(title);
   $('.modal-body').html(body);
   $('.modal-form').attr('action', action);
