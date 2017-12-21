@@ -98,9 +98,16 @@ class Mapel extends CI_Controller {
 
 		if (
 			$data['nama_mapel'] == '' ||
-			$data['kkm'] == '')
+			$data['kkm'] == '' )
 		{
 			$r['error'] = 'Isi semua data yang diperlukan!';
+			echo json_encode($r);
+			return;
+		}
+
+		if($data['kkm'] < 0 || $data['kkm'] >100)
+		{
+			$r['error'] = 'Isikan kkm dalam skala 0-100';
 			echo json_encode($r);
 			return;
 		}
@@ -158,6 +165,14 @@ class Mapel extends CI_Controller {
 			echo json_encode($r);
 			return;
 		}
+
+		if($data['kkm'] < 0 || $data['kkm'] > 100)
+		{
+			$r['error'] = 'Isikan kkm dalam skala 0-100';
+			echo json_encode($r);
+			return;
+		}
+
 		if ($this->input->post('kurikulum')) {
 			$data['id_kurikulum'] = $this->input->post('kurikulum');
 		} else {

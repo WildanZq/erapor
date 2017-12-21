@@ -96,7 +96,7 @@ $(document).ready(function() {
 
 	function showModalEditMapel(idMapel) {
 		body = '<?php echo $this->load->view('admin/mapel/modal_body', '', TRUE); ?>';
-		updateModal('Edit Mapel', body, '<?php echo base_url('mapel/editMapel'); ?>', 'editMapel', idMapel, 'lg', 'primary');
+		updateModal('Edit Mapel', body, '<?php echo base_url('mapel/editMapel'); ?>', 'editMapel', idMapel, 'md', 'primary');
 
 		refreshPilihanKurikulum(); 
 		refreshPilihanJenisMapel(); 
@@ -121,20 +121,20 @@ $(document).ready(function() {
 		event.preventDefault();
 		$.ajax({
 			url: $('.modal-form').attr('action'),
-	  type: 'POST',
-	  dataType: 'json',
-	  data: $('.modal-form').serialize()+'&id='+idMapel,
-	  success: function(r) {
-	    if (r.status) {
-	      toastr.remove();
-	      toastr["success"]("Data mapel berhasil diedit");
-	      refreshTabelMapel();
-	      $('.modal').modal('hide');
-	    } else {
-	      toastr.remove();
-	      toastr["error"](r.error);
-	    }
-	  }
+		  	type: 'POST',
+		 	dataType: 'json',
+		  	data: $('.modal-form').serialize()+'&id='+idMapel,
+		  	success: function(r) {
+			    if (r.status) {
+			      toastr.remove();
+			      toastr["success"]("Data mapel berhasil diedit");
+			      refreshTabelMapel();
+			      $('.modal').modal('hide');
+			    } else {
+			      toastr.remove();
+			      toastr["error"](r.error);
+			    }
+	 		}
 		});
 	}
 
@@ -162,4 +162,5 @@ $(document).ready(function() {
 	      	}
 		});
 	}
+
 </script>

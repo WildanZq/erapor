@@ -1,5 +1,5 @@
 <div class="row">\
-  <div class="col-sm-6">\
+  <div class="col-sm-12">\
     <div class="form-group">\
       <label>Kurikulum</label>\
       <select name="kurikulum" class="form-control select2" id="kurikulum">\
@@ -18,7 +18,7 @@
     </div>\
     <div class="form-group">\
       <label>KKM</label>\
-      <input type="text" name="kkm" class="form-control" id="kkm">\
+      <input type="number" min="0" max="100" name="kkm" class="form-control" id="kkm">\
     </div>\
   </div>\
 </div>
