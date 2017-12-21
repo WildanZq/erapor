@@ -58,6 +58,7 @@
                           </li>';
                 });
                 $('.nav-mapel').html(data);
+                setActiveCurNav();
               }
             });
           });
@@ -97,6 +98,7 @@
                   data += '</ul></li>';
                 });
                 $('.nav-mapel').html(data);
+                setActiveCurNav();
               }
             });
         </script>
