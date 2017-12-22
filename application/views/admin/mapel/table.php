@@ -37,7 +37,7 @@
 	<div class="col-lg-6 col-sm-5 pr-sm-2">\
 		<div class="card">\
 			<div class="card-header font-weight-bold">List Jenis Mata Pelajaran\
-				<button onclick="#" data-target="#modal" data-toggle="modal" class="btn btn-sm btn-success float-right">\
+				<button onclick="showModalAddJenisMapel()" data-target="#modal" data-toggle="modal" class="btn btn-sm btn-success float-right">\
 					<i class="fa fa-plus"></i>&nbsp;Tambah Jenis Mapel\
 				</button>\
 			</div>\

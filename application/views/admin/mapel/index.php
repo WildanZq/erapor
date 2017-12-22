@@ -8,6 +8,7 @@ $(document).ready(function() {
 		$('.main-container').html('<?php echo $this->load->view('admin/mapel/table', '', TRUE); ?>');
 		refreshTabelMapel();
 		refreshTabelKurikulum();
+		refreshTabelJenisMapel();
 	}
 
 	//MAPEL
@@ -270,6 +271,119 @@ $(document).ready(function() {
 		          	toastr.remove();
 		          	toastr["success"]("Data kurikulum berhasil dihapus");
 		          	refreshTabelKurikulum();
+		          	$('.modal').modal('hide');
+	        	} else {
+		          	toastr.remove();
+		          	toastr["error"](r.error);
+	        	}
+	      	}
+		});
+	}
+
+	//JENIS MATA PELAJARAN
+
+	function refreshTabelJenisMapel() { 
+		$('#tabel-jenismapel').DataTable({
+			destroy: true,
+			ajax: '<?php echo base_url('jenis_mapel/getAllJenisMapel'); ?>',
+			deferRender: true,
+	 	columns: [
+	  	{ data: 'nama_jenis_mapel' },
+			],
+			columnDefs: [
+			{
+	  		targets: 1,
+	  		data: 'id_jenis_mapel',
+	  		render: function(data, type, full) {
+	    		return '<div class="d-flex">\
+	  				<button onclick="showModalEditJenisMapel('+data+')" data-target="#modal" data-toggle="modal" class="btn btn-primary text-white mr-1"><i class="fa fa-pencil"></i>&nbsp;Edit</button>\
+	  				<button onclick="showModalDeleteJenisMapel('+data+')" data-target="#modal" data-toggle="modal" class="btn btn-danger text-white"><i class="fa fa-trash"></i></button>\
+	  			</div>';
+	  		}
+			}
+		]
+		});
+	}
+
+	function showModalAddJenisMapel() {
+			body = '<?php echo $this->load->view('admin/mapel/modal_body_jenismapel', '', TRUE); ?>';
+			updateModal('Tambah Jenis Mapel', body, '<?php echo base_url('jenis_mapel/addJenisMapel'); ?>', 'addJenisMapel', null, 'md', 'success');
+	}
+
+	function addJenisMapel(){
+		event.preventDefault();
+		$.ajax({
+			url: $('.modal-form').attr('action'),
+	    	type: 'POST',
+	    	dataType: 'json',
+	    	data: $('.modal-form').serialize(),
+	    	success: function(r) {
+			    if (r.status) {
+			    	toastr.remove();
+			      	toastr["success"]("Data jenis mapel berhasil ditambahkan");
+			      	refreshTabelJenisMapel();
+			      	$('.modal').modal('hide');
+			    } else {
+			      	toastr.remove();
+			     	toastr["error"](r.error);
+			    }
+	      	}
+		});
+	}
+
+	function showModalEditJenisMapel(idJenisMapel) {
+		body = '<?php echo $this->load->view('admin/mapel/modal_body_jenismapel', '', TRUE); ?>';
+		updateModal('Edit Jenis Mapel', body, '<?php echo base_url('jenis_mapel/editJenisMapel'); ?>', 'editJenisMapel', idJenisMapel, 'md', 'primary');
+		setTimeout(function() {
+			$.ajax({
+				url: '<?php echo base_url('jenis_mapel/getJenisMapelById'); ?>',
+				type: 'GET',
+				dataType: 'json',
+				data: 'id='+idJenisMapel,
+				success: function(r) {
+					$('#nama_jenis_mapel').val(r.nama_jenis_mapel);
+				}
+			});
+		},100);
+	}
+
+	function editJenisMapel(idJenisMapel) {
+		event.preventDefault();
+		$.ajax({
+			url: $('.modal-form').attr('action'),
+		  	type: 'POST',
+		 	dataType: 'json',
+		  	data: $('.modal-form').serialize()+'&id='+idJenisMapel,
+		  	success: function(r) {
+			    if (r.status) {
+			      toastr.remove();
+			      toastr["success"]("Data jenis mapel berhasil diedit");
+			      refreshTabelJenisMapel();
+			      $('.modal').modal('hide');
+			    } else {
+			      toastr.remove();
+			      toastr["error"](r.error);
+			    }
+	 		}
+		});
+	}
+
+	function showModalDeleteJenisMapel(idJenisMapel) {
+		updateModal('Delete Jenis Mapel?', '', '<?php echo base_url('jenis_mapel/deleteJenisMapel'); ?>', 'deleteJenisMapel', idJenisMapel, 'sm', 'danger', 'Yes');
+	}
+
+	function deleteJenisMapel(idJenisMapel) {
+		event.preventDefault();
+		$.ajax({
+			url: '<?php echo base_url('jenis_mapel/deleteJenisMapel'); ?>',
+	      	type: 'POST',
+	      	dataType: 'json',
+	      	data: 'id='+idJenisMapel,
+	      	success: function(r) {
+		        if (r.status) {
+		          	toastr.remove();
+		          	toastr["success"]("Data jenis mapel berhasil dihapus");
+		          	refreshTabelJenisMapel();
 		          	$('.modal').modal('hide');
 	        	} else {
 		          	toastr.remove();
