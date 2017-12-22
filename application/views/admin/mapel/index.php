@@ -7,7 +7,10 @@ $(document).ready(function() {
 	function manageMapel() {
 		$('.main-container').html('<?php echo $this->load->view('admin/mapel/table', '', TRUE); ?>');
 		refreshTabelMapel();
+		refreshTabelKurikulum();
 	}
+
+	//MAPEL
 
 	function addMapel(){
 		event.preventDefault();
@@ -154,6 +157,119 @@ $(document).ready(function() {
 		          	toastr.remove();
 		          	toastr["success"]("Data mapel berhasil dihapus");
 		          	refreshTabelMapel();
+		          	$('.modal').modal('hide');
+	        	} else {
+		          	toastr.remove();
+		          	toastr["error"](r.error);
+	        	}
+	      	}
+		});
+	}
+
+	//KURIKULUM
+
+	function refreshTabelKurikulum() { 
+		$('#tabel-kurikulum').DataTable({
+			destroy: true,
+			ajax: '<?php echo base_url('kurikulum/getAllKurikulum'); ?>',
+			deferRender: true,
+	 	columns: [
+	  	{ data: 'nama_kurikulum' },
+			],
+			columnDefs: [
+			{
+	  		targets: 1,
+	  		data: 'id_kurikulum',
+	  		render: function(data, type, full) {
+	    		return '<div class="d-flex">\
+	  				<button onclick="showModalEditKurikulum('+data+')" data-target="#modal" data-toggle="modal" class="btn btn-primary text-white mr-1"><i class="fa fa-pencil"></i>&nbsp;Edit</button>\
+	  				<button onclick="showModalDeleteKurikulum('+data+')" data-target="#modal" data-toggle="modal" class="btn btn-danger text-white"><i class="fa fa-trash"></i></button>\
+	  			</div>';
+	  		}
+			}
+		]
+		});
+	}
+
+	function showModalAddKurikulum() {
+			body = '<?php echo $this->load->view('admin/mapel/modal_body_kurikulum', '', TRUE); ?>';
+			updateModal('Tambah Kurikulum', body, '<?php echo base_url('kurikulum/addKurikulum'); ?>', 'addKurikulum', null, 'md', 'success');
+	}
+
+	function addKurikulum(){
+		event.preventDefault();
+		$.ajax({
+			url: $('.modal-form').attr('action'),
+	    	type: 'POST',
+	    	dataType: 'json',
+	    	data: $('.modal-form').serialize(),
+	    	success: function(r) {
+			    if (r.status) {
+			    	toastr.remove();
+			      	toastr["success"]("Data kurikulum berhasil ditambahkan");
+			      	refreshTabelKurikulum();
+			      	$('.modal').modal('hide');
+			    } else {
+			      	toastr.remove();
+			     	toastr["error"](r.error);
+			    }
+	      	}
+		});
+	}
+
+	function showModalEditKurikulum(idKurikulum) {
+		body = '<?php echo $this->load->view('admin/mapel/modal_body_kurikulum', '', TRUE); ?>';
+		updateModal('Edit Kurikulum', body, '<?php echo base_url('kurikulum/editKurikulum'); ?>', 'editKurikulum', idKurikulum, 'md', 'primary');
+		setTimeout(function() {
+			$.ajax({
+				url: '<?php echo base_url('kurikulum/getKurikulumById'); ?>',
+				type: 'GET',
+				dataType: 'json',
+				data: 'id='+idKurikulum,
+				success: function(r) {
+					$('#nama_kurikulum').val(r.nama_kurikulum);
+				}
+			});
+		},100);
+	}
+
+	function editKurikulum(idKurikulum) {
+		event.preventDefault();
+		$.ajax({
+			url: $('.modal-form').attr('action'),
+		  	type: 'POST',
+		 	dataType: 'json',
+		  	data: $('.modal-form').serialize()+'&id='+idKurikulum,
+		  	success: function(r) {
+			    if (r.status) {
+			      toastr.remove();
+			      toastr["success"]("Data kurikulum berhasil diedit");
+			      refreshTabelKurikulum();
+			      $('.modal').modal('hide');
+			    } else {
+			      toastr.remove();
+			      toastr["error"](r.error);
+			    }
+	 		}
+		});
+	}
+
+	function showModalDeleteKurikulum(idKurikulum) {
+		updateModal('Delete Kurikulum?', '', '<?php echo base_url('kurikulum/deleteKurikulum'); ?>', 'deleteKurikulum', idKurikulum, 'sm', 'danger', 'Yes');
+	}
+
+	function deleteKurikulum(idKurikulum) {
+		event.preventDefault();
+		$.ajax({
+			url: '<?php echo base_url('kurikulum/deleteKurikulum'); ?>',
+	      	type: 'POST',
+	      	dataType: 'json',
+	      	data: 'id='+idKurikulum,
+	      	success: function(r) {
+		        if (r.status) {
+		          	toastr.remove();
+		          	toastr["success"]("Data kurikulum berhasil dihapus");
+		          	refreshTabelKurikulum();
 		          	$('.modal').modal('hide');
 	        	} else {
 		          	toastr.remove();
