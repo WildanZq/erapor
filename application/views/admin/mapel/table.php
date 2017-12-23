@@ -27,7 +27,7 @@
 			<div class="card-body">\
 				<table id="tabel-kurikulum" class="table table-striped table-hover" width="100%">\
 					<thead>\
-						<th>Kurikulum</th>\
+						<th style="width: 800px">Kurikulum</th>\
 						<th></th>\
 					</thead>\
 				</table>\
@@ -44,7 +44,7 @@
 			<div class="card-body">\
 				<table id="tabel-jenismapel" class="table table-striped table-hover" width="100%">\
 					<thead>\
-						<th>Jenis Mapel</th>\
+						<th style="width: 800px">Jenis Mapel</th>\
 						<th></th>\
 					</thead>\
 				</table>\
