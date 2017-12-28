@@ -47,7 +47,8 @@
 			data: 'semester='+semester+'&id_mapel='+idMapel,
 			success: function(r) {
 				if (r.length == 0) {
-					$('#tabel-kd').html('<strong class="text-danger">KD belum ada, segera tambahkan!</strong>');
+					$('#tabel-kd thead').html('<strong class="text-danger">KD belum ada, segera tambahkan!</strong>');
+					$('#tabel-kd tbody tr').html('');
 					return;
 				}
 
