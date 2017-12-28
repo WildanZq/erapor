@@ -7,6 +7,7 @@ class Kelas_model extends CI_Model {
 	{
 		return $this->db
 		->join('kelompok_kelas', 'kelompok_kelas.id_kelompok_kelas = kelas.id_kelompok_kelas')
+		->order_by('nama_kelas', 'asc')
 		->get('kelas')->result();
 	}
 
