@@ -223,6 +223,7 @@
 			      toastr.remove();
 			      toastr["success"]("Data jurusan berhasil diedit");
 			      refreshTabelKelompokKelas();
+			      refreshTabelKelas();
 			      $('.modal').modal('hide');
 			    } else {
 			      toastr.remove();
