@@ -48,6 +48,17 @@ class Kd_model extends CI_Model {
 		return true;
 	}
 
+	public function deleteKD($id)
+	{
+		$this->db
+		->where('id_kd', $this->db->escape_str($id))
+		->delete('kd');
+		if ($this->db->affected_rows() == 0) {
+			return false;
+		}
+		return true;
+	}
+
 }
 
 /* End of file kd_model.php */

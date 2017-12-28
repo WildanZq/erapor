@@ -55,11 +55,13 @@
 				htmlHead = ''; htmlBody = '';
 				$.each(r, function(i, data) {
 					htmlHead += '<th>'+(++i)+'. '+data.nama_kd+'</th>';
+					if (i == 1) {awal = 'disabled'} else {awal = ''}
+					if (i == r.length) {akhir = 'disabled'} else {akhir = ''}
 					htmlBody += '<td class="py-2">\
 						<div style="width: 100px;">\
 							<div class="d-flex justify-content-center align-items-center">\
-								<button onclick="moveLeftKD()" class="btn mr-1"><i class="fa fa-caret-left"></i></button>\
-								<button onclick="moveRightKD()" class="btn"><i class="fa fa-caret-right"></i></button>\
+								<button '+awal+' onclick="moveLeftKD()" class="btn mr-1"><i class="fa fa-caret-left"></i></button>\
+								<button '+akhir+' onclick="moveRightKD()" class="btn"><i class="fa fa-caret-right"></i></button>\
 							</div>\
 							<div class="mt-1 d-flex justify-content-center align-items-center">\
 								<button onclick="showModalEditKD('+data.id_kd+')" class="btn btn-primary mr-1" data-target="#modal" data-toggle="modal"><i class="fa fa-pencil"></i> Edit</button>\
@@ -97,13 +99,17 @@
 		});
 	}
 
+	function showModalDeleteKD(idKD) {
+		updateModal('Delete KD?', '', '<?php echo base_url('kd/deleteKD'); ?>', 'deleteKD', idKD, 'sm', 'danger', 'Yes');
+	}
+
 	function addKD(idMapel) {
 		event.preventDefault();
 		$.ajax({
 			url: '<?php echo base_url('kd/addKD'); ?>',
 			type: 'POST',
 			dataType: 'json',
-			data: $('.modal-form').serialize()+'&id_mapel='+idMapel,
+			data: $('.modal-form').serialize()+'&id_mapel='+idMapel+'&semester_kd='+$('#semester').val(),
 			success: function(r) {
 				if (r.status) {
 			    	toastr.remove();
@@ -136,6 +142,27 @@
 			     	toastr["error"](r.error);
 			    }
 			}
+		});
+	}
+
+	function deleteKD(idKD) {
+		event.preventDefault();
+		$.ajax({
+			url: '<?php echo base_url('kd/deleteKD'); ?>',
+	      	type: 'POST',
+	      	dataType: 'json',
+	      	data: 'id='+idKD,
+	      	success: function(r) {
+		        if (r.status) {
+		          	toastr.remove();
+		          	toastr["success"]("Data KD berhasil dihapus");
+			      	refreshTabelKD($('#semester').val(), <?php echo $this->uri->segment(3); ?>);
+		          	$('.modal').modal('hide');
+	        	} else {
+		          	toastr.remove();
+		          	toastr["error"](r.error);
+	        	}
+	      	}
 		});
 	}
 </script>
