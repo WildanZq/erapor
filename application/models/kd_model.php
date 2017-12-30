@@ -59,6 +59,19 @@ class Kd_model extends CI_Model {
 		return true;
 	}
 
+	public function moveKD($semester,$idMapel,$urutan,$data)
+	{
+		$this->db
+		->where('semester', $this->db->escape_str($semester))
+		->where('id_mapel', $this->db->escape_str($idMapel))
+		->where('urutan', $this->db->escape_str($urutan))
+		->update('kd', $data);
+		if ($this->db->affected_rows() == 0) {
+			return false;
+		}
+		return true;
+	}
+
 }
 
 /* End of file kd_model.php */

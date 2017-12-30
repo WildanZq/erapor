@@ -4,6 +4,8 @@
 
 		refreshPilihanKelas();
 
+		getKKM();
+
 		$('#tabel-nilai-siswa').DataTable();
 
 		refreshTabelKD($('#semester').val(), <?php echo $this->uri->segment(3); ?>);
@@ -27,6 +29,18 @@
 				$('#kelas').html(html);
 				$('.select2').select2();
   				$('.select2').css('width','100%');
+			}
+		});
+	}
+
+	function getKKM() {
+		$.ajax({
+			url: '<?php echo base_url('mapel/getMapelById'); ?>',
+			type: 'GET',
+			dataType: 'json',
+			data: 'id=<?php echo $this->uri->segment(3) ?>',
+			success: function(r) {
+				$('#kkm').html(r.kkm);
 			}
 		});
 	}
@@ -60,8 +74,8 @@
 					htmlBody += '<td class="py-2">\
 						<div style="width: 100px;">\
 							<div class="d-flex justify-content-center align-items-center">\
-								<button '+awal+' onclick="moveLeftKD()" class="btn mr-1"><i class="fa fa-caret-left"></i></button>\
-								<button '+akhir+' onclick="moveRightKD()" class="btn"><i class="fa fa-caret-right"></i></button>\
+								<button '+awal+' onclick="moveLeftKD('+data.id_kd+')" class="btn mr-1"><i class="fa fa-caret-left"></i></button>\
+								<button '+akhir+' onclick="moveRightKD('+data.id_kd+')" class="btn"><i class="fa fa-caret-right"></i></button>\
 							</div>\
 							<div class="mt-1 d-flex justify-content-center align-items-center">\
 								<button onclick="showModalEditKD('+data.id_kd+')" class="btn btn-primary mr-1" data-target="#modal" data-toggle="modal"><i class="fa fa-pencil"></i> Edit</button>\
@@ -163,6 +177,44 @@
 		          	toastr["error"](r.error);
 	        	}
 	      	}
+		});
+	}
+
+	function moveLeftKD(idKD) {
+		$.ajax({
+			url: '<?php echo base_url('kd/moveLeftKD'); ?>',
+			type: 'POST',
+			dataType: 'json',
+			data: 'id='+idKD,
+			success: function(r) {
+				if (r.status) {
+					toastr.remove();
+					toastr['success']("KD berhasil dipindah");
+			      	refreshTabelKD($('#semester').val(), <?php echo $this->uri->segment(3); ?>);
+				} else {
+					toastr.remove();
+					toastr['error'](r.error);
+				}
+			}
+		});
+	}
+
+	function moveRightKD(idKD) {
+		$.ajax({
+			url: '<?php echo base_url('kd/moveRightKD'); ?>',
+			type: 'POST',
+			dataType: 'json',
+			data: 'id='+idKD,
+			success: function(r) {
+				if (r.status) {
+					toastr.remove();
+					toastr['success']("KD berhasil dipindah");
+			      	refreshTabelKD($('#semester').val(), <?php echo $this->uri->segment(3); ?>);
+				} else {
+					toastr.remove();
+					toastr['error'](r.error);
+				}
+			}
 		});
 	}
 </script>

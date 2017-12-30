@@ -138,6 +138,74 @@ class Kd extends CI_Controller {
 		echo json_encode($r);
 	}
 
+	public function moveLeftKD()
+	{
+		if(! $this->input->is_ajax_request()) {
+			$data['title'] = '404 Page Not Found';
+    		$this->load->view('error404_view',$data);
+    		return;
+		}
+
+		$r = array('status' => false, 'error' => '');
+
+		if ($this->input->post('id') == '') {
+			$r['error'] = 'Id tidak ada!';
+			echo json_encode($r);
+			return;
+		}
+
+		$kd = $this->kd_model->getKDById($this->input->post('id'))[0];
+		if ($kd->urutan == 1) {
+			$r['error'] = 'Tidak bisa mamindahkan KD!';
+			echo json_encode($r);
+			return;
+		}
+
+		$dataBefore = array( 'urutan' => $kd->urutan );
+		$data = array( 'urutan' => $kd->urutan-1 );
+		if ($this->kd_model->moveKD($kd->semester,$kd->id_mapel,($kd->urutan-1),$dataBefore) && $this->kd_model->editKD($this->input->post('id'),$data)) {
+			$r['status'] = true;
+		} else {
+			$r['error'] = 'Gagal mamindahkan KD!';
+		}
+
+		echo json_encode($r);
+	}
+
+	public function moveRightKD()
+	{
+		if(! $this->input->is_ajax_request()) {
+			$data['title'] = '404 Page Not Found';
+    		$this->load->view('error404_view',$data);
+    		return;
+		}
+
+		$r = array('status' => false, 'error' => '');
+
+		if ($this->input->post('id') == '') {
+			$r['error'] = 'Id tidak ada!';
+			echo json_encode($r);
+			return;
+		}
+
+		$kd = $this->kd_model->getKDById($this->input->post('id'))[0];
+		if ($kd->urutan == $this->kd_model->getMaxUrutanKDBySemesterAndIdMapel($kd->semester,$kd->id_mapel)[0]->urutan) {
+			$r['error'] = 'Tidak bisa mamindahkan KD!';
+			echo json_encode($r);
+			return;
+		}
+
+		$dataAfter = array( 'urutan' => $kd->urutan );
+		$data = array( 'urutan' => $kd->urutan+1 );
+		if ($this->kd_model->moveKD($kd->semester,$kd->id_mapel,($kd->urutan+1),$dataAfter) && $this->kd_model->editKD($this->input->post('id'),$data)) {
+			$r['status'] = true;
+		} else {
+			$r['error'] = 'Gagal mamindahkan KD!';
+		}
+
+		echo json_encode($r);
+	}
+
 }
 
 /* End of file kd.php */

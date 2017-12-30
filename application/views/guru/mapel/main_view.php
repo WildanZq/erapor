@@ -21,7 +21,7 @@
 	<div class="col-sm-4 pl-sm-1">\
 		<div class="card">\
 			<div class="card-header font-weight-bold">KKM</div>\
-			<div class="p-1 pl-3" id="kkm">75</div>\
+			<div class="p-1 pl-3" id="kkm"></div>\
 		</div>\
 	</div>\
 </div>\
