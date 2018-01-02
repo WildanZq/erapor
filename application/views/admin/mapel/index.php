@@ -246,6 +246,7 @@ $(document).ready(function() {
 			      toastr.remove();
 			      toastr["success"]("Data kurikulum berhasil diedit");
 			      refreshTabelKurikulum();
+			      refreshTabelMapel();
 			      $('.modal').modal('hide');
 			    } else {
 			      toastr.remove();
@@ -359,6 +360,7 @@ $(document).ready(function() {
 			      toastr.remove();
 			      toastr["success"]("Data jenis mapel berhasil diedit");
 			      refreshTabelJenisMapel();
+			      refreshTabelMapel();
 			      $('.modal').modal('hide');
 			    } else {
 			      toastr.remove();

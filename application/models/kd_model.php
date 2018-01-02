@@ -48,6 +48,30 @@ class Kd_model extends CI_Model {
 		return true;
 	}
 
+	public function deleteKD($id)
+	{
+		$this->db
+		->where('id_kd', $this->db->escape_str($id))
+		->delete('kd');
+		if ($this->db->affected_rows() == 0) {
+			return false;
+		}
+		return true;
+	}
+
+	public function moveKD($semester,$idMapel,$urutan,$data)
+	{
+		$this->db
+		->where('semester', $this->db->escape_str($semester))
+		->where('id_mapel', $this->db->escape_str($idMapel))
+		->where('urutan', $this->db->escape_str($urutan))
+		->update('kd', $data);
+		if ($this->db->affected_rows() == 0) {
+			return false;
+		}
+		return true;
+	}
+
 }
 
 /* End of file kd_model.php */
