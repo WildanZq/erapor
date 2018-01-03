@@ -20,7 +20,7 @@
   <link rel="stylesheet" href="<?php echo base_url(); ?>assets/vendors/css/chart.min.css">
 
   <!-- Main styles for this application -->
-  <link href="<?php echo base_url(); ?>assets/css/style.css" rel="stylesheet">
+  <link href="<?php echo base_url(); ?>assets/css/style.min.css" rel="stylesheet">
 
   <!-- Bootstrap and necessary plugins -->
   <script src="<?php echo base_url(); ?>assets/vendors/js/jquery.min.js"></script>

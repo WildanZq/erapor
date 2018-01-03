@@ -1,77 +1,14 @@
-<div class="row">
-	<div class="col-lg-3 col-sm-4 pr-sm-1">
-		<div class="card">
-			<div class="card-header font-weight-bold">Kelas</div>
-			<div class="form-group m-0">
-			  <select name="kelas" class="form-control select2" id="kelas" onchange="updateKelas()"></select>
-			</div>
-		</div>
-	</div>
-	<div class="col-lg-3 col-sm-4 pl-sm-1 pr-lg-1">
-		<div class="card">
-			<div class="card-header font-weight-bold">KKM
-				<button onclick="showModalEditKKM()" data-target="#modal" data-toggle="modal" class="btn btn-sm btn-primary float-right">
-					<i class="fa fa-pencil"></i>&nbsp;Edit KKM
-				</button>
-			</div>
-			<div class="p-1 pl-3">75</div>
-		</div>
-	</div>
-</div>
-<div class="card">
-	<div class="card-header font-weight-bold">Nilai Siswa X RPL 1
-		<button onclick="showModalAddNilaiKD()" data-target="#modal" data-toggle="modal" class="btn btn-sm btn-success float-right">
-			<i class="fa fa-plus"></i>&nbsp;Tambah Nilai KD
-		</button>
-	</div>
-	<div class="card-body">
-		<table id="tabel-nilai-siswa" class="table table-striped table-hover" width="100%">
-			<thead>
-				<th>No</th>
-				<th>Nama Siswa</th>
-				<th>KD1</th>
-				<th>KD2</th>
-				<th>KD3</th>
-				<th>KD4</th>
-				<th></th>
-			</thead>
-			<tbody>
-				<tr>
-					<td>1</td>
-					<td>abc</td>
-					<td>40</td>
-					<td>70</td>
-					<td>68</td>
-					<td>90</td>
-					<td><button class="btn btn-primary"><i class="fa fa-pencil"></i> Edit</button></td>
-				</tr>
-				<tr>
-					<td>2</td>
-					<td>dbc</td>
-					<td>50</td>
-					<td>60</td>
-					<td>88</td>
-					<td>80</td>
-					<td><button class="btn btn-primary"><i class="fa fa-pencil"></i> Edit</button></td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
-</div>
-<div class="card">
-	<div class="card-header font-weight-bold">Kompetensi Dasar
-		<button onclick="showModalAddKD()" data-target="#modal" data-toggle="modal" class="btn btn-sm btn-success float-right">
-			<i class="fa fa-plus"></i>&nbsp;Tambah KD
-		</button>
-	</div>
-	<div class="card-body">
-		Belum ada KD
-	</div>
-</div>
 <script type="text/javascript">
 	$(document).ready(function() {
+		$('.main-container').html('<?php echo $this->load->view('guru/mapel/main_view', '', TRUE); ?>');
+
 		refreshPilihanKelas();
+
+		getKKM();
+
 		$('#tabel-nilai-siswa').DataTable();
+
+		refreshTabelKD($('#semester').val(), <?php echo $this->uri->segment(3); ?>);
 	});
 
 	function refreshPilihanKelas() {
@@ -96,7 +33,188 @@
 		});
 	}
 
+	function getKKM() {
+		$.ajax({
+			url: '<?php echo base_url('mapel/getMapelById'); ?>',
+			type: 'GET',
+			dataType: 'json',
+			data: 'id=<?php echo $this->uri->segment(3) ?>',
+			success: function(r) {
+				$('#kkm').html(r.kkm);
+			}
+		});
+	}
+
+	function updateSemester() {
+		refreshTabelKD($('#semester').val(), <?php echo $this->uri->segment(3); ?>);
+	}
+
 	function updateKelas() {
 		idKelas = $('#kelas').val();
+	}
+
+	function refreshTabelKD(semester,idMapel) {
+		$.ajax({
+			url: '<?php echo base_url('kd/getKD'); ?>',
+			type: 'GET',
+			dataType: 'json',
+			data: 'semester='+semester+'&id_mapel='+idMapel,
+			success: function(r) {
+				if (r.length == 0) {
+					$('#tabel-kd thead').html('<strong class="text-danger">KD belum ada, segera tambahkan!</strong>');
+					$('#tabel-kd tbody tr').html('');
+					return;
+				}
+
+				htmlHead = ''; htmlBody = '';
+				$.each(r, function(i, data) {
+					htmlHead += '<th>'+(++i)+'. '+data.nama_kd+'</th>';
+					if (i == 1) {awal = 'disabled'} else {awal = ''}
+					if (i == r.length) {akhir = 'disabled'} else {akhir = ''}
+					htmlBody += '<td class="py-2">\
+						<div style="width: 100px;">\
+							<div class="d-flex justify-content-center align-items-center">\
+								<button '+awal+' onclick="moveLeftKD('+data.id_kd+')" class="btn mr-1"><i class="fa fa-caret-left"></i></button>\
+								<button '+akhir+' onclick="moveRightKD('+data.id_kd+')" class="btn"><i class="fa fa-caret-right"></i></button>\
+							</div>\
+							<div class="mt-1 d-flex justify-content-center align-items-center">\
+								<button onclick="showModalEditKD('+data.id_kd+')" class="btn btn-primary mr-1" data-target="#modal" data-toggle="modal"><i class="fa fa-pencil"></i> Edit</button>\
+								<button onclick="showModalDeleteKD('+data.id_kd+')" class="btn btn-danger" data-target="#modal" data-toggle="modal"><i class="fa fa-trash"></i></button>\
+							</div>\
+						</div>\
+					</td>';
+				});
+				$('#tabel-kd thead').html(htmlHead);
+				$('#tabel-kd tbody tr').html(htmlBody);
+			}
+		});
+	}
+
+	function showModalAddKD(idMapel) {
+		body = '<?php echo $this->load->view('guru/kd/modal_body', '', TRUE); ?>';
+		updateModal('Tambah KD', body, '<?php echo base_url('kd/addKD'); ?>', 'addKD', idMapel, 'md', 'success');
+
+		$('#semester_kd').val($('#semester').val());
+	}
+
+	function showModalEditKD(idKD) {
+		body = '<?php echo $this->load->view('guru/kd/modal_body', '', TRUE); ?>';
+		updateModal('Edit KD', body, '<?php echo base_url('kd/editKD'); ?>', 'editKD', idKD, 'md', 'primary');
+
+		$.ajax({
+			url: '<?php echo base_url('kd/getKDById'); ?>',
+			type: 'GET',
+			dataType: 'json',
+			data: 'id_kd='+idKD,
+			success: function(r) {
+				$('#semester_kd').val(r.semester);
+				$('#nama_kd').val(r.nama_kd);
+			}
+		});
+	}
+
+	function showModalDeleteKD(idKD) {
+		updateModal('Delete KD?', '', '<?php echo base_url('kd/deleteKD'); ?>', 'deleteKD', idKD, 'sm', 'danger', 'Yes');
+	}
+
+	function addKD(idMapel) {
+		event.preventDefault();
+		$.ajax({
+			url: '<?php echo base_url('kd/addKD'); ?>',
+			type: 'POST',
+			dataType: 'json',
+			data: $('.modal-form').serialize()+'&id_mapel='+idMapel+'&semester_kd='+$('#semester').val(),
+			success: function(r) {
+				if (r.status) {
+			    	toastr.remove();
+			      	toastr["success"]("Data KD berhasil ditambahkan");
+			      	refreshTabelKD($('#semester').val(), <?php echo $this->uri->segment(3); ?>);
+			      	$('.modal').modal('hide');
+			    } else {
+			      	toastr.remove();
+			     	toastr["error"](r.error);
+			    }
+			}
+		});
+	}
+
+	function editKD(idKD) {
+		event.preventDefault();
+		$.ajax({
+			url: '<?php echo base_url('kd/editKD'); ?>',
+			type: 'POST',
+			dataType: 'json',
+			data: $('.modal-form').serialize()+'&id_kd='+idKD+'&id_mapel='+<?php echo $this->uri->segment(3); ?>,
+			success: function(r) {
+				if (r.status) {
+			    	toastr.remove();
+			      	toastr["success"]("Data KD berhasil diedit");
+			      	refreshTabelKD($('#semester').val(), <?php echo $this->uri->segment(3); ?>);
+			      	$('.modal').modal('hide');
+			    } else {
+			      	toastr.remove();
+			     	toastr["error"](r.error);
+			    }
+			}
+		});
+	}
+
+	function deleteKD(idKD) {
+		event.preventDefault();
+		$.ajax({
+			url: '<?php echo base_url('kd/deleteKD'); ?>',
+	      	type: 'POST',
+	      	dataType: 'json',
+	      	data: 'id='+idKD,
+	      	success: function(r) {
+		        if (r.status) {
+		          	toastr.remove();
+		          	toastr["success"]("Data KD berhasil dihapus");
+			      	refreshTabelKD($('#semester').val(), <?php echo $this->uri->segment(3); ?>);
+		          	$('.modal').modal('hide');
+	        	} else {
+		          	toastr.remove();
+		          	toastr["error"](r.error);
+	        	}
+	      	}
+		});
+	}
+
+	function moveLeftKD(idKD) {
+		$.ajax({
+			url: '<?php echo base_url('kd/moveLeftKD'); ?>',
+			type: 'POST',
+			dataType: 'json',
+			data: 'id='+idKD,
+			success: function(r) {
+				if (r.status) {
+					toastr.remove();
+					toastr['success']("KD berhasil dipindah");
+			      	refreshTabelKD($('#semester').val(), <?php echo $this->uri->segment(3); ?>);
+				} else {
+					toastr.remove();
+					toastr['error'](r.error);
+				}
+			}
+		});
+	}
+
+	function moveRightKD(idKD) {
+		$.ajax({
+			url: '<?php echo base_url('kd/moveRightKD'); ?>',
+			type: 'POST',
+			dataType: 'json',
+			data: 'id='+idKD,
+			success: function(r) {
+				if (r.status) {
+					toastr.remove();
+					toastr['success']("KD berhasil dipindah");
+			      	refreshTabelKD($('#semester').val(), <?php echo $this->uri->segment(3); ?>);
+				} else {
+					toastr.remove();
+					toastr['error'](r.error);
+				}
+			}
+		});
 	}
 </script>
