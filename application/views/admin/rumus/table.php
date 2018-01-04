@@ -5,12 +5,8 @@
 			</div>\
 			<div class="card-body">\
 				<table id="tabel-rumus" class="table table-striped table-hover" width="100%">\
-					<thead>\
-						<th>Nilai KD (%)</th>\
-						<th>Nilai UTS (%)</th>\
-						<th>Nilai UAS (%)</th>\
-						<th></th>\
-					</thead>\
+					<thead></thead>\
+					<tbody><tr></tr></tbody>\
 				</table>\
 			</div>\
 		</div>\

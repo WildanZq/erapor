@@ -78,7 +78,6 @@ class Rumus extends CI_Controller {
 			return;
 		}
 
-
 		if ($this->rumus_model->editRumus($this->input->post('id'), $data)) {
 			$r['status'] =true;
 		} else {
