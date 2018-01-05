@@ -9,7 +9,6 @@ class Profile extends CI_Controller {
 		if (! $this->session->userdata('logged_in') || $this->session->userdata('logged_in') == null) {
 			redirect('/');
 		}
-		$this->load->model('profile_model');
 		$this->load->model('service_model');
 	}
 
@@ -42,36 +41,41 @@ class Profile extends CI_Controller {
     		return;
 		}
 
-		$r = array('status' => false, 'error' => '', 'nama' => '', 'username' => '');
-		$data = array(
-			'nama_admin' => $this->input->post('nama'),
-			'username' => $this->input->post('username')
-		);
+		if ($this->session->userdata('role') == 'admin') {
+			$this->load->model('admin_model');
 
-		if ($this->input->post('id') == '' || $data['nama_admin'] == '' || $data['username'] == '') {
-			$r['error'] = 'Isi semua data yang diperlukan!';
-			echo json_encode($r);
-			return;
-		}
-
-		$data = $this->service_model->escape_array($data);
-		if ($this->profile_model->editProfile($this->input->post('id'), $data)) {
-			$r['status'] = true;
-
-			$p = $this->profile_model->getProfile($this->session->userdata('userid'))[0];
-			$r['nama'] = $p->nama_admin;
-			$r['username'] = $p->username;
-
-			$session = array(
-				'username' => $p->nama_admin,
-				'admin' => $this->profile_model->getProfileArray($this->session->userdata('userid'))
+			$r = array('status' => false, 'error' => '', 'nama' => '', 'username' => '');
+			$data = array(
+				'nama_admin' => $this->input->post('nama'),
+				'username' => $this->input->post('username')
 			);
-			$this->session->set_userdata($session);
-		} else {
-			$r['error'] = 'Gagal mengedit siswa';
+
+			if ($this->input->post('id') == '' || $data['nama_admin'] == '' || $data['username'] == '') {
+				$r['error'] = 'Isi semua data yang diperlukan!';
+				echo json_encode($r);
+				return;
+			}
+
+			$data = $this->service_model->escape_array($data);
+			if ($this->admin_model->editAdmin($this->input->post('id'), $data)) {
+				$r['status'] = true;
+
+				$p = $this->admin_model->getAdminById($this->session->userdata('userid'))[0];
+				$r['nama'] = $p->nama_admin;
+				$r['username'] = $p->username;
+
+				$session = array(
+					'username' => $p->nama_admin,
+					'admin' => $this->db->where('id_admin', $this->db->escape_str($this->session->userdata('userid')))->get('admin')
+				);
+				$this->session->set_userdata($session);
+			} else {
+				$r['error'] = 'Gagal mengedit siswa';
+			}
+
+			echo json_encode($r);
 		}
 
-		echo json_encode($r);
 	}
 
 	public function getProfile()
@@ -82,7 +86,11 @@ class Profile extends CI_Controller {
     		return;
 		}
 
-		$r = $this->profile_model->getProfile($this->session->userdata('userid'));
+		if ($this->session->userdata('role') == 'admin') {
+			$this->load->model('admin_model');
+			$r = $this->admin_model->getAdminById($this->session->userdata('userid'));
+		}
+
 
 		echo json_encode($r[0]);
 	}

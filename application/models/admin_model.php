@@ -29,6 +29,24 @@ class Admin_model extends CI_Model {
 		return true;
 	}
 
+	public function editAdmin($id,$data)
+	{
+		$this->db
+		->where('id_admin', $this->db->escape_str($id))
+		->update('admin', $data);
+		if ($this->db->affected_rows() == 0) {
+			return false;
+		}
+		return true;
+	}
+
+	public function getAdminById($id)
+	{
+		return $this->db
+		->where('id_admin', $this->db->escape_str($id))
+		->get('admin')->result();
+	}
+
 }
 
 /* End of file admin_model.php */
