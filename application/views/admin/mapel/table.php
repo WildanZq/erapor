@@ -17,7 +17,7 @@
 	</div>\
 </div>\
 <div class="row">\
-	<div class="col-lg-6 col-sm-5 pr-sm-2">\
+	<div class="col-md-6 pr-sm-2">\
 		<div class="card">\
 			<div class="card-header font-weight-bold">List Kurikulum\
 				<button onclick="showModalAddKurikulum()" data-target="#modal" data-toggle="modal" class="btn btn-sm btn-success float-right">\
@@ -34,7 +34,7 @@
 			</div>\
 		</div>\
 	</div>\
-	<div class="col-lg-6 col-sm-5 pr-sm-2">\
+	<div class="col-md-6 pl-sm-2">\
 		<div class="card">\
 			<div class="card-header font-weight-bold">List Jenis Mata Pelajaran\
 				<button onclick="showModalAddJenisMapel()" data-target="#modal" data-toggle="modal" class="btn btn-sm btn-success float-right">\

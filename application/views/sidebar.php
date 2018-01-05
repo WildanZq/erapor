@@ -103,6 +103,9 @@
             });
         </script>
       <?php endif ?>
+      <li class="nav-item mt-auto">
+        <a class="nav-link" href="<?php echo base_url('profile/'); ?>"><i class="icon-settings"></i> Profile Settings</a>
+      </li>
     </ul>
   </nav>
   <button class="sidebar-minimizer brand-minimizer" type="button"></button>

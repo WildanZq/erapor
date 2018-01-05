@@ -57,12 +57,12 @@
 
     <ul class="nav navbar-nav ml-auto mr-3">
       <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-          <img src="<?php echo base_url(); ?>assets/img/upload/profile/<?php if ($this->session->userdata('foto')): echo $this->session->userdata('foto'); else: ?>blank.jpg<?php endif ?>" class="img-avatar">
-          <span class="d-md-down-none"><?php echo $this->session->userdata('username'); ?></span>
+        <a class="nav-link dropdown-toggle nav-link d-flex align-items-center" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+          <div class="pp mx-2" style="height: 35px;width: 35px;background-image: url(<?php echo base_url(); ?>assets/img/upload/profile/<?php if ($this->session->userdata('foto')): echo $this->session->userdata('foto'); else: ?>blank.jpg<?php endif ?>)"></div>
+          <span class="d-md-down-none nav-name"><?php echo $this->session->userdata('username'); ?></span>
         </a>
         <div class="dropdown-menu dropdown-menu-right">
-          <a class="dropdown-item" href="#"><i class="fa fa-user"></i> Profile</a>
+          <a class="dropdown-item" href="<?php echo base_url('profile'); ?>"><i class="fa fa-user"></i> Profile</a>
           <a class="dropdown-item" href="<?php echo base_url('authorization/logout'); ?>"><i class="fa fa-lock"></i> Logout</a>
         </div>
       </li>

@@ -22,7 +22,8 @@ class Login_model extends CI_Model {
 				'role' => 'siswa',
 				'userid' => $siswa['id_siswa'],
 				'username' => $siswa['nama_siswa'],
-				'foto' => $siswa['foto_siswa']
+				'foto' => $siswa['foto_siswa'],
+				'siswa' => $siswa
 			);
 			$this->session->set_userdata($session);
 
@@ -40,7 +41,8 @@ class Login_model extends CI_Model {
 				'role' => 'guru',
 				'userid' => $guru['id_guru'],
 				'username' => $guru['nama_guru'],
-				'foto' => $guru['foto_guru']
+				'foto' => $guru['foto_guru'],
+				'guru' => $guru
 			);
 			$this->session->set_userdata($session);
 
@@ -58,7 +60,8 @@ class Login_model extends CI_Model {
 				'role' => 'admin',
 				'userid' => $admin['id_admin'],
 				'username' => $admin['nama_admin'],
-				'foto' => $admin['foto_admin']
+				'foto' => $admin['foto_admin'],
+				'admin' => $admin
 			);
 			$this->session->set_userdata($session);
 

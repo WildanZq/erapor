@@ -19,7 +19,7 @@ class Kd extends CI_Controller {
 			$data['title'] = '404 Page Not Found';
     		$this->load->view('error404_view',$data);
     		return;
-		}		
+		}
 	}
 
 	public function getKD()
