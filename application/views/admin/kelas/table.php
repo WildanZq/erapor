@@ -9,6 +9,7 @@
 			<thead>\
 				<th>Jurusan</th>\
 				<th>Nama Kelas</th>\
+				<th>Mapel</th>\
 				<th></th>\
 			</thead>\
 		</table>\

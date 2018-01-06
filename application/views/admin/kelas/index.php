@@ -9,29 +9,101 @@
 		refreshTabelKelompokKelas();
 	}
 
-	//KELAS
-
-	function refreshTabelKelas() { //lihat
+	function refreshTabelKelas() {
 		$('#tabel-kelas').DataTable({
 			destroy: true,
 			ajax: '<?php echo base_url('kelas/getAllKelas'); ?>',
 			deferRender: true,
-	 	columns: [
-	  	{ data: 'nama_kelompok_kelas' },
-	  	{ data: 'nama_kelas' }
+		 	columns: [
+			  	{ data: 'nama_kelompok_kelas' },
+			  	{ data: 'nama_kelas' }
 			],
-			columnDefs: [
-			{
-	  		targets: 2,
-	  		data: 'id_kelas',
-	  		render: function(data, type, full) {
-	    		return '<div class="d-flex">\
-	  				<button onclick="showModalEditKelas('+data+')" data-target="#modal" data-toggle="modal" class="btn btn-primary text-white mr-1"><i class="fa fa-pencil"></i>&nbsp;Edit</button>\
-	  				<button onclick="showModalDeleteKelas('+data+')" data-target="#modal" data-toggle="modal" class="btn btn-danger text-white"><i class="fa fa-trash"></i></button>\
-	  			</div>';
-	  		}
+			columnDefs: [{
+				targets: 2,
+				data: 'id_kelas',
+				render: function(data, type, full) {
+					return '<button onclick="showModalMapelKelas('+data+')" data-target="#modal" data-toggle="modal" class="btn btn-warning"><i class="fa fa-eye"></i>&nbsp;Lihat</button>';
+				}
+			},{
+		  		targets: 3,
+		  		data: 'id_kelas',
+		  		render: function(data, type, full) {
+		    		return '<div class="d-flex">\
+		  				<button onclick="showModalEditKelas('+data+')" data-target="#modal" data-toggle="modal" class="btn btn-primary text-white mr-1"><i class="fa fa-pencil"></i>&nbsp;Edit</button>\
+		  				<button onclick="showModalDeleteKelas('+data+')" data-target="#modal" data-toggle="modal" class="btn btn-danger text-white"><i class="fa fa-trash"></i></button>\
+		  			</div>';
+		  		}
+			}]
+		});
+	}
+
+	function showModalMapelKelas(id) {
+		body = '<div class="row">\
+				  <div class="col-sm-12">\
+				    <div class="form-group">\
+				      <select name="mapel[]" class="form-control select2" multiple="multiple" id="mapel"></select>\
+				    </div>\
+				  </div>\
+				</div>';
+		updateModal('List Mapel', body, '<?php echo base_url('mapel_kelas/editMapel'); ?>', 'editMapelKelas', id, 'md', 'warning');
+
+		refreshPilihanMapel(id);
+	}
+
+	function editMapelKelas(id) {
+		event.preventDefault();
+		$.ajax({
+			url: $('.modal-form').attr('action'),
+			type: 'POST',
+			dataType: 'json',
+			data: $('.modal-form').serialize()+'&id='+id,
+			success: function(r) {
+				if (r.status) {
+			    	toastr.remove();
+			      	toastr["success"]("Data mapel berhasil diedit");
+			      	refreshTabelKelas();
+			      	$('.modal').modal('hide');
+			    } else {
+			      	toastr.remove();
+			     	toastr["error"](r.error);
+			    }
 			}
-		]
+		});
+	}
+
+	function refreshPilihanMapel(id) {
+		$.ajax({
+			url: '<?php echo base_url('mapel/getAllMapel'); ?>',
+			type: 'GET',
+			dataType: 'json',
+			success: function(r) {
+				html = '';
+				r = groupBy(r.data,'nama_jenis_mapel');
+				$.each(r, function(key,data) {
+					html += '<optgroup label="'+key+'">';
+					$.each(data, function(key,data) {
+						html += '<option value="'+data.id_mapel+'">'+data.nama_mapel+'</option>';
+					});
+					html += '</optgroup>';
+				});
+				$('#mapel').html(html);
+				$('.select2').select2();
+  				$('.select2').css('width','100%');
+
+  				$.ajax({
+  					url: '<?php echo base_url('mapel_kelas/getMapelByKelasId') ?>',
+  					type: 'GET',
+  					dataType: 'json',
+  					data: 'id='+id,
+  					success: function(r) {
+  						val = [];
+  						$.each(r, function(key,data) {
+  							val.push(data.id_mapel);
+  						});
+  						$('#mapel').val(val).trigger('change');
+  					}
+  				});
+			}
 		});
 	}
 
@@ -63,7 +135,7 @@
 			refreshPilihanKelompokKelas();
 	}
 
-	function refreshPilihanKelompokKelas() { //select
+	function refreshPilihanKelompokKelas(idKelas) {
 		$.ajax({
 			url: '<?php echo base_url('kelompok_kelas/getAllKelompokKelas'); ?>',
 			type: 'GET',
@@ -74,6 +146,19 @@
 					html += '<option value="'+data.id_kelompok_kelas+'">'+data.nama_kelompok_kelas+'</option>';
 				});
 				$('#kelompok_kelas').html(html);
+
+				if (idKelas) {
+					$.ajax({
+						url: '<?php echo base_url('kelas/getKelasById'); ?>',
+						type: 'GET',
+						dataType: 'json',
+						data: 'id='+idKelas,
+						success: function(r) {
+							$('#kelompok_kelas').val(r.id_kelompok_kelas).trigger('change');
+							$('#nama_kelas').val(r.nama_kelas);
+						}
+					});
+				}
 			}
 		});
 	}
@@ -82,40 +167,27 @@
 		body = '<?php echo $this->load->view('admin/kelas/modal_body', '', TRUE); ?>';
 		updateModal('Edit Kelas', body, '<?php echo base_url('kelas/editKelas'); ?>', 'editKelas', idKelas, 'md', 'primary');
 
-		refreshPilihanKelompokKelas();  
-
-		setTimeout(function() {
-			$.ajax({
-				url: '<?php echo base_url('kelas/getKelasById'); ?>',
-				type: 'GET',
-				dataType: 'json',
-				data: 'id='+idKelas,
-				success: function(r) {
-					$('#kelompok_kelas').val(r.id_kelompok_kelas).trigger('change');
-					$('#nama_kelas').val(r.nama_kelas);
-				}
-			});
-		},100);
+		refreshPilihanKelompokKelas(idKelas);
 	}
 
 	function editKelas(idKelas) {
 		event.preventDefault();
 		$.ajax({
 			url: $('.modal-form').attr('action'),
-	  type: 'POST',
-	  dataType: 'json',
-	  data: $('.modal-form').serialize()+'&id='+idKelas,
-	  success: function(r) {
-	    if (r.status) {
-	      toastr.remove();
-	      toastr["success"]("Data kelas berhasil diedit");
-	      refreshTabelKelas();
-	      $('.modal').modal('hide');
-	    } else {
-	      toastr.remove();
-	      toastr["error"](r.error);
-	    }
-	  }
+		  	type: 'POST',
+		  	dataType: 'json',
+		  	data: $('.modal-form').serialize()+'&id='+idKelas,
+		  	success: function(r) {
+			    if (r.status) {
+		      	toastr.remove();
+		      	toastr["success"]("Data kelas berhasil diedit");
+		      	refreshTabelKelas();
+		      	$('.modal').modal('hide');
+		    	} else {
+		      	toastr.remove();
+		      	toastr["error"](r.error);
+		    	}
+		  	}
 		});
 	}
 
@@ -143,8 +215,6 @@
 	      	}
 		});
 	}
-
-	//KELOMPOK KELAS
 
 	function refreshTabelKelompokKelas() { 
 		$('#tabel-kelompokkelas').DataTable({

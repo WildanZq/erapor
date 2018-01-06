@@ -11,8 +11,6 @@ $(document).ready(function() {
 		refreshTabelJenisMapel();
 	}
 
-	//MAPEL
-
 	function addMapel(){
 		event.preventDefault();
 		$.ajax({
@@ -42,33 +40,33 @@ $(document).ready(function() {
 			refreshPilihanJenisMapel();
 	}
 
-	function refreshTabelMapel() { //fix
+	function refreshTabelMapel() {
 		$('#tabel-mapel').DataTable({
 			destroy: true,
 			ajax: '<?php echo base_url('mapel/getAllMapel'); ?>',
 			deferRender: true,
-	 	columns: [
-	  	{ data: 'nama_kurikulum' },
-	  	{ data: 'nama_jenis_mapel' },
-	  	{ data: 'nama_mapel' },
-	  	{ data: 'kkm' }
+		 	columns: [
+			  	{ data: 'nama_kurikulum' },
+			  	{ data: 'nama_jenis_mapel' },
+			  	{ data: 'nama_mapel' },
+			  	{ data: 'kkm' }
 			],
 			columnDefs: [
-			{
-	  		targets: 4,
-	  		data: 'id_mapel',
-	  		render: function(data, type, full) {
-	    		return '<div class="d-flex">\
-	  				<button onclick="showModalEditMapel('+data+')" data-target="#modal" data-toggle="modal" class="btn btn-primary text-white mr-1"><i class="fa fa-pencil"></i>&nbsp;Edit</button>\
-	  				<button onclick="showModalDeleteMapel('+data+')" data-target="#modal" data-toggle="modal" class="btn btn-danger text-white"><i class="fa fa-trash"></i></button>\
-	  			</div>';
-	  		}
-			}
-		]
+				{
+			  		targets: 4,
+			  		data: 'id_mapel',
+			  		render: function(data, type, full) {
+			    		return '<div class="d-flex">\
+			  				<button onclick="showModalEditMapel('+data+')" data-target="#modal" data-toggle="modal" class="btn btn-primary text-white mr-1"><i class="fa fa-pencil"></i>&nbsp;Edit</button>\
+			  				<button onclick="showModalDeleteMapel('+data+')" data-target="#modal" data-toggle="modal" class="btn btn-danger text-white"><i class="fa fa-trash"></i></button>\
+			  			</div>';
+			  		}
+				}
+			]
 		});
 	}
 
-	function refreshPilihanKurikulum() {
+	function refreshPilihanKurikulum(idMapel) {
 		$.ajax({
 			url: '<?php echo base_url('kurikulum/getAllKurikulum'); ?>',
 			type: 'GET',
@@ -79,11 +77,23 @@ $(document).ready(function() {
 					html += '<option value="'+data.id_kurikulum+'">'+data.nama_kurikulum+'</option>';
 				});
 				$('#kurikulum').html(html);
+
+				if (idMapel) {
+					$.ajax({
+						url: '<?php echo base_url('mapel/getMapelById'); ?>',
+						type: 'GET',
+						dataType: 'json',
+						data: 'id='+idMapel,
+						success: function(r) {
+							$('#kurikulum').val(r.id_kurikulum).trigger('change');
+						}
+					});
+				}
 			}
 		});
 	}
 
-	function refreshPilihanJenisMapel() {
+	function refreshPilihanJenisMapel(idMapel) {
 		$.ajax({
 			url: '<?php echo base_url('jenis_mapel/getAllJenisMapel'); ?>',
 			type: 'GET',
@@ -94,6 +104,18 @@ $(document).ready(function() {
 					html += '<option value="'+data.id_jenis_mapel+'">'+data.nama_jenis_mapel+'</option>';
 				});
 				$('#jenis_mapel').html(html);
+
+				if (idMapel) {
+					$.ajax({
+						url: '<?php echo base_url('mapel/getMapelById'); ?>',
+						type: 'GET',
+						dataType: 'json',
+						data: 'id='+idMapel,
+						success: function(r) {
+							$('#jenis_mapel').val(r.id_jenis_mapel).trigger('change');
+						}
+					});
+				}
 			}
 		});
 	}
@@ -102,23 +124,19 @@ $(document).ready(function() {
 		body = '<?php echo $this->load->view('admin/mapel/modal_body', '', TRUE); ?>';
 		updateModal('Edit Mapel', body, '<?php echo base_url('mapel/editMapel'); ?>', 'editMapel', idMapel, 'md', 'primary');
 
-		refreshPilihanKurikulum(); 
-		refreshPilihanJenisMapel(); 
+		refreshPilihanKurikulum(idMapel); 
+		refreshPilihanJenisMapel(idMapel); 
 
-		setTimeout(function() {
-			$.ajax({
-				url: '<?php echo base_url('mapel/getMapelById'); ?>',
-				type: 'GET',
-				dataType: 'json',
-				data: 'id='+idMapel,
-				success: function(r) {
-					$('#kurikulum').val(r.id_kurikulum).trigger('change');
-					$('#jenis_mapel').val(r.id_jenis_mapel).trigger('change');
-					$('#nama_mapel').val(r.nama_mapel);
-					$('#kkm').val(r.kkm);
-				}
-			});
-		},100);
+		$.ajax({
+			url: '<?php echo base_url('mapel/getMapelById'); ?>',
+			type: 'GET',
+			dataType: 'json',
+			data: 'id='+idMapel,
+			success: function(r) {
+				$('#nama_mapel').val(r.nama_mapel);
+				$('#kkm').val(r.kkm);
+			}
+		});
 	}
 
 	function editMapel(idMapel) {
@@ -166,8 +184,6 @@ $(document).ready(function() {
 	      	}
 		});
 	}
-
-	//KURIKULUM
 
 	function refreshTabelKurikulum() { 
 		$('#tabel-kurikulum').DataTable({
@@ -280,8 +296,6 @@ $(document).ready(function() {
 	      	}
 		});
 	}
-
-	//JENIS MATA PELAJARAN
 
 	function refreshTabelJenisMapel() { 
 		$('#tabel-jenismapel').DataTable({

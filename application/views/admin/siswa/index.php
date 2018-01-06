@@ -62,48 +62,62 @@
 		body = '<?php echo $this->load->view('admin/siswa/modal_body', '', TRUE); ?>';
 		updateModal('Edit Siswa', body, '<?php echo base_url('siswa/editSiswa'); ?>', 'editSiswa', idSiswa, 'lg', 'primary');
 
-		refreshPilihanKelas(); refreshPilihanGuru();
+		refreshPilihanKelas(idSiswa); refreshPilihanGuru(idSiswa);
 
-		setTimeout(function() {
-			$.ajax({
-				url: '<?php echo base_url('siswa/getSiswaById'); ?>',
-				type: 'GET',
-				dataType: 'json',
-				data: 'id='+idSiswa,
-				success: function(r) {
-					$('#nisn').val(r.nisn);
-					$('#nis').val(r.nis);
-					$('#nama').val(r.nama_siswa);
-					$('#jk').val(r.jk);
-					$('#tempat_lahir').val(r.tempat_lahir);
-					$('#tgl_lahir').val(r.tgl_lahir);
-					$('#kelas').val(r.id_kelas).trigger('change');
-					$('#guru').val(r.id_guru).trigger('change');
-				}
-			});
-		},100);
+		$.ajax({
+			url: '<?php echo base_url('siswa/getSiswaById'); ?>',
+			type: 'GET',
+			dataType: 'json',
+			data: 'id='+idSiswa,
+			success: function(r) {
+				$('#nisn').val(r.nisn);
+				$('#nis').val(r.nis);
+				$('#nama').val(r.nama_siswa);
+				$('#jk').val(r.jk);
+				$('#tempat_lahir').val(r.tempat_lahir);
+				$('#tgl_lahir').val(r.tgl_lahir);
+				$('#guru').val(r.id_guru).trigger('change');
+			}
+		});
 	}
 
 	function showModalDeleteSiswa(idSiswa) {
 		updateModal('Delete Siswa?', '', '<?php echo base_url('siswa/deleteSiswa'); ?>', 'deleteSiswa', idSiswa, 'sm', 'danger', 'Yes');
 	}
 
-	function refreshPilihanKelas() {
+	function refreshPilihanKelas(idSiswa) {
 		$.ajax({
 			url: '<?php echo base_url('kelas/getAllKelas'); ?>',
 			type: 'GET',
 			dataType: 'json',
 			success: function(r) {
 				html = '<option value="">-Pilih kelas-</option>';
-				$.each(r.data, function(i, data) {
-					html += '<option value="'+data.id_kelas+'">'+data.nama_kelas+'</option>';
+				r = groupBy(r.data,'nama_kelompok_kelas');
+				$.each(r, function(key,data) {
+					html += '<optgroup label="'+key+'">';
+					$.each(data, function(key,data) {
+						html += '<option value="'+data.id_kelas+'">'+data.nama_kelas+'</option>';
+					});
+					html += '</optgroup>';
 				});
 				$('#kelas').html(html);
+
+				if (idSiswa) {
+					$.ajax({
+						url: '<?php echo base_url('siswa/getSiswaById'); ?>',
+						type: 'GET',
+						dataType: 'json',
+						data: 'id='+idSiswa,
+						success: function(r) {
+							$('#kelas').val(r.id_kelas).trigger('change');
+						}
+					});
+				}
 			}
 		});
 	}
 
-	function refreshPilihanGuru() {
+	function refreshPilihanGuru(idSiswa) {
 		$.ajax({
 			url: '<?php echo base_url('guru/getAllGuru'); ?>',
 			type: 'GET',
@@ -114,6 +128,18 @@
 					html += '<option value="'+data.id_guru+'">'+data.nama_guru+'</option>';
 				});
 				$('#guru').html(html);
+
+				if (idSiswa) {
+					$.ajax({
+						url: '<?php echo base_url('siswa/getSiswaById'); ?>',
+						type: 'GET',
+						dataType: 'json',
+						data: 'id='+idSiswa,
+						success: function(r) {
+							$('#guru').val(r.id_guru).trigger('change');
+						}
+					});
+				}
 			}
 		});
 	}
