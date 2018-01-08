@@ -12,6 +12,7 @@
 			<th>Jenis Kelamin</th>\
 			<th>Nomor Telepon</th>\
 			<th>Alamat</th>\
+			<th>Mapel</th>\
 			<th></th>\
 			</thead>\
 		</table>\
