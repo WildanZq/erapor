@@ -9,7 +9,7 @@
       <input type="text" name="nama" class="form-control" id="nama">\
     </div>\
     <div class="form-group">\
-      <label> </label>\
+      <label> Jenis Kelamin </label>\
       <select name="jk_guru" class="form-control" id="jk_guru">\
             <option value="1">Laki-laki</option>\
             <option value="0">Perempuan</option>\

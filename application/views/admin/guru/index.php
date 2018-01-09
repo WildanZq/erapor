@@ -38,8 +38,8 @@
 					data: 'id_guru',
 					render: function(data, type, full){
 						return '<div class="d-flex">\
-							<button onclick="showModalEditGuru('+data+')" data-target="#modal" data-toggle="modal" class="btn-primary text-white mr-1"><i class="fa fa-pencil"></i>&nbsp;Edit </button>\
-							<button onclick="showModalDeleteGuru('+data+')" data-target="#modal" data-toggle="modal" class="btn-danger text-white"> <i class="fa fa-trash"></i></button>\
+							<button onclick="showModalEditGuru('+data+')" data-target="#modal" data-toggle="modal" class="btn btn-primary text-white mr-1"><i class="fa fa-pencil"></i>&nbsp;Edit </button>\
+							<button onclick="showModalDeleteGuru('+data+')" data-target="#modal" data-toggle="modal" class="btn btn-danger text-white"> <i class="fa fa-trash"></i></button>\
 							</div>';
 					}
 				}
