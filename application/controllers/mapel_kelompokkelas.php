@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Mapel_guru extends CI_Controller {
+class Mapel_kelompokkelas extends CI_Controller {
 
 	public function __construct()
 	{
@@ -9,11 +9,11 @@ class Mapel_guru extends CI_Controller {
 		if (! $this->session->userdata('logged_in') || $this->session->userdata('logged_in') == null) {
 			redirect('/');
 		}
-		$this->load->model('mapel_guru_model');
+		$this->load->model('mapel_kelompokkelas_model');
 		$this->load->model('service_model');
 	}
 
-	public function getMapelByGuruId()
+	public function getMapelByKelompokKelasId()
 	{
 		if(! $this->input->is_ajax_request()) {
 			$data['title'] = '404 Page Not Found';
@@ -21,7 +21,7 @@ class Mapel_guru extends CI_Controller {
     		return;
 		}
 
-		$r = $this->mapel_guru_model->getMapelByGuruId($this->input->get('id'));
+		$r = $this->mapel_kelompokkelas_model->getMapelByKelompokKelasId($this->input->get('id'));
 
 		echo json_encode($r);
 	}
@@ -41,12 +41,12 @@ class Mapel_guru extends CI_Controller {
 			return;
 		}
 
-		$this->mapel_guru_model->deleteMapelGuruByGuruId($this->input->post('id'));
+		$this->mapel_kelompokkelas_model->deleteMapelByKelompokKelasId($this->input->post('id'));
 
 		foreach ($this->input->post('mapel') as $mapel) {
-			$data = array('id_mapel' => $mapel, 'id_guru' => $this->input->post('id'));
+			$data = array('id_mapel' => $mapel, 'id_kelompok_kelas' => $this->input->post('id'));
 			$data = $this->service_model->escape_array($data);
-			if ($this->mapel_guru_model->addMapelGuru($data)) {
+			if ($this->mapel_kelompokkelas_model->addMapelKelompokKelas($data)) {
 				$r['status'] = true;
 			} else {
 				$r['error'] = 'Gagal menambahkan mapel';
@@ -58,5 +58,5 @@ class Mapel_guru extends CI_Controller {
 
 }
 
-/* End of file mapel_guru.php */
-/* Location: ./application/controllers/mapel_guru.php */
+/* End of file mapel_kelompokkelas.php */
+/* Location: ./application/controllers/mapel_kelompokkelas.php */
