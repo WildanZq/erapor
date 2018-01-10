@@ -13,11 +13,6 @@ class Kurikulum extends CI_Controller {
 		$this->load->model('service_model');
 	}
 
-	public function index()
-	{
-		
-	}
-
 	public function getAllKurikulum()
 	{
 		if(! $this->input->is_ajax_request()) {
