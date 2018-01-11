@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 10 Jan 2018 pada 04.40
+-- Generation Time: 11 Jan 2018 pada 17.28
 -- Versi Server: 10.1.21-MariaDB
 -- PHP Version: 7.1.1
 
@@ -104,15 +104,15 @@ CREATE TABLE `kd` (
 --
 
 INSERT INTO `kd` (`id_kd`, `nama_kd`, `urutan`, `semester`, `id_mapel`) VALUES
-(1, 'puisi', 1, 1, 5),
-(2, 'majas', 2, 1, 5),
 (3, 'teks naratif', 1, 2, 5),
 (4, 'jenis kata', 2, 2, 5),
 (5, 'announcement', 1, 1, 2),
 (6, 'narative', 2, 1, 2),
 (7, 'descriptive', 1, 2, 2),
 (8, 'procedure', 2, 2, 2),
-(9, 'report', 3, 2, 2);
+(9, 'report', 3, 2, 2),
+(10, 'puisi', 1, 1, 5),
+(11, 'majas', 2, 1, 5);
 
 -- --------------------------------------------------------
 
@@ -154,7 +154,8 @@ CREATE TABLE `kelas_siswa` (
 --
 
 INSERT INTO `kelas_siswa` (`id_kelas_siswa`, `id_siswa`, `id_kelas`, `th_ajar`) VALUES
-(1, 1, 1, 2017);
+(1, 1, 1, 2017),
+(2, 2, 1, 2017);
 
 -- --------------------------------------------------------
 
@@ -236,8 +237,8 @@ CREATE TABLE `mapel_guru` (
 
 INSERT INTO `mapel_guru` (`id_mapel_guru`, `id_mapel`, `id_guru`) VALUES
 (1, 1, 1),
-(2, 2, 2),
-(3, 5, 2);
+(7, 2, 2),
+(8, 5, 2);
 
 -- --------------------------------------------------------
 
@@ -287,7 +288,8 @@ CREATE TABLE `nilai` (
 --
 
 INSERT INTO `nilai` (`id_nilai`, `id_mapel`, `id_kelas_siswa`, `nilai_uts`, `nilai_uas`, `nilai_sikap`, `nilai_akhir`, `semester`) VALUES
-(1, 1, 1, 80, 0, 0, 70, 1);
+(1, 5, 1, 80, 0, 0, 80, 1),
+(2, 5, 2, 0, 90, 0, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -298,9 +300,17 @@ INSERT INTO `nilai` (`id_nilai`, `id_mapel`, `id_kelas_siswa`, `nilai_uts`, `nil
 CREATE TABLE `nilai_kd` (
   `id_nilai_kd` int(11) NOT NULL,
   `id_kd` int(11) NOT NULL,
-  `id_siswa` int(11) NOT NULL,
+  `id_kelas_siswa` int(11) NOT NULL,
   `nilai` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `nilai_kd`
+--
+
+INSERT INTO `nilai_kd` (`id_nilai_kd`, `id_kd`, `id_kelas_siswa`, `nilai`) VALUES
+(2, 11, 1, 80),
+(3, 10, 2, 75);
 
 -- --------------------------------------------------------
 
@@ -447,7 +457,7 @@ ALTER TABLE `nilai`
 ALTER TABLE `nilai_kd`
   ADD PRIMARY KEY (`id_nilai_kd`),
   ADD KEY `id_kd` (`id_kd`),
-  ADD KEY `id_siswa` (`id_siswa`);
+  ADD KEY `id_siswa` (`id_kelas_siswa`);
 
 --
 -- Indexes for table `siswa`
@@ -480,7 +490,7 @@ ALTER TABLE `jenis_mapel`
 -- AUTO_INCREMENT for table `kd`
 --
 ALTER TABLE `kd`
-  MODIFY `id_kd` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id_kd` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 --
 -- AUTO_INCREMENT for table `kelas`
 --
@@ -490,7 +500,7 @@ ALTER TABLE `kelas`
 -- AUTO_INCREMENT for table `kelas_siswa`
 --
 ALTER TABLE `kelas_siswa`
-  MODIFY `id_kelas_siswa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_kelas_siswa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `kelompok_kelas`
 --
@@ -510,7 +520,7 @@ ALTER TABLE `mapel`
 -- AUTO_INCREMENT for table `mapel_guru`
 --
 ALTER TABLE `mapel_guru`
-  MODIFY `id_mapel_guru` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_mapel_guru` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT for table `mapel_kelas`
 --
@@ -520,12 +530,12 @@ ALTER TABLE `mapel_kelas`
 -- AUTO_INCREMENT for table `nilai`
 --
 ALTER TABLE `nilai`
-  MODIFY `id_nilai` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_nilai` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `nilai_kd`
 --
 ALTER TABLE `nilai_kd`
-  MODIFY `id_nilai_kd` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_nilai_kd` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `siswa`
 --
@@ -587,7 +597,7 @@ ALTER TABLE `nilai`
 --
 ALTER TABLE `nilai_kd`
   ADD CONSTRAINT `nilai_kd_ibfk_2` FOREIGN KEY (`id_kd`) REFERENCES `kd` (`id_kd`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `nilai_kd_ibfk_3` FOREIGN KEY (`id_siswa`) REFERENCES `siswa` (`id_siswa`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `nilai_kd_ibfk_3` FOREIGN KEY (`id_kelas_siswa`) REFERENCES `kelas_siswa` (`id_kelas_siswa`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Ketidakleluasaan untuk tabel `siswa`

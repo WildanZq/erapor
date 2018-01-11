@@ -74,7 +74,9 @@
 
 	function updateNilai() {
 		idKelas = $('#kelas').val();
+		idMapel = <?php echo $this->uri->segment(3); ?>;
 		thAjar = $('#th_ajar').val();
+		semester = $('#semester').val();
 		if (! idKelas) {
 			$('#header-nilai').html('Nilai Siswa');
 			$('#tabel-nilai-siswa').html('<h5 class="text-danger text-center">Pilih kelas dahulu</h5>');
@@ -85,13 +87,13 @@
 			url: '<?php echo base_url('kd/getKD') ?>',
 			type: 'GET',
 			dataType: 'json',
-			data: 'semester='+$('#semester').val()+'&id_mapel='+<?php echo $this->uri->segment(3); ?>,
-			success: function(tr) {
+			data: 'semester='+semester+'&id_mapel='+idMapel,
+			success: function(r) {
 				thtml = '<thead><th>No</th><th>Nama Siswa</th>';
-				$.each(tr, function(tkey,tdata) {
-					thtml += '<th>'+tdata.nama_kd+'</th>';
+				$.each(r, function(key,data) {
+					thtml += '<th>'+data.nama_kd+'</th>';
 				});
-				thtml += '<th></th></thead><tbody></tbody><tfoot></tfoot>';
+				thtml += '<th>UTS</th><th>UAS</th><th></th></thead><tbody></tbody><tfoot></tfoot>';
 				$('#tabel-nilai-siswa').html(thtml);
 
 				$.ajax({
@@ -100,22 +102,52 @@
 					dataType: 'json',
 					data: 'id='+idKelas+'&th_ajar='+thAjar,
 					success: function(sr) {
+						if (sr.length == 0) {
+							$('#tabel-nilai-siswa').html('<h5 class="text-danger text-center">Tidak ada siswa</h5>');
+							return;
+						}
 						shtml = '';
 						$.each(sr, function(skey,sdata) {
-							shtml += '<tr>\
-							<td>'+(skey+1)+'</td>\
-							<td>'+sdata.nama_siswa+'</td>\
-							<td></td>\
-							<td><button onclick="showModalEditNilaiSiswa('+sdata.id_siswa+')" data-target="#modal" data-toggle="modal" class="btn btn-primary"><i class="fa fa-pencil"></i> Edit</button></td>\
-						</tr>';
+							$.ajax({
+								url: '<?php echo base_url('nilai/getNilaiKD'); ?>',
+								type: 'GET',
+								dataType: 'json',
+								data: 'id_kelas_siswa='+sdata.id_kelas_siswa,
+								success: function(nkr) {
+
+									$.ajax({
+										url: '<?php echo base_url('nilai/getNilai'); ?>',
+										type: 'GET',
+										dataType: 'json',
+										data: 'id_kelas_siswa='+sdata.id_kelas_siswa+'&id_mapel='+idMapel,
+										success: function(nr) {
+											shtml += '<tr><td>'+(skey+1)+'</td><td>'+sdata.nama_siswa+'</td>';
+
+											$.each(r, function(key,data) {
+												$.each(nkr, function(nkkey, nkdata) {
+													if (nkdata.id_kelas_siswa == sdata.id_kelas_siswa && nkdata.id_kd == data.id_kd) {
+														shtml += '<td>'+nkdata.nilai+'</td>';
+													} else {
+														shtml += '<td>0</td>';
+													}
+												})
+											});
+
+											shtml += '<td>'+nr.nilai_uts+'</td>';
+											shtml += '<td>'+nr.nilai_uas+'</td>';
+											shtml += '<td><button onclick="showModalEditNilaiSiswa('+sdata.id_siswa+')" data-target="#modal" data-toggle="modal" class="btn btn-primary"><i class="fa fa-pencil"></i> Edit</button></td></tr>';
+											$('#tabel-nilai-siswa tbody').html(shtml);
+										}
+									});
+								}
+							});
+
 						});
-						$('#tabel-nilai-siswa tbody').html(shtml);
 					}
 				});
 			}
 		});
 
-		$('#tabel-nilai-siswa').DataTable();
 	}
 
 	function refreshTabelKD(semester,idMapel) {

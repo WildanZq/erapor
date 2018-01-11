@@ -57,7 +57,7 @@ class Siswa extends CI_Controller {
     		return;
 		}
 
-		$r = $this->siswa_model->getSiswaByKelasIdAndThAjar($this->input->get('id'),$this->input->get('th_ajar'));
+		$r = $this->siswa_model->getSiswaByKelasIdAndThAjar($this->input->get('id'), $this->input->get('th_ajar'));
 
 		echo json_encode($r);
 	}

@@ -19,12 +19,13 @@ class Siswa_model extends CI_Model {
 		->get('siswa')->result();
 	}
 
-	public function getSiswaByKelasIdAndThAjar($id,$th)
+	public function getSiswaByKelasIdAndThAjar($idKelas,$thAjar)
 	{
 		return $this->db
 		->join('kelas_siswa', 'kelas_siswa.id_siswa = siswa.id_siswa')
-		->where('th_ajar', $this->db->escape_str($th))
-		->where('id_kelas', $this->db->escape_str($id))
+		->order_by('siswa.id_siswa', 'asc')
+		->where('id_kelas', $this->db->escape_str($idKelas))
+		->where('th_ajar', $this->db->escape_str($thAjar))
 		->get('siswa')->result();
 	}
 
