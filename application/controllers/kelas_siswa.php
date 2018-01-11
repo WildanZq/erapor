@@ -13,19 +13,14 @@ class Kelas_siswa extends CI_Controller {
 		$this->load->model('kelas_siswa_model');
 	}
 
-<<<<<<< HEAD
+
 	public function getKelasBySiswaId()
-=======
-	public function getThAjar()
->>>>>>> 45260ee5ccc3e869d4fd3b3684d50b8749f077c3
 	{
 		if(! $this->input->is_ajax_request()) {
 			$data['title'] = '404 Page Not Found';
     		$this->load->view('error404_view',$data);
     		return;
 		}
-
-<<<<<<< HEAD
 		$r = $this->kelas_siswa_model->getKelasBySiswaId($this->input->get('id'));
 
 		echo json_encode($r);
@@ -60,13 +55,6 @@ class Kelas_siswa extends CI_Controller {
 
 		echo json_encode($r);
 	}
-
-=======
-		$r = $this->kelas_siswa_model->getThAjar();
-
-		echo json_encode($r);
-	}
->>>>>>> 45260ee5ccc3e869d4fd3b3684d50b8749f077c3
 }
 
 /* End of file kelas_siswa.php */
