@@ -55,6 +55,19 @@ class Kelas_siswa extends CI_Controller {
 
 		echo json_encode($r);
 	}
+
+	public function getThAjar()
+	{
+		if(! $this->input->is_ajax_request()) {
+			$data['title'] = '404 Page Not Found';
+    		$this->load->view('error404_view',$data);
+    		return;
+		}
+		
+		$r = $this->kelas_siswa_model->getThAjar();
+
+		echo json_encode($r);
+	}
 }
 
 /* End of file kelas_siswa.php */
