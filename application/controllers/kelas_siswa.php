@@ -13,7 +13,20 @@ class Kelas_siswa extends CI_Controller {
 		$this->load->model('kelas_siswa_model');
 	}
 
-	public function getThAjar()
+
+	public function getKelasBySiswaId()
+	{
+		if(! $this->input->is_ajax_request()) {
+			$data['title'] = '404 Page Not Found';
+    		$this->load->view('error404_view',$data);
+    		return;
+		}
+		$r = $this->kelas_siswa_model->getKelasBySiswaId($this->input->get('id'));
+
+		echo json_encode($r);
+	}
+
+	public function editKelas()
 	{
 		if(! $this->input->is_ajax_request()) {
 			$data['title'] = '404 Page Not Found';
@@ -21,7 +34,24 @@ class Kelas_siswa extends CI_Controller {
     		return;
 		}
 
-		$r = $this->kelas_siswa_model->getThAjar();
+		$r = array('status' => false, 'error' => '');
+		if ($this->input->post('id') == '') {
+			$r['error'] = 'Isi semua data yang diperlukan!';
+			echo json_encode($r);
+			return;
+		}
+
+		$this->kelas_siswa_model->deleteKelasSiswaBySiswaId($this->input->post('id'));
+
+		foreach ($this->input->post('kelas') as $kelas) {
+			$data = array('id_kelas' => $kelas, 'id_siswa' => $this->input->post('id'));
+			$data = $this->service_model->escape_array($data);
+			if ($this->kelas_siswa_model->addKelasSiswa($data)) {
+				$r['status'] = true;
+			} else {
+				$r['error'] = 'Gagal menambahkan kelas';
+			}
+		}
 
 		echo json_encode($r);
 	}

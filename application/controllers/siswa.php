@@ -86,9 +86,6 @@ class Siswa extends CI_Controller {
 			echo json_encode($r);
 			return;
 		}
-		if ($this->input->post('kelas')) {
-			$data['id_kelas'] = $this->input->post('kelas');
-		}
 		if ($this->input->post('guru')) {
 			$data['id_guru'] = $this->input->post('guru');
 		}
@@ -126,11 +123,6 @@ class Siswa extends CI_Controller {
 			$r['error'] = 'Isi semua data yang diperlukan!';
 			echo json_encode($r);
 			return;
-		}
-		if ($this->input->post('kelas')) {
-			$data['id_kelas'] = $this->input->post('kelas');
-		} else {
-			$data['id_kelas'] = null;
 		}
 		if ($this->input->post('guru')) {
 			$data['id_guru'] = $this->input->post('guru');
