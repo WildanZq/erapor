@@ -7,8 +7,6 @@ class Siswa_model extends CI_Model {
 	{
 		return $this->db
 		->join('guru', 'guru.id_guru = siswa.id_guru', 'left')
-		->join('kelas', 'kelas.id_kelas = siswa.id_kelas', 'left')
-		->join('kelompok_kelas', 'kelompok_kelas.id_kelompok_kelas = kelas.id_kelompok_kelas', 'left')
 		->get('siswa')->result();
 	}
 

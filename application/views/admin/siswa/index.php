@@ -19,8 +19,7 @@
 		      	{ data: 'nis' },
 		      	{ data: 'tempat_lahir' },
 		      	{ data: 'tgl_lahir' },
-		      	{ data: 'jk' },
-		      	{ data: 'nama_kelas' }
+		      	{ data: 'jk' }
   			],
 	  		columnDefs: [
 	  			{
@@ -35,7 +34,13 @@
 	    			render: function(data, type, full) {
 	    				return jk[data];
 	    			}
-	    		},
+	    		},{
+					data:'id_siswa',
+					targets: 6,
+					render: function(data, type, full) {
+					return '<button onclick="showModalKelasSiswa('+data+')" data-target="#modal" data-toggle="modal" class="btn btn-warning"><i class="fa fa-eye"></i>&nbsp;Lihat</button>';
+					}
+				},
 	  			{
 		      		targets: 7,
 		      		data: 'id_siswa',
@@ -50,11 +55,80 @@
 		});
 	}
 
+	function showModalKelasSiswa(id) {
+		body = '<div class="row">\
+				  <div class="col-sm-12">\
+				    <div class="form-group">\
+				      <select name="kelas[]" class="form-control select2" multiple="multiple" id="kelas"></select>\
+				    </div>\
+				  </div>\
+				</div>';
+		updateModal('List Kelas', body, '<?php echo base_url('kelas_siswa/editKelas'); ?>', 'editKelasSiswa', id, 'md', 'warning');
+
+		refreshPilihanKelasSiswa(id);
+	}
+
+	function editKelasSiswa(id) {
+		event.preventDefault();
+		$.ajax({
+			url: $('.modal-form').attr('action'),
+			type: 'POST',
+			dataType: 'json',
+			data: $('.modal-form').serialize()+'&id='+id,
+			success: function(r) {
+				if (r.status) {
+			    	toastr.remove();
+			      	toastr["success"]("Data kelas berhasil diedit");
+			      	refreshTabelSiswa();
+			      	$('.modal').modal('hide');
+			    } else {
+			      	toastr.remove();
+			     	toastr["error"](r.error);
+			    }
+			}
+		});
+	}
+
+	function refreshPilihanKelasSiswa(id) {
+		$.ajax({
+			url: '<?php echo base_url('kelas/getAllKelas'); ?>',
+			type: 'GET',
+			dataType: 'json',
+			success: function(r) {
+				html = '';
+				r = groupBy(r.data,'nama_kelompok_kelas');
+				$.each(r, function(key,data) {
+					html += '<optgroup label="'+key+'">';
+					$.each(data, function(key,data) {
+						html += '<option value="'+data.id_kelas+'">'+data.nama_kelas+'</option>';
+					});
+					html += '</optgroup>';
+				});
+				$('#kelas').html(html);
+				$('.select2').select2();
+  				$('.select2').css('width','100%');
+
+  				$.ajax({
+  					url: '<?php echo base_url('kelas_siswa/getKelasBySiswaId') ?>',
+  					type: 'GET',
+  					dataType: 'json',
+  					data: 'id='+id,
+  					success: function(r) {
+  						val = [];
+  						$.each(r, function(key,data) {
+  							val.push(data.id_kelas);
+  						});
+  						$('#kelas').val(val).trigger('change');
+  					}
+  				});
+			}
+		});
+	}
+
 	function showModalAddSiswa() {
 		body = '<?php echo $this->load->view('admin/siswa/modal_body', '', TRUE); ?>';
 		updateModal('Tambah Siswa', body, '<?php echo base_url('siswa/addSiswa'); ?>', 'addSiswa', null, 'lg', 'success');
 
-		refreshPilihanKelas();
 		refreshPilihanGuru();
 	}
 
@@ -62,7 +136,7 @@
 		body = '<?php echo $this->load->view('admin/siswa/modal_body', '', TRUE); ?>';
 		updateModal('Edit Siswa', body, '<?php echo base_url('siswa/editSiswa'); ?>', 'editSiswa', idSiswa, 'lg', 'primary');
 
-		refreshPilihanKelas(idSiswa); refreshPilihanGuru(idSiswa);
+		refreshPilihanGuru(idSiswa);
 
 		$.ajax({
 			url: '<?php echo base_url('siswa/getSiswaById'); ?>',
@@ -83,38 +157,6 @@
 
 	function showModalDeleteSiswa(idSiswa) {
 		updateModal('Delete Siswa?', '', '<?php echo base_url('siswa/deleteSiswa'); ?>', 'deleteSiswa', idSiswa, 'sm', 'danger', 'Yes');
-	}
-
-	function refreshPilihanKelas(idSiswa) {
-		$.ajax({
-			url: '<?php echo base_url('kelas/getAllKelas'); ?>',
-			type: 'GET',
-			dataType: 'json',
-			success: function(r) {
-				html = '<option value="">-Pilih kelas-</option>';
-				r = groupBy(r.data,'nama_kelompok_kelas');
-				$.each(r, function(key,data) {
-					html += '<optgroup label="'+key+'">';
-					$.each(data, function(key,data) {
-						html += '<option value="'+data.id_kelas+'">'+data.nama_kelas+'</option>';
-					});
-					html += '</optgroup>';
-				});
-				$('#kelas').html(html);
-
-				if (idSiswa) {
-					$.ajax({
-						url: '<?php echo base_url('siswa/getSiswaById'); ?>',
-						type: 'GET',
-						dataType: 'json',
-						data: 'id='+idSiswa,
-						success: function(r) {
-							$('#kelas').val(r.id_kelas).trigger('change');
-						}
-					});
-				}
-			}
-		});
 	}
 
 	function refreshPilihanGuru(idSiswa) {

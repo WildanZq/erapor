@@ -32,10 +32,6 @@
       </div>\
     </div>\
     <div class="form-group">\
-      <label>Kelas</label>\
-      <select name="kelas" class="form-control select2" id="kelas"></select>\
-    </div>\
-    <div class="form-group">\
       <label>Wali Siswa</label>\
       <select name="guru" class="form-control select2" id="guru">\
         <option value="">-Pilih wasis-</option>\
