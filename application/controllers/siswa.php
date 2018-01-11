@@ -49,6 +49,19 @@ class Siswa extends CI_Controller {
 		echo json_encode($r[0]);
 	}
 
+	public function getSiswaByKelasIdAndThAjar()
+	{
+		if(! $this->input->is_ajax_request()) {
+			$data['title'] = '404 Page Not Found';
+    		$this->load->view('error404_view',$data);
+    		return;
+		}
+
+		$r = $this->siswa_model->getSiswaByKelasIdAndThAjar($this->input->get('id'),$this->input->get('th_ajar'));
+
+		echo json_encode($r);
+	}
+
 	public function addSiswa()
 	{
 		if(! $this->input->is_ajax_request()) {

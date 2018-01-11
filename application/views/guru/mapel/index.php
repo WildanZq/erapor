@@ -4,21 +4,24 @@
 
 		refreshPilihanKelas();
 
-		getKKM();
+		refreshThAjar();
 
-		$('#tabel-nilai-siswa').DataTable();
+		updateNilai();
+
+		getKKM();
 
 		refreshTabelKD($('#semester').val(), <?php echo $this->uri->segment(3); ?>);
 	});
 
 	function refreshPilihanKelas() {
 		$.ajax({
-			url: '<?php echo base_url('kelas/getAllKelas'); ?>',
+			url: '<?php echo base_url('kelas/getKelasByMapelId'); ?>',
 			type: 'GET',
+			data: 'id='+<?php echo $this->uri->segment(3); ?>,
 			dataType: 'json',
 			success: function(r) {
 				html = '<option value="">-Pilih kelas-</option>';
-				r = groupBy(r.data,'nama_kelompok_kelas');
+				r = groupBy(r,'nama_kelompok_kelas');
 				$.each(r, function(key,data) {
 					html += '<optgroup label="'+key+'">';
 					$.each(data, function(key,data) {
@@ -33,12 +36,27 @@
 		});
 	}
 
+	function refreshThAjar() {
+		$.ajax({
+			url: '<?php echo base_url('kelas_siswa/getThAjar'); ?>',
+			type: 'GET',
+			dataType: 'json',
+			success: function(r) {
+				html = '';
+				$.each(r, function(key,data) {
+					html += '<option value="'+data.th_ajar+'">'+data.th_ajar+'/'+(parseInt(data.th_ajar)+1)+'</option>';
+				});
+				$('#th_ajar').html(html);
+			}
+		});
+	}
+
 	function getKKM() {
 		$.ajax({
 			url: '<?php echo base_url('mapel/getMapelById'); ?>',
 			type: 'GET',
 			dataType: 'json',
-			data: 'id=<?php echo $this->uri->segment(3) ?>',
+			data: 'id=<?php echo $this->uri->segment(3); ?>',
 			success: function(r) {
 				$('#kkm').html(r.kkm);
 			}
@@ -47,10 +65,57 @@
 
 	function updateSemester() {
 		refreshTabelKD($('#semester').val(), <?php echo $this->uri->segment(3); ?>);
+		updateNilai();
 	}
 
 	function updateKelas() {
+		updateNilai();
+	}
+
+	function updateNilai() {
 		idKelas = $('#kelas').val();
+		thAjar = $('#th_ajar').val();
+		if (! idKelas) {
+			$('#header-nilai').html('Nilai Siswa');
+			$('#tabel-nilai-siswa').html('<h5 class="text-danger text-center">Pilih kelas dahulu</h5>');
+			return;
+		}
+
+		$.ajax({
+			url: '<?php echo base_url('kd/getKD') ?>',
+			type: 'GET',
+			dataType: 'json',
+			data: 'semester='+$('#semester').val()+'&id_mapel='+<?php echo $this->uri->segment(3); ?>,
+			success: function(tr) {
+				thtml = '<thead><th>No</th><th>Nama Siswa</th>';
+				$.each(tr, function(tkey,tdata) {
+					thtml += '<th>'+tdata.nama_kd+'</th>';
+				});
+				thtml += '<th></th></thead><tbody></tbody><tfoot></tfoot>';
+				$('#tabel-nilai-siswa').html(thtml);
+
+				$.ajax({
+					url: '<?php echo base_url('siswa/getSiswaByKelasIdAndThAjar') ?>',
+					type: 'GET',
+					dataType: 'json',
+					data: 'id='+idKelas+'&th_ajar='+thAjar,
+					success: function(sr) {
+						shtml = '';
+						$.each(sr, function(skey,sdata) {
+							shtml += '<tr>\
+							<td>'+(skey+1)+'</td>\
+							<td>'+sdata.nama_siswa+'</td>\
+							<td></td>\
+							<td><button onclick="showModalEditNilaiSiswa('+sdata.id_siswa+')" data-target="#modal" data-toggle="modal" class="btn btn-primary"><i class="fa fa-pencil"></i> Edit</button></td>\
+						</tr>';
+						});
+						$('#tabel-nilai-siswa tbody').html(shtml);
+					}
+				});
+			}
+		});
+
+		$('#tabel-nilai-siswa').DataTable();
 	}
 
 	function refreshTabelKD(semester,idMapel) {

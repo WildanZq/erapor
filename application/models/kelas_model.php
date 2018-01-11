@@ -27,6 +27,15 @@ class Kelas_model extends CI_Model {
 		->get('kelas')->result();
 	}
 
+	public function getKelasByMapelId($id)
+	{
+		return $this->db
+		->join('kelompok_kelas', 'kelompok_kelas.id_kelompok_kelas = kelas.id_kelompok_kelas')
+		->join('mapel_kelas', 'kelompok_kelas.id_kelompok_kelas = mapel_kelas.id_kelompok_kelas')
+		->where('id_mapel', $this->db->escape_str($id))
+		->get('kelas')->result();
+	}
+
 	public function editKelas($id, $data)
 	{
 		$this->db

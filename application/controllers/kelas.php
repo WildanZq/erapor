@@ -36,6 +36,19 @@ class Kelas extends CI_Controller {
 		echo json_encode($r);
 	}
 
+	public function getKelasByMapelId()
+	{
+		if(! $this->input->is_ajax_request()) {
+			$data['title'] = '404 Page Not Found';
+    		$this->load->view('error404_view',$data);
+    		return;
+		}
+
+		$r = $this->kelas_model->getKelasByMapelId($this->input->get('id'));
+
+		echo json_encode($r);
+	}
+
 	public function addKelas()
 	{
 		if(! $this->input->is_ajax_request()) {
