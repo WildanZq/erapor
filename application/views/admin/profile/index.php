@@ -1,8 +1,10 @@
-
 <div class="card">
 	<div class="card-header font-weight-bold">Profile
 		<button onclick="showModalEdit()" data-target="#modal" data-toggle="modal" class="btn btn-sm btn-primary float-right">
 			<i class="fa fa-pencil"></i>&nbsp;Edit data
+		</button>
+		<button onclick="showModalPassword()" data-target="#modal" data-toggle="modal" class="btn btn-sm btn-danger float-right mr-2">
+			<i class="fa fa-pencil"></i>&nbsp;Ubah password
 		</button>
 	</div>
 	<div class="card-body">
@@ -21,6 +23,10 @@
 	</div>
 </div>
 <script type="text/javascript">
+	function showModalPassword() {
+		updateModal('Edit Password', '', '<?php echo base_url('profile/editPassword'); ?>', 'editPassword', null, 'md', 'danger');
+	}
+
 	function showModalEdit() {
 		body = '<?php echo $this->load->view('admin/profile/modal_body', '', TRUE); ?>';
 		updateModal('Edit Profile', body, '<?php echo base_url('profile/editProfile'); ?>', 'editProfile', null, 'md', 'primary');

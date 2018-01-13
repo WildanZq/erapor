@@ -18,19 +18,25 @@ class Profile extends CI_Controller {
 			$data['title'] = 'Profile Settings';
 			$data['main'] = 'admin/profile/index';
 			$this->load->view('template', $data);
+			return;
 		}
 
 		if ($this->session->userdata('role') == 'guru') {
 			$data['title'] = 'Profile Settings';
 			$data['main'] = 'guru/profile/index';
 			$this->load->view('template', $data);
+			return;
 		}
 
 		if ($this->session->userdata('role') == 'siswa') {
 			$data['title'] = 'Profile Settings';
 			$data['main'] = 'siswa/profile/index';
 			$this->load->view('template', $data);
+			return;
 		}
+
+		$data['title'] = '404 Page Not Found';
+    	$this->load->view('error404_view',$data);
 	}
 
 	public function editProfile()
@@ -66,11 +72,11 @@ class Profile extends CI_Controller {
 
 				$session = array(
 					'username' => $p->nama_admin,
-					'admin' => $this->db->where('id_admin', $this->db->escape_str($this->session->userdata('userid')))->get('admin')
+					'admin' => $this->db->where('id_admin', $this->db->escape_str($this->session->userdata('userid')))->get('admin')->row_array()
 				);
 				$this->session->set_userdata($session);
 			} else {
-				$r['error'] = 'Gagal mengedit siswa';
+				$r['error'] = 'Gagal mengedit profile';
 			}
 
 			echo json_encode($r);
@@ -90,7 +96,6 @@ class Profile extends CI_Controller {
 			$this->load->model('admin_model');
 			$r = $this->admin_model->getAdminById($this->session->userdata('userid'));
 		}
-
 
 		echo json_encode($r[0]);
 	}
