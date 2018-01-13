@@ -71,10 +71,10 @@
         <div class="nav-mapel"></div>
         <script type="text/javascript">
           $.ajax({
-              url: '<?php echo base_url('mapel/getMapelSiswa'); ?>',
-              type: 'POST',
+              url: '<?php echo base_url('kelas/getKelasSiswa'); ?>',
+              type: 'GET',
               dataType: 'json',
-              data: 'userid=<?php echo $this->session->userdata('userid'); ?>',
+              data: 'id=<?php echo $this->session->userdata('userid'); ?>',
               success: function(r) {
                 if (r.error) {
                   data = '<li class="nav-item">\
@@ -85,17 +85,13 @@
                 }
 
                 data = '';
-                r = groupBy(r,'nama_jenis_mapel');
                 $.each(r, function(key,val) {
-                  data += '<li class="nav-item nav-dropdown">\
-                              <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-notebook"></i> '+key+'</a>\
-                                <ul class="nav-dropdown-items">';
-                  $.each(val, function(key,val) {
-                    data += '<li class="nav-item">\
-                          <a class="nav-link" href="<?php echo base_url('mapel/'); ?>'+val.id_mapel+'">'+val.nama_mapel+'</a>\
-                        </li>';
-                  });
-                  data += '</ul></li>';
+                    data += '<li class="nav-item nav-dropdown">\
+                          <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-home"></i> '+val.nama_kelas+'<span class="badge badge-warning mr-3">'+val.th_ajar+'/'+(parseInt(val.th_ajar) + 1)+'</span></a>\
+                            <ul class="nav-dropdown-items">\
+                              <li class="nav-item"><a class="nav-link" href="<?php echo base_url('kelas/index/'); ?>'+val.id_kelas+'/1">Semester 1</a></li>\
+                              <li class="nav-item"><a class="nav-link" href="<?php echo base_url('kelas/index/'); ?>'+val.id_kelas+'/2">Semester 2</a></li>\
+                        </ul></li>';
                 });
                 $('.nav-mapel').html(data);
                 setActiveCurNav();

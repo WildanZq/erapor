@@ -1,6 +1,8 @@
 <script type="text/javascript">
 	$(document).ready(function() {
 		$('.main-container').html('<?php echo $this->load->view('guru/mapel/main_view', '', TRUE); ?>');
+		
+		getKKM();
 
 		refreshPilihanKelas();
 
@@ -8,10 +10,95 @@
 
 		updateNilai();
 
-		getKKM();
-
 		refreshTabelKD($('#semester').val(), <?php echo $this->uri->segment(3); ?>);
 	});
+
+	function showModalEditNilaiSiswa(id) {
+		body = '';
+		updateModal('Edit Nilai', body, '', 'editNilaiSiswa', id, 'md', 'primary');
+		$.ajax({
+			url: '<?php echo base_url('kd/getKD') ?>',
+			type: 'GET',
+			dataType: 'json',
+			data: 'id_mapel='+<?php echo $this->uri->segment(3); ?>+'&semester='+$('#semester').val(),
+			success: function(r) {
+				$.ajax({
+					url: '<?php echo base_url('nilai/getNilaiKD') ?>',
+					type: 'GET',
+					dataType: 'json',
+					data: 'id_kelas_siswa='+id+'&id_mapel='+<?php echo $this->uri->segment(3); ?>+'&semester='+$('#semester').val(),
+					success: function(nkr) {
+						$.ajax({
+							url: '<?php echo base_url('nilai/getNilai'); ?>',
+							type: 'GET',
+							dataType: 'json',
+							data: 'id_kelas_siswa='+id+'&id_mapel='+idMapel+'&semester='+semester,
+							success: function(nr) {
+								body += '<div class="row">';
+								$.each(r, function(key,data) {
+									kd = 0;
+									$.each(nkr, function(nkkey,nkdata) {
+										if (data.id_kd == nkdata.id_kd) {
+											kd = nkdata.nilai;
+										}
+									})
+									body += '<div class="col-12">\
+											    <div class="form-group">\
+											      <label>'+data.nama_kd+'</label>\
+											      <input type="number" class="d-none" name="kd[]" value="'+data.id_kd+'">\
+											      <input type="number" name="'+data.id_kd+'" class="form-control" id="'+data.id_kd+'" value="'+kd+'">\
+											    </div>\
+											  </div>';
+								});
+								uts = 0; uas = 0;
+								$.each(nr, function(nkey,ndata) {
+									if (ndata.id_kelas_siswa == id) {
+										uts = ndata.nilai_uts;
+										uas = ndata.nilai_uas;
+									}
+								})
+								body += '<div class="col-12">\
+										    <div class="form-group">\
+										      <label>UTS</label>\
+										      <input type="number" name="uts" class="form-control" id="uts" value="'+uts+'">\
+										    </div>\
+										  </div>\
+										  <div class="col-12">\
+										    <div class="form-group">\
+										      <label>UAS</label>\
+										      <input type="number" name="uas" class="form-control" id="uas" value="'+uas+'">\
+										    </div>\
+										  </div>\
+										</div>';
+								updateModal('Edit Nilai', body, '<?php echo base_url('nilai/editNilai'); ?>', 'editNilaiSiswa', id, 'md', 'primary');
+							}
+						});
+					}
+				})
+			}
+		});
+	}
+
+	function editNilaiSiswa(id) {
+		event.preventDefault();
+		$.ajax({
+			url: '<?php echo base_url('nilai/editNilai'); ?>',
+			type: 'POST',
+			dataType: 'json',
+			data: $('.modal-form').serialize()+'&id_kelas_siswa='+id+'&semester='+$('#semester').val()+'&id_mapel='+<?php echo $this->uri->segment(3); ?>,
+			success: function(r) {
+				if (r.status) {
+					updateNilai();
+			    	toastr.remove();
+			      	toastr["success"]("Nilai berhasil diedit");
+			      	$('.modal').modal('hide');
+			    } else {
+			      	toastr.remove();
+			     	toastr["error"](r.error);
+			    }
+			}
+		});
+	}
 
 	function refreshPilihanKelas() {
 		$.ajax({
@@ -51,6 +138,15 @@
 		});
 	}
 
+	function cekKKM(data) {
+		if (data == kkm) {
+			return ' class="table-warning"';
+		} else if (data < kkm) {
+			return ' class="table-danger"';
+		}
+		return '';
+	}
+
 	function getKKM() {
 		$.ajax({
 			url: '<?php echo base_url('mapel/getMapelById'); ?>',
@@ -58,6 +154,7 @@
 			dataType: 'json',
 			data: 'id=<?php echo $this->uri->segment(3); ?>',
 			success: function(r) {
+				kkm = r.kkm;
 				$('#kkm').html(r.kkm);
 			}
 		});
@@ -73,10 +170,12 @@
 	}
 
 	function updateNilai() {
+		$('#tabel-nilai-siswa').html('');
 		idKelas = $('#kelas').val();
 		idMapel = <?php echo $this->uri->segment(3); ?>;
 		thAjar = $('#th_ajar').val();
 		semester = $('#semester').val();
+
 		if (! idKelas) {
 			$('#header-nilai').html('Nilai Siswa');
 			$('#tabel-nilai-siswa').html('<h5 class="text-danger text-center">Pilih kelas dahulu</h5>');
@@ -94,7 +193,6 @@
 					thtml += '<th>'+data.nama_kd+'</th>';
 				});
 				thtml += '<th>UTS</th><th>UAS</th><th></th></thead><tbody></tbody><tfoot></tfoot>';
-				$('#tabel-nilai-siswa').html(thtml);
 
 				$.ajax({
 					url: '<?php echo base_url('siswa/getSiswaByKelasIdAndThAjar') ?>',
@@ -106,41 +204,49 @@
 							$('#tabel-nilai-siswa').html('<h5 class="text-danger text-center">Tidak ada siswa</h5>');
 							return;
 						}
-						shtml = '';
-						$.each(sr, function(skey,sdata) {
-							$.ajax({
-								url: '<?php echo base_url('nilai/getNilaiKD'); ?>',
-								type: 'GET',
-								dataType: 'json',
-								data: 'id_kelas_siswa='+sdata.id_kelas_siswa,
-								success: function(nkr) {
 
-									$.ajax({
-										url: '<?php echo base_url('nilai/getNilai'); ?>',
-										type: 'GET',
-										dataType: 'json',
-										data: 'id_kelas_siswa='+sdata.id_kelas_siswa+'&id_mapel='+idMapel,
-										success: function(nr) {
+						$('#tabel-nilai-siswa').html(thtml);
+						shtml = '';
+						$.ajax({
+							url: '<?php echo base_url('nilai/getAllNilaiKD'); ?>',
+							type: 'GET',
+							dataType: 'json',
+							data: 'id_mapel='+idMapel+'&semester='+semester,
+							success: function(nkr) {
+								$.ajax({
+									url: '<?php echo base_url('nilai/getAllNilai'); ?>',
+									type: 'GET',
+									dataType: 'json',
+									data: 'id_mapel='+idMapel+'&semester='+semester,
+									success: function(nr) {
+										$.each(sr, function(skey,sdata) {
 											shtml += '<tr><td>'+(skey+1)+'</td><td>'+sdata.nama_siswa+'</td>';
 
 											$.each(r, function(key,data) {
-												$.each(nkr, function(nkkey, nkdata) {
-													if (nkdata.id_kelas_siswa == sdata.id_kelas_siswa && nkdata.id_kd == data.id_kd) {
-														shtml += '<td>'+nkdata.nilai+'</td>';
-													} else {
-														shtml += '<td>0</td>';
+												kd = 0;
+												$.each(nkr, function(nkkey,nkdata) {
+													if (nkdata.id_kelas_siswa == sdata.id_kelas_siswa && data.id_kd == nkdata.id_kd) {
+														kd = nkdata.nilai;
 													}
-												})
+												});
+												shtml += '<td'+(cekKKM(kd))+'>'+kd+'</td>';
 											});
 
-											shtml += '<td>'+nr.nilai_uts+'</td>';
-											shtml += '<td>'+nr.nilai_uas+'</td>';
-											shtml += '<td><button onclick="showModalEditNilaiSiswa('+sdata.id_siswa+')" data-target="#modal" data-toggle="modal" class="btn btn-primary"><i class="fa fa-pencil"></i> Edit</button></td></tr>';
-											$('#tabel-nilai-siswa tbody').html(shtml);
-										}
-									});
-								}
-							});
+											uts = 0; uas = 0;
+											$.each(nr, function(nkey,ndata) {
+												if (ndata.id_kelas_siswa == sdata.id_kelas_siswa) {
+													uts = ndata.nilai_uts;
+													uas = ndata.nilai_uas;
+												}
+											})
+											shtml += '<td'+(cekKKM(uts))+'>'+uts+'</td><td'+(cekKKM(uas))+'>'+uas+'</td>';
+											
+											shtml += '<td><button onclick="showModalEditNilaiSiswa('+sdata.id_kelas_siswa+')" data-target="#modal" data-toggle="modal" class="btn btn-primary"><i class="fa fa-pencil"></i> Edit</button></td></tr>';
+										});
+										$('#tabel-nilai-siswa tbody').html(shtml);
+									}
+								});
+							}
 
 						});
 					}
@@ -151,6 +257,7 @@
 	}
 
 	function refreshTabelKD(semester,idMapel) {
+		$('#tabel-kd').html('<thead></thead><tbody><tr></tr></tbody>');
 		$.ajax({
 			url: '<?php echo base_url('kd/getKD'); ?>',
 			type: 'GET',
@@ -223,6 +330,7 @@
 			data: $('.modal-form').serialize()+'&id_mapel='+idMapel+'&semester_kd='+$('#semester').val(),
 			success: function(r) {
 				if (r.status) {
+					updateNilai();
 			    	toastr.remove();
 			      	toastr["success"]("Data KD berhasil ditambahkan");
 			      	refreshTabelKD($('#semester').val(), <?php echo $this->uri->segment(3); ?>);
@@ -244,6 +352,7 @@
 			data: $('.modal-form').serialize()+'&id_kd='+idKD+'&id_mapel='+<?php echo $this->uri->segment(3); ?>,
 			success: function(r) {
 				if (r.status) {
+			      	updateNilai();
 			    	toastr.remove();
 			      	toastr["success"]("Data KD berhasil diedit");
 			      	refreshTabelKD($('#semester').val(), <?php echo $this->uri->segment(3); ?>);
@@ -265,6 +374,7 @@
 	      	data: 'id='+idKD,
 	      	success: function(r) {
 		        if (r.status) {
+		        	updateNilai();
 		          	toastr.remove();
 		          	toastr["success"]("Data KD berhasil dihapus");
 			      	refreshTabelKD($('#semester').val(), <?php echo $this->uri->segment(3); ?>);
@@ -285,6 +395,7 @@
 			data: 'id='+idKD,
 			success: function(r) {
 				if (r.status) {
+					updateNilai();
 					toastr.remove();
 					toastr['success']("KD berhasil dipindah");
 			      	refreshTabelKD($('#semester').val(), <?php echo $this->uri->segment(3); ?>);
@@ -304,6 +415,7 @@
 			data: 'id='+idKD,
 			success: function(r) {
 				if (r.status) {
+					updateNilai();
 					toastr.remove();
 					toastr['success']("KD berhasil dipindah");
 			      	refreshTabelKD($('#semester').val(), <?php echo $this->uri->segment(3); ?>);

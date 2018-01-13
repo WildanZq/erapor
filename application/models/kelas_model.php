@@ -36,6 +36,15 @@ class Kelas_model extends CI_Model {
 		->get('kelas')->result();
 	}
 
+	public function getKelasBySiswaId($id)
+	{
+		return $this->db
+		->join('kelas_siswa', 'kelas_siswa.id_kelas = kelas.id_kelas')
+		->where('id_siswa', $this->db->escape_str($id))
+		->order_by('th_ajar', 'desc')
+		->get('kelas')->result();
+	}
+
 	public function editKelas($id, $data)
 	{
 		$this->db
