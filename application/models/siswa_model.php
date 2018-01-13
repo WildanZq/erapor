@@ -21,9 +21,9 @@ class Siswa_model extends CI_Model {
 	{
 		return $this->db
 		->join('kelas_siswa', 'kelas_siswa.id_siswa = siswa.id_siswa')
-		->order_by('siswa.id_siswa', 'asc')
 		->where('id_kelas', $this->db->escape_str($idKelas))
 		->where('th_ajar', $this->db->escape_str($thAjar))
+		->order_by('siswa.nama_siswa', 'asc')
 		->get('siswa')->result();
 	}
 

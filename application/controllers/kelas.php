@@ -19,7 +19,18 @@ class Kelas extends CI_Controller {
 			$data['title'] = 'Kelas';
 			$data['main'] = 'admin/kelas/index';
 			$this->load->view('template', $data);
+			return;
 		}
+
+		if ($this->session->userdata('role') == 'siswa') {
+			$data['title'] = 'Kelas';
+			$data['main'] = 'siswa/kelas/index';
+			$this->load->view('template', $data);
+			return;
+		}
+
+		$data['title'] = '404 Page Not Found';
+    	$this->load->view('error404_view',$data);
 	}
 
 	public function getAllKelas()
@@ -45,6 +56,19 @@ class Kelas extends CI_Controller {
 		}
 
 		$r = $this->kelas_model->getKelasByMapelId($this->input->get('id'));
+
+		echo json_encode($r);
+	}
+
+	public function getKelasSiswa()
+	{
+		if(! $this->input->is_ajax_request()) {
+			$data['title'] = '404 Page Not Found';
+    		$this->load->view('error404_view',$data);
+    		return;
+		}
+
+		$r = $this->kelas_model->getKelasBySiswaId($this->input->get('id'));
 
 		echo json_encode($r);
 	}

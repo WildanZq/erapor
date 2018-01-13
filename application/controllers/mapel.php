@@ -19,6 +19,7 @@ class Mapel extends CI_Controller {
 			$data['title'] = 'Mapel';
 			$data['main'] = 'admin/mapel/index';
 			$this->load->view('template', $data);
+			return;
 		}
 
 		if ($this->session->userdata('role') == 'guru') {
@@ -32,7 +33,11 @@ class Mapel extends CI_Controller {
 			$data['title'] = 'Nilai';
 			$data['main'] = 'guru/mapel/index';
 			$this->load->view('template', $data);
+			return;
 		}
+
+		$data['title'] = '404 Page Not Found';
+    	$this->load->view('error404_view',$data);
 	}
 
 	public function getMapelGuru()
@@ -57,28 +62,6 @@ class Mapel extends CI_Controller {
 		echo json_encode($r);
 	}
 
-	public function getMapelSiswa()
-	{
-		if(! $this->input->is_ajax_request()) {
-			$data['title'] = '404 Page Not Found';
-    		$this->load->view('error404_view',$data);
-    		return;
-		}
-		if (! $this->input->post('userid')) {
-			redirect('authorization/logout');
-		}
-
-		$r = array();
-
-		if (! $data = $this->mapel_model->getMapelSiswa($this->input->post('userid'))) {
-			$r = array('error' => 'You don&#39;t have any mapel in your class');
-		} else {
-			$r = $data;
-		}
-
-		echo json_encode($r);
-	}
-
 	public function addMapel()
 	{
 		if(! $this->input->is_ajax_request()) {
@@ -89,7 +72,6 @@ class Mapel extends CI_Controller {
 
 		$r = array('status' => false, 'error' => '');
 		$data = array(
-			//'id_mapel'		=> $this->input->post('id_mapel'),
 			'id_kurikulum'		=> $this->input->post('id_kurikulum'),
 			'id_jenis_mapel'	=> $this->input->post('id_jenis_mapel'),
 			'nama_mapel'		=> $this->input->post('nama_mapel'),
