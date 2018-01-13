@@ -26,6 +26,76 @@ class Kelas_siswa extends CI_Controller {
 		echo json_encode($r);
 	}
 
+	public function getAllKelasSiswa()
+	{
+		if(! $this->input->is_ajax_request()) {
+			$data['title'] = '404 Page Not Found';
+    		$this->load->view('error404_view',$data);
+    		return;
+		}
+
+		$data = $this->kelas_siswa_model->getAllKelasSiswa($this->input->get('id_siswa'));
+		$r = array('data' => $data );
+
+		echo json_encode($r);
+	}
+
+	public function addKelasSiswa()
+	{
+		if(! $this->input->is_ajax_request()) {
+			$data['title'] = '404 Page Not Found';
+    		$this->load->view('error404_view',$data);
+    		return;
+		}
+
+		$r = array('status' => false, 'error' => '' );
+
+		if ($this->input->post('th_ajar') == '' || $this->input->post('id_kelas') == '') {
+			$r['error'] = 'Isi semua data!';
+			echo json_encode($r);
+			return;
+		}
+
+		$data = array(
+			'th_ajar' => $this->input->post('th_ajar'), 
+			'id_kelas' => $this->input->post('id_kelas'),
+			'id_siswa' => $this->input->post('id_siswa')
+		);
+		$data = $this->service_model->escape_array($data);
+		if ($this->kelas_siswa_model->addKelasSiswa($data)) {
+			$r['status'] = true;
+		} else {
+			$r['error'] = 'Gagal menambahkan kelas';
+		}
+
+		echo json_encode($r);
+	}
+
+	public function deleteKelasSiswa()
+	{
+		if(! $this->input->is_ajax_request()) {
+			$data['title'] = '404 Page Not Found';
+    		$this->load->view('error404_view',$data);
+    		return;
+		}
+
+		$r = array('status' => false, 'error' => '');
+
+		if ($this->input->post('id') == '') {
+			$r['error'] = 'Id tidak ada!';
+			echo json_encode($r);
+			return;
+		}
+
+		if ($this->kelas_siswa_model->deleteKelasSiswa($this->input->post('id'))) {
+			$r['status'] = true;
+		} else {
+			$r['error'] = 'Gagal menghapus kelas';
+		}
+
+		echo json_encode($r);
+	}
+
 	public function editKelas()
 	{
 		if(! $this->input->is_ajax_request()) {

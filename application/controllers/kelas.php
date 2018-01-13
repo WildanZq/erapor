@@ -154,8 +154,6 @@ class Kelas extends CI_Controller {
 
 		echo json_encode($r);
 	}
-
-
 }
 
 /* End of file kelas.php */

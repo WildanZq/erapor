@@ -55,38 +55,59 @@
 		});
 	}
 
-	function showModalKelasSiswa(id) {
-		body = '<div class="row">\
-				  <div class="col-sm-12">\
-				    <div class="form-group">\
-				      <select name="kelas[]" class="form-control select2" multiple="multiple" id="kelas"></select>\
-				    </div>\
-				  </div>\
-				</div>';
-		updateModal('List Kelas', body, '<?php echo base_url('kelas_siswa/editKelas'); ?>', 'editKelasSiswa', id, 'md', 'warning');
-
-		refreshPilihanKelasSiswa(id);
-	}
-
-	function editKelasSiswa(id) {
-		event.preventDefault();
+	function refreshTabelKelasSiswa(id) {
 		$.ajax({
-			url: $('.modal-form').attr('action'),
-			type: 'POST',
+			url: '<?php echo base_url('kelas_siswa/getAllKelasSiswa'); ?>',
+			type: 'GET',
 			dataType: 'json',
-			data: $('.modal-form').serialize()+'&id='+id,
+			data: 'id_siswa='+id,
 			success: function(r) {
-				if (r.status) {
-			    	toastr.remove();
-			      	toastr["success"]("Data kelas berhasil diedit");
-			      	refreshTabelSiswa();
-			      	$('.modal').modal('hide');
-			    } else {
-			      	toastr.remove();
-			     	toastr["error"](r.error);
-			    }
+				htmlHead = ''; htmlBody = '';
+				htmlHead += '<th>Tahun Ajar</th><th>Kelas</th><th></th>';
+				$('#tabel-kelas-siswa thead').html(htmlHead);
+				$.each(r.data, function(i, data) {
+				htmlBody += '<tr><td>'+data.th_ajar+'/'+(parseInt(data.th_ajar)+1)+'</td>';
+				htmlBody += '<td>'+data.nama_kelas+'</td>';
+				htmlBody += '<td class="py-2">\
+					<div style="width: 100px;">\
+						<div class="mt-1 d-flex justify-content-center align-items-center">\
+							<button onclick="deleteKelasSiswa('+data.id_kelas_siswa+','+data.id_siswa+')" class="btn btn-danger text-white"><i class="fa fa-trash"></i></button>\
+						</div>\
+					</div>\
+				</td></tr>';
+				});
+				$('#tabel-kelas-siswa tbody').html(htmlBody);
 			}
 		});
+	}
+
+	function deleteKelasSiswa(id,idSiswa) {
+		event.preventDefault();
+		$.ajax({
+			url: '<?php echo base_url('kelas_siswa/deleteKelasSiswa'); ?>',
+			type: 'POST',
+			dataType: 'json',
+			data: 'id='+id,
+			success: function(r) {
+		        if (r.status) {
+		          	toastr.remove();
+		          	toastr["success"]("Data siswa berhasil dihapus");
+		          	refreshTabelKelasSiswa(idSiswa);
+	        	} else {
+		          	toastr.remove();
+		          	toastr["error"](r.error);
+	        	}
+	      	}
+		});
+	}
+
+	function showModalKelasSiswa(id) {
+		body = '<?php echo $this->load->view('admin/siswa/kelas_siswa_modal', '', TRUE); ?>';
+		updateModal('List Kelas', body, '', 'addKelasSiswa', id, 'md', 'warning', '<i class="fa fa-plus"></i> Tambah Kelas');
+
+		refreshTabelKelasSiswa(id);
+		refreshPilihanKelasSiswa(id);
+		refreshPilihanThAjar();
 	}
 
 	function refreshPilihanKelasSiswa(id) {
@@ -107,21 +128,42 @@
 				$('#kelas').html(html);
 				$('.select2').select2();
   				$('.select2').css('width','100%');
-
-  				$.ajax({
-  					url: '<?php echo base_url('kelas_siswa/getKelasBySiswaId') ?>',
-  					type: 'GET',
-  					dataType: 'json',
-  					data: 'id='+id,
-  					success: function(r) {
-  						val = [];
-  						$.each(r, function(key,data) {
-  							val.push(data.id_kelas);
-  						});
-  						$('#kelas').val(val).trigger('change');
-  					}
-  				});
 			}
+		});
+	}
+
+	function refreshPilihanThAjar() {
+		$.ajax({
+			url: '<?php echo base_url('kelas_siswa/getThAjar'); ?>',
+			type: 'GET',
+			dataType: 'json',
+			success: function(r) {
+				html = '';
+				$.each(r, function(key,data) {
+					html += '<option value="'+data.th_ajar+'">'+data.th_ajar+'/'+(parseInt(data.th_ajar)+1)+'</option>';
+				});
+				$('#th_ajar').html(html);
+			}
+		});
+	}
+
+	function addKelasSiswa(id){
+		event.preventDefault();
+		$.ajax({
+			url : '<?php echo base_url('kelas_siswa/addKelasSiswa')?>',
+			type: 'POST',
+			dataType: 'json',
+			data: 'th_ajar='+$('#th_ajar').val()+'&id_kelas='+$('#kelas').val()+'&id_siswa='+id,
+			success: function(r) {
+		    	if (r.status) {
+		        	toastr.remove();
+		        	toastr["success"]("Data kelas siswa berhasil ditambahkan");
+		        	refreshTabelKelasSiswa(id);
+		    	} else {
+		        	toastr.remove();
+		        	toastr["error"](r.error);
+		    	}
+		    }
 		});
 	}
 

@@ -32,8 +32,7 @@
 					render: function(data, type, full) {
 					return '<button onclick="showModalMapelGuru('+data+')" data-target="#modal" data-toggle="modal" class="btn btn-warning"><i class="fa fa-eye"></i>&nbsp;Lihat</button>';
 					}
-				},
-				{
+				},{
 					targets: 6,
 					data: 'id_guru',
 					render: function(data, type, full){

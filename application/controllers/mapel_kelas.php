@@ -49,7 +49,7 @@ class Mapel_kelas extends CI_Controller {
 			if ($this->mapel_kelas_model->addMapelKelas($data)) {
 				$r['status'] = true;
 			} else {
-				$r['error'] = 'Gagal menambahkan siswa';
+				$r['error'] = 'Gagal menambahkan kelas';
 			}
 		}
 
