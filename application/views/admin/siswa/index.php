@@ -108,6 +108,15 @@
 		refreshTabelKelasSiswa(id);
 		refreshPilihanKelasSiswa(id);
 		refreshPilihanThAjar();
+
+		curYear = new Date().getFullYear();
+		$('#th_ajar').val(curYear);
+		$('#th').html('/ '+(curYear+1));
+	}
+
+	function changeThAjar() {
+		thAjar = parseInt($('#th_ajar').val());
+		$('#th').html('/ '+(thAjar+1));
 	}
 
 	function refreshPilihanKelasSiswa(id) {
