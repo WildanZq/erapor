@@ -89,8 +89,8 @@
                     data += '<li class="nav-item nav-dropdown">\
                           <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-home"></i> '+val.nama_kelas+'<span class="badge badge-warning mr-3">'+val.th_ajar+'/'+(parseInt(val.th_ajar) + 1)+'</span></a>\
                             <ul class="nav-dropdown-items">\
-                              <li class="nav-item"><a class="nav-link" href="<?php echo base_url('kelas/index/'); ?>'+val.id_kelas+'/1">Semester 1</a></li>\
-                              <li class="nav-item"><a class="nav-link" href="<?php echo base_url('kelas/index/'); ?>'+val.id_kelas+'/2">Semester 2</a></li>\
+                              <li class="nav-item"><a class="nav-link pl-4" href="<?php echo base_url('kelas/index/'); ?>'+val.id_kelas+'/1"><i class="icon-home"></i> Semester 1</a></li>\
+                              <li class="nav-item"><a class="nav-link pl-4" href="<?php echo base_url('kelas/index/'); ?>'+val.id_kelas+'/2"><i class="icon-home"></i> Semester 2</a></li>\
                         </ul></li>';
                 });
                 $('.nav-mapel').html(data);

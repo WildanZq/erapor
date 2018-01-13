@@ -13,6 +13,10 @@
 		refreshTabelKD($('#semester').val(), <?php echo $this->uri->segment(3); ?>);
 	});
 
+	function updateThAjar() {
+		updateNilai();
+	}
+
 	function showModalEditNilaiSiswa(id) {
 		body = '';
 		updateModal('Edit Nilai', body, '', 'editNilaiSiswa', id, 'md', 'primary');

@@ -142,10 +142,8 @@
 
 <?php $this->load->view('footer'); ?>
 
-<!-- Plugins and scripts required by this views -->
-
-<!-- Custom scripts required by this view -->
-<!-- <script src="js/views/main.js"></script> -->
+<!-- CoreUI main scripts -->
+<script src="<?php echo base_url(); ?>assets/js/app.js"></script>
 
 </body>
 </html>
