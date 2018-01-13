@@ -18,6 +18,16 @@ class Dashboard extends CI_Controller {
 			$data['title'] = 'Dashboard';
 			$data['main'] = 'admin/dashboard/index';
 			$this->load->view('template', $data);
+		}
+		if ($this->session->userdata('role') == 'guru') {
+			$data['title'] = 'Dashboard';
+			$data['main'] = 'admin/dashboard/index';
+			$this->load->view('template', $data);
+		}
+		if ($this->session->userdata('role') == 'siswa') {
+			$data['title'] = 'Dashboard';
+			$data['main'] = 'admin/dashboard/index';
+			$this->load->view('template', $data);
 		}	
 	}
 
