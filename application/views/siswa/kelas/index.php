@@ -4,7 +4,7 @@
 			<button class="btn btn-primary" onclick="showMapel()"><i class="fa fa-arrow-left"></i> Back</button>
 		</div>
 	</div>
-	<div class="col-sm-5 pr-sm-1 pl-sm-1 card-mapel-detail" style="display: none">
+	<div class="col-sm-3 pr-sm-1 pl-sm-1 card-mapel-detail" style="display: none">
 		<div class="card">
 			<div class="card-header font-weight-bold">Mapel</div>
 			<div class="form-group m-0">
@@ -15,15 +15,45 @@
 			</div>
 		</div>
 	</div>
-	<div class="col-sm-5 pl-sm-1 card-mapel-detail" style="display: none">
+	<div class="col-sm-3 pl-sm-1 pr-sm-1 card-mapel-detail" style="display: none">
 		<div class="card">
 			<div class="card-header font-weight-bold">KKM</div>
 			<span class="p-2 pl-3" id="kkm">75</span>
 		</div>
 	</div>
+	<div class="col-sm-4 pl-sm-1 card-mapel-detail" style="display: none">
+		<div class="card">
+			<div class="card-header font-weight-bold">Ranking Kelas</div>
+			<span class="p-2 pl-3" id="rank">1</span>
+		</div>
+	</div>
+	<div class="col-sm-3 pr-sm-1 card-mapel-detail" style="display: none">
+		<div class="card">
+			<div class="card-header font-weight-bold">Rata" Kelas</div>
+			<span class="p-2 pl-3" id="rk">80</span>
+		</div>
+	</div>
+	<div class="col-sm-3 pl-sm-1 pr-sm-1 card-mapel-detail" style="display: none">
+		<div class="card">
+			<div class="card-header font-weight-bold">Nilai Akhir</div>
+			<span class="p-2 pl-3" id="na">80</span>
+		</div>
+	</div>
+	<div class="col-sm-3 pr-sm-1 pl-sm-1 card-mapel-detail" style="display: none">
+		<div class="card">
+			<div class="card-header font-weight-bold">UTS</div>
+			<span class="p-2 pl-3" id="uts">75</span>
+		</div>
+	</div>
+	<div class="col-sm-3 pl-sm-1 card-mapel-detail" style="display: none">
+		<div class="card">
+			<div class="card-header font-weight-bold">UAS</div>
+			<span class="p-2 pl-3" id="uas">75</span>
+		</div>
+	</div>
 	<div class="col-12 card-mapel-detail" style="display: none">
 		<div class="card">
-			<div class="card-header font-weight-bold">Bahasa Indonesia</div>
+			<div class="card-header font-weight-bold">Nilai KD</div>
 			<div class="card-body">
 				<canvas id="canvas-kd" height="80"></canvas>
 			</div>

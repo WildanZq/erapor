@@ -3,6 +3,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Mapel_model extends CI_Model {
 
+	public function getMapelByKelasSiswa($idKelasSiswa)
+	{
+		return $this->db
+		->join('mapel_kelas', 'mapel_kelas.id_mapel = mapel.id_mapel')
+		->join('kelompok_kelas', 'kelompok_kelas.id_kelompok_kelas = mapel_kelas.id_kelompok_kelas')
+		->join('kelas', 'kelas.id_kelompok_kelas = kelompok_kelas.id_kelompok_kelas')
+		->join('kelas_siswa', 'kelas_siswa.id_kelas = kelas.id_kelas')
+		->where('id_kelas_siswa', $this->db->escape_str($idKelasSiswa))
+		->get('mapel')->result();
+	}
+
 	public function getMapelGuru($idGuru)
 	{
 		return $this->db

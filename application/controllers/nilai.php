@@ -13,6 +13,32 @@ class Nilai extends CI_Controller {
 		$this->load->model('service_model');
 	}
 
+	public function getAVGNilaiByKelasAndSemester()
+	{
+		if(! $this->input->is_ajax_request()) {
+			$data['title'] = '404 Page Not Found';
+    		$this->load->view('error404_view',$data);
+    		return;
+		}
+
+		$r = $this->nilai_model->getAVGNilaiByKelasAndSemester($this->input->get('id_kelas'),$this->input->get('semester'));
+
+		echo json_encode($r);
+	}
+
+	public function getNilaiByKelasSiswaAndSemester()
+	{
+		if(! $this->input->is_ajax_request()) {
+			$data['title'] = '404 Page Not Found';
+    		$this->load->view('error404_view',$data);
+    		return;
+		}
+
+		$r = $this->nilai_model->getNilaiByKelasSiswaAndSemester($this->input->get('id_kelas_siswa'),$this->input->get('semester'));
+
+		echo json_encode($r);
+	}
+
 	public function getNilaiKD()
 	{
 		if(! $this->input->is_ajax_request()) {

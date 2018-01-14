@@ -62,6 +62,26 @@ class Siswa extends CI_Controller {
 		echo json_encode($r);
 	}
 
+	public function getSiswaByGuruId()
+	{
+		if(! $this->input->is_ajax_request()) {
+			$data['title'] = '404 Page Not Found';
+    		$this->load->view('error404_view',$data);
+    		return;
+		}
+
+		if ($this->input->get('id')) {
+			$id = $this->input->get('id');
+		} else {
+			$id = $this->session->userdata('userid');
+		}
+
+		$data = $this->siswa_model->getSiswaByGuruId($id);
+		$r = array('data' => $data );
+
+		echo json_encode($r);
+	}
+
 	public function addSiswa()
 	{
 		if(! $this->input->is_ajax_request()) {

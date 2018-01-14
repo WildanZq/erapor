@@ -27,6 +27,13 @@ class Siswa_model extends CI_Model {
 		->get('siswa')->result();
 	}
 
+	public function getSiswaByGuruId($idGuru)
+	{
+		return $this->db
+		->where('id_guru', $this->db->escape_str($idGuru))
+		->get('siswa')->result();
+	}
+
 	public function addSiswa($data)
 	{
 		$this->db->insert('siswa', $data);

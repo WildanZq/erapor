@@ -13,19 +13,6 @@ class Kelas_siswa extends CI_Controller {
 		$this->load->model('kelas_siswa_model');
 	}
 
-
-	public function getKelasBySiswaId()
-	{
-		if(! $this->input->is_ajax_request()) {
-			$data['title'] = '404 Page Not Found';
-    		$this->load->view('error404_view',$data);
-    		return;
-		}
-		$r = $this->kelas_siswa_model->getKelasBySiswaId($this->input->get('id'));
-
-		echo json_encode($r);
-	}
-
 	public function getAllKelasSiswa()
 	{
 		if(! $this->input->is_ajax_request()) {

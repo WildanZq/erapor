@@ -20,13 +20,6 @@ class Kelas_siswa_model extends CI_Model {
 		->get('kelas_siswa')->result();
 	}
 
-	public function getKelasBySiswaId($id)
-	{
-		return $this->db
-		->where('id_siswa', $this->db->escape_str($id))
-		->get('kelas_siswa')->result();
-	}
-
 	public function deleteKelasSiswaBySiswaId($id)
 	{
 		$this->db

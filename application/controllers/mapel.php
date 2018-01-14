@@ -40,6 +40,19 @@ class Mapel extends CI_Controller {
     	$this->load->view('error404_view',$data);
 	}
 
+	public function getMapelByKelasSiswa()
+	{
+		if(! $this->input->is_ajax_request()) {
+			$data['title'] = '404 Page Not Found';
+    		$this->load->view('error404_view',$data);
+    		return;
+		}
+
+		$r = $this->mapel_model->getMapelByKelasSiswa($this->input->get('id_kelas_siswa'));
+
+		echo json_encode($r);
+	}
+
 	public function getMapelGuru()
 	{
 		if(! $this->input->is_ajax_request()) {

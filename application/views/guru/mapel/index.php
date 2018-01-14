@@ -1,5 +1,6 @@
 <script type="text/javascript">
 	$(document).ready(function() {
+		tabelNilai = false;
 		$('.main-container').html('<?php echo $this->load->view('guru/mapel/main_view', '', TRUE); ?>');
 		
 		getKKM();
@@ -181,6 +182,7 @@
 		semester = $('#semester').val();
 
 		if (! idKelas) {
+			if (tabelNilai) {tabelNilai.fnDestroy();}
 			$('#header-nilai').html('Nilai Siswa');
 			$('#tabel-nilai-siswa').html('<h5 class="text-danger text-center">Pilih kelas dahulu</h5>');
 			return;
@@ -196,7 +198,7 @@
 				$.each(r, function(key,data) {
 					thtml += '<th>'+data.nama_kd+'</th>';
 				});
-				thtml += '<th>UTS</th><th>UAS</th><th></th></thead><tbody></tbody><tfoot></tfoot>';
+				thtml += '<th>UTS</th><th>UAS</th><th>Nilai Akhir</th><th></th></thead><tbody></tbody><tfoot></tfoot>';
 
 				$.ajax({
 					url: '<?php echo base_url('siswa/getSiswaByKelasIdAndThAjar') ?>',
@@ -236,18 +238,20 @@
 												shtml += '<td'+(cekKKM(kd))+'>'+kd+'</td>';
 											});
 
-											uts = 0; uas = 0;
+											uts = 0; uas = 0; na = 0;
 											$.each(nr, function(nkey,ndata) {
 												if (ndata.id_kelas_siswa == sdata.id_kelas_siswa) {
 													uts = ndata.nilai_uts;
 													uas = ndata.nilai_uas;
+													na = ndata.nilai_akhir;
 												}
 											})
-											shtml += '<td'+(cekKKM(uts))+'>'+uts+'</td><td'+(cekKKM(uas))+'>'+uas+'</td>';
+											shtml += '<td'+(cekKKM(uts))+'>'+uts+'</td><td'+(cekKKM(uas))+'>'+uas+'</td><td'+(cekKKM(na))+'>'+na+'</td>';
 											
 											shtml += '<td><button onclick="showModalEditNilaiSiswa('+sdata.id_kelas_siswa+')" data-target="#modal" data-toggle="modal" class="btn btn-primary"><i class="fa fa-pencil"></i> Edit</button></td></tr>';
 										});
 										$('#tabel-nilai-siswa tbody').html(shtml);
+										tabelNilai = $('#tabel-nilai-siswa').dataTable();
 									}
 								});
 							}
