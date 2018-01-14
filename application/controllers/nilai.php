@@ -13,7 +13,7 @@ class Nilai extends CI_Controller {
 		$this->load->model('service_model');
 	}
 
-	public function getAVGNilaiByKelasAndSemester()
+	public function getAVGNilaiKelas()
 	{
 		if(! $this->input->is_ajax_request()) {
 			$data['title'] = '404 Page Not Found';
@@ -21,7 +21,7 @@ class Nilai extends CI_Controller {
     		return;
 		}
 
-		$r = $this->nilai_model->getAVGNilaiByKelasAndSemester($this->input->get('id_kelas'),$this->input->get('semester'));
+		$r = $this->nilai_model->getAVGNilaiKelas($this->input->get('id_kelas'),$this->input->get('semester'),$this->input->get('th_ajar'));
 
 		echo json_encode($r);
 	}

@@ -181,8 +181,8 @@
 		thAjar = $('#th_ajar').val();
 		semester = $('#semester').val();
 
+		if (tabelNilai) {tabelNilai.fnDestroy();}
 		if (! idKelas) {
-			if (tabelNilai) {tabelNilai.fnDestroy();}
 			$('#header-nilai').html('Nilai Siswa');
 			$('#tabel-nilai-siswa').html('<h5 class="text-danger text-center">Pilih kelas dahulu</h5>');
 			return;

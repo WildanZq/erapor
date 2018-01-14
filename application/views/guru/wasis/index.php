@@ -137,8 +137,8 @@
 	function refreshMapel() {
 		idKelasSiswa = $('#kelas').val();
 		semester = $('#semester').val();
+		if (tabelMapel) {tabelMapel.fnDestroy();}
 		if (! idKelasSiswa) {
-			if (tabelMapel) {tabelMapel.fnDestroy();}
 			$('#tabel-mapel').html('<h5 class="text-danger text-center">Pilih kelas dahulu</h5>');
 			return;
 		} else {
@@ -158,10 +158,10 @@
 					data: 'id_kelas_siswa='+idKelasSiswa+'&semester='+semester,
 					success: function(nr) {
 						$.ajax({
-							url: '<?php echo base_url('nilai/getAVGNilaiByKelasAndSemester'); ?>',
+							url: '<?php echo base_url('nilai/getAVGNilaiKelas'); ?>',
 							type: 'GET',
 							dataType: 'json',
-							data: 'id_kelas='+r[0].id_kelas+'&semester='+semester,
+							data: 'id_kelas='+r[0].id_kelas+'&semester='+semester+'&th_ajar='+r[0].th_ajar,
 							success: function(anr) {
 								html = '';
 								$.each(r, function(key,data) {

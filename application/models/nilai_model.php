@@ -3,16 +3,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Nilai_model extends CI_Model {
 
-	public function getAVGNilaiByKelasAndSemester($idKelas,$semester)
+	public function getAVGNilaiKelas($idKelas,$semester,$thAjar)
 	{
 		return $this->db
-		->select('id_mapel, (SELECT COUNT(*) FROM nilai JOIN kelas_siswa ON kelas_siswa.id_kelas_siswa = nilai.id_kelas_siswa JOIN kelas ON kelas.id_kelas = kelas_siswa.id_kelas WHERE nilai.nilai_akhir > n.nilai_akhir AND kelas.id_kelas = '.$this->db->escape_str($idKelas).' AND semester = '.$this->db->escape_str($semester).')+1 AS position')
+		->select('id_mapel, (SELECT COUNT(*) FROM nilai JOIN kelas_siswa ON kelas_siswa.id_kelas_siswa = nilai.id_kelas_siswa JOIN kelas ON kelas.id_kelas = kelas_siswa.id_kelas WHERE nilai.nilai_akhir > n.nilai_akhir AND kelas.id_kelas = '.$this->db->escape_str($idKelas).' AND semester = '.$this->db->escape_str($semester).' AND kelas_siswa.th_ajar = ks.th_ajar)+1 AS position')
 		->select_avg('nilai_akhir')
-		->join('kelas_siswa', 'kelas_siswa.id_kelas_siswa = n.id_kelas_siswa')
-		->join('kelas', 'kelas.id_kelas = kelas_siswa.id_kelas')
+		->join('kelas_siswa AS ks', 'ks.id_kelas_siswa = n.id_kelas_siswa')
+		->join('kelas', 'kelas.id_kelas = ks.id_kelas')
 		->group_by('id_mapel')
 		->where('kelas.id_kelas', $this->db->escape_str($idKelas))
 		->where('semester', $this->db->escape_str($semester))
+		->where('th_ajar', $this->db->escape_str($thAjar))
 		->get('nilai AS n')->result();
 	}
 
