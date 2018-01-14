@@ -125,7 +125,7 @@
 			type: 'GET',
 			dataType: 'json',
 			success: function(r) {
-				html = '';
+				html = '<option value="">-Pilih kelas-</option>';
 				r = groupBy(r.data,'nama_kelompok_kelas');
 				$.each(r, function(key,data) {
 					html += '<optgroup label="'+key+'">';
