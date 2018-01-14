@@ -120,12 +120,14 @@
 	}
 
 	function showDetailSiswa(idSiswa) {
+		if (tabelMapel) {tabelMapel.fnDestroy();}
 		$('.card-siswa').slideUp();
 		$('#siswa').val(idSiswa).trigger('change');
 		getKelas(idSiswa);
-		refreshMapel();
 		setTimeout(function() {
 			$('.card-mapel').slideDown();
+			if (tabelMapel) {tabelMapel.fnDestroy();}
+			$('#tabel-mapel').html('<h5 class="text-danger text-center">Pilih kelas dahulu</h5>');
 		},500);
 	}
 
