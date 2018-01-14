@@ -16,6 +16,12 @@
 .p-relative {position: relative;}.p-absolute {position: absolute;}
 .t-0 {top: 0;}.b-0 {bottom: 0;}.r-0 {right: 0;}.l-0 {left: 0;}
 .t-auto {top: auto;}.b-auto {bottom: auto;}.r-auto {right: auto;}.l-auto {left: auto;}
+@keyframes slide {
+	0% {transform: translateY(-30px);opacity: 0;}
+	50% {opacity: 1;}
+	100% {transform: translateY(0);opacity: 1;}
+}
+.card {animation: slide 1.5s;}
 .pp {
 	width: 200px;
 	height: 200px;

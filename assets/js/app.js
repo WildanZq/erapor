@@ -49,6 +49,17 @@ function setActiveCurNav() {
 
 $(document).ready(function($){
 
+  $('a').click(function() {
+    $('.card').css({
+      'transition':'.3s','opacity':'0','transform':'translateY(-20px)'
+    });
+  });
+  $('a[href="#"]').click(function() {
+    $('.card').css({
+      'transition':'0','opacity':'1','transform':'translateY(0)'
+    });
+  })
+
   setActiveCurNav();
 
   // Dropdown Menu
