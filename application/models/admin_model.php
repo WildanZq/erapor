@@ -3,10 +3,28 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Admin_model extends CI_Model {
 
+	public function editPassword($data,$id)
+	{
+		$this->db
+		->where('id_admin', $this->db->escape_str($id))
+		->update('admin', $data);
+		if ($this->db->affected_rows() == 0) {
+			return false;
+		}
+		return true;
+	}
+
+	public function cekPassword($pass,$id)
+	{
+		return $this->db
+		->where('password', $this->db->escape_str($pass))
+		->where('id_admin', $this->db->escape_str($id))
+		->count_all_results('admin');
+	}
+
 	public function getAllAdmin()
 	{
-		return $this->db->get('admin')
-						->result();
+		return $this->db->get('admin')->result();
 	}
 
 	public function addAdmin($data)

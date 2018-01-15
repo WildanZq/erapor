@@ -39,8 +39,7 @@
 	}
 
 	function showModalEditRumus(rumus) {
-		body = '<?php echo $this->load->view('admin/rumus/modal_body', '', TRUE); ?>';
-		updateModal('Edit Rumus (%)', body, '<?php echo base_url('rumus/editRumus'); ?>', 'editRumus', rumus, 'md', 'primary');
+		updateModal('Edit Rumus (%)', '', '', '', null, 'md', 'primary');
 		setTimeout(function() {
 			$.ajax({
 				url: '<?php echo base_url('rumus/getRumus'); ?>',
@@ -48,6 +47,8 @@
 				dataType: 'json',
 				data: 'id='+rumus,
 				success: function(r) {
+					body = '<?php echo $this->load->view('admin/rumus/modal_body', '', TRUE); ?>';
+					updateModal('Edit Rumus (%)', body, '<?php echo base_url('rumus/editRumus'); ?>', 'editRumus', rumus, 'md', 'primary');
 					$('#nilai_kd').val(r.nilai_kd);
 					$('#nilai_uts').val(r.nilai_uts);
 					$('#nilai_uas').val(r.nilai_uas);

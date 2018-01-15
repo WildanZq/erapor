@@ -24,7 +24,11 @@
 </div>
 <script type="text/javascript">
 	function showModalPassword() {
-		updateModal('Edit Password', '', '<?php echo base_url('profile/editPassword'); ?>', 'editPassword', null, 'md', 'danger');
+		body = '<div class="form-group">\
+			      <label>Konfirmasi password</label>\
+			      <input type="password" name="password" class="form-control" id="password">\
+			    </div>';
+		updateModal('Edit Password', body, '<?php echo base_url('profile/editPassword'); ?>', 'cekPassword', null, 'md', 'danger');
 	}
 
 	function showModalEdit() {
@@ -38,6 +42,54 @@
 			success: function(r) {
 				$('#nama').val(r.nama_admin);
 				$('#username').val(r.username);
+			}
+		});
+	}
+
+	function cekPassword() {
+		event.preventDefault();
+		$.ajax({
+			url: '<?php echo base_url('profile/cekPassword'); ?>',
+			type: 'POST',
+			dataType: 'json',
+			data: 'password='+$('#password').val(),
+			success: function(r) {
+				if (r.valid) {
+		          	body = '<div class="form-group">\
+						      <label>Password baru</label>\
+						      <input type="password" name="password" class="form-control" id="password">\
+						    </div><div class="form-group">\
+						      <label>Konfirmasi password</label>\
+						      <input type="password" name="password2" class="form-control" id="password2">\
+						    </div>';
+		          	updateModal('Edit Password', body, '<?php echo base_url('profile/editPassword'); ?>', 'editPassword', null, 'md', 'danger');
+
+					toastr.remove();
+		          	toastr["info"]('Masukkan password baru');
+				} else {
+					toastr.remove();
+		          	toastr["error"](r.error);
+				}
+			}
+		});
+	}
+
+	function editPassword() {
+		event.preventDefault();
+		$.ajax({
+			url: $('.modal-form').attr('action'),
+			type: 'POST',
+			dataType: 'json',
+			data: $('.modal-form').serialize(),
+			success: function(r) {
+				if (r.status) {
+		          	toastr.remove();
+		          	toastr["success"]("Data profile berhasil diedit");
+		          	$('.modal').modal('hide');
+	        	} else {
+		          	toastr.remove();
+		          	toastr["error"](r.error);
+	        	}
 			}
 		});
 	}

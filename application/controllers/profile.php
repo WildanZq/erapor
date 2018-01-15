@@ -39,6 +39,67 @@ class Profile extends CI_Controller {
     	$this->load->view('error404_view',$data);
 	}
 
+	public function editPassword()
+	{
+		if(! $this->input->is_ajax_request()) {
+			$data['title'] = '404 Page Not Found';
+    		$this->load->view('error404_view',$data);
+    		return;
+		}
+
+		if ($this->session->userdata('role') == 'admin') {
+			$this->load->model('admin_model');
+
+			$r = array('status' => false, 'error' => '');
+
+			if ($this->input->post('password') == '') {
+				$r['error'] = 'Isi password baru!';
+				echo json_encode($r);
+				return;
+			}
+			if ($this->input->post('password') != $this->input->post('password2')) {
+				$r['error'] = 'Password tidak sama!';
+				echo json_encode($r);
+				return;
+			}
+
+			$data = array( 'password' => $this->input->post('password') );
+			$data = $this->service_model->escape_array($data);
+			if ($this->admin_model->editPassword($data, $this->session->userdata('userid'))) {
+				$r['status'] = true;
+			} else {
+				$r['error'] = 'Edit password gagal';
+			}
+
+			echo json_encode($r);
+		}
+	}
+
+	public function cekPassword()
+	{
+		if(! $this->input->is_ajax_request()) {
+			$data['title'] = '404 Page Not Found';
+    		$this->load->view('error404_view',$data);
+    		return;
+		}
+
+		if ($this->session->userdata('role') == 'admin') {
+			$this->load->model('admin_model');
+
+			$r = array('valid' => false, 'error' => '');
+			
+			if (! $this->input->post('password')) {
+				$r['error'] = 'Masukkan password!';
+			} elseif ($this->admin_model->cekPassword($this->input->post('password'),$this->session->userdata('userid'))) {
+				$r['valid'] = true;
+			} else {
+				$r['error'] = 'Password salah!';
+			}
+
+			echo json_encode($r);
+		}
+	}
+
 	public function editProfile()
 	{
 		if(! $this->input->is_ajax_request()) {
