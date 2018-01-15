@@ -48,12 +48,12 @@
     </button>
 
     <!-- Breadcrumb -->
-    <ol class="nav navbar-nav d-md-down-none breadcrumb" style="border:none;margin:0;">
+    <!-- <ol class="nav navbar-nav d-md-down-none breadcrumb" style="border:none;margin:0;">
       <li class="breadcrumb-item">Home</li>
       <li class="breadcrumb-item"><a href="#">Admin</a></li>
       <li class="breadcrumb-item active">Dashboard</li>
 
-    </ol>
+    </ol> -->
 
     <ul class="nav navbar-nav ml-auto mr-3">
       <li class="nav-item dropdown">
