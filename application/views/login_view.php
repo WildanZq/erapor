@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <?php $data['title'] = $title; $this->load->view('header', $data); ?>
@@ -29,9 +28,6 @@
                 <div class="col-6">
                   <button type="submit" class="btn btn-primary px-4" onclick="signin();">Login</button>
                 </div>
-                <!-- <div class="col-6 text-right">
-                  <button type="button" class="btn btn-link px-0">Forgot password?</button>
-                </div> -->
               </div>
               </form>
             </div>
@@ -39,6 +35,7 @@
           <div class="card text-white bg-primary py-5 d-md-down-none" style="width:44%">
             <div class="card-body text-center">
               <div>
+                <img class="mb-2" src="<?php echo base_url('assets/img'); ?>/putih.png" height="50px">
                 <h2>E-Rapor</h2>
                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
               </div>
