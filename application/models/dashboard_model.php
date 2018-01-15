@@ -3,6 +3,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Dashboard_model extends CI_Model {
 
+	public function countSiswa(){
+		return $this->db->count_all_results('siswa');
+	}
+
 	public function countKelas(){
 		return $this->db->count_all_results('kelas');
     }

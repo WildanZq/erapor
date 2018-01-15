@@ -3,7 +3,7 @@
     <div class="card card-accent-primary">
       <div class="card-body p-3 clearfix">
         <i class="icon-graduation p-3 font-2xl mr-3 float-left"></i>
-        <div class="h5 mt-2 mb-0 text-primary" id="siswa">326</div>
+        <div class="h5 mt-2 mb-0 text-primary" id="siswa">&nbsp;</div>
         <div class="text-muted text-uppercase font-weight-bold font-xs">Siswa</div>
       </div>
       <div class="card-footer px-3 py-2 text-white bg-primary">
@@ -15,7 +15,7 @@
     <div class="card card-accent-primary">
       <div class="card-body p-3 clearfix">
         <i class="icon-people p-3 font-2xl mr-3 float-left"></i>
-        <div class="h5 mt-2 mb-0 text-primary" id="guru"></div>
+        <div class="h5 mt-2 mb-0 text-primary" id="guru">&nbsp;</div>
         <div class="text-muted text-uppercase font-weight-bold font-xs">Guru</div>
       </div>
       <div class="card-footer px-3 py-2 text-white bg-primary">
@@ -27,7 +27,7 @@
     <div class="card card-accent-primary">
       <div class="card-body p-3 clearfix">
         <i class="icon-notebook p-3 font-2xl mr-3 float-left"></i>
-        <div class="h5 mt-2 mb-0 text-primary" id="mapel"></div>
+        <div class="h5 mt-2 mb-0 text-primary" id="mapel">&nbsp;</div>
         <div class="text-muted text-uppercase font-weight-bold font-xs">Mapel</div>
       </div>
       <div class="card-footer px-3 py-2 text-white bg-primary">
@@ -51,10 +51,22 @@
 
 <script type="text/javascript">
   $(document).ready(function() {
+    countSiswa();
     countGuru();
     countKelas();
     countMapel();
   });
+
+  function countSiswa() {
+    $.ajax({
+      url: '<?php echo base_url('dashboard/countSiswa'); ?>',
+      type: 'GET',
+      dataType: 'json',
+      success: function(r) {
+        $('#siswa').html(r);
+      }
+    });
+  }
 
   function countGuru(){
     $.ajax({

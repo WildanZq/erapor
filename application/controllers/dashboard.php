@@ -31,6 +31,19 @@ class Dashboard extends CI_Controller {
 		}	
 	}
 
+	public function countSiswa()
+	{
+		if(! $this->input->is_ajax_request()) {
+			$data['title'] = '404 Page Not Found';
+    		$this->load->view('error404_view',$data);
+    		return;
+		}
+
+		$r = $this->dashboard_model->countSiswa();
+
+		echo json_encode($r);
+	}
+
 	public function countGuru()
 	{
 		if(! $this->input->is_ajax_request()) {
