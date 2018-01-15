@@ -8,7 +8,7 @@
 		<div class="card">
 			<div class="card-header font-weight-bold">Mapel</div>
 			<div class="form-group m-0">
-			  <select name="mapel" class="form-control select2" id="mapel" onchange="changeMapel($(this).val())"></select>
+			  <select name="mapel" class="form-control select2" id="mapel" onchange="getNilaiMapel($(this).val())"></select>
 			</div>
 		</div>
 	</div>
@@ -84,18 +84,13 @@
 		canvasKD = new Chart(document.getElementById("canvas-kd").getContext("2d"), {
 	      	type: 'bar',
 	      	data: {
-	        	labels: ['kd1','kd2','kd3','kd3','kd4'],
+	        	labels: [],
 	        	datasets: [{
-		          	backgroundColor: [color(getRandomColor()).rgbString(),color(getRandomColor()).rgbString(),color(getRandomColor()).rgbString(),color(getRandomColor()).rgbString(),color(getRandomColor()).rgbString()],
-		          	borderWidth: 0,
-		          	pointBorderWidth: 1,
-		          	data: ['90','80','85']
+		          	backgroundColor: [],borderWidth: 0,pointBorderWidth: 1,data: []
 	      		}]
 	      	},
 	      	options: {
-		        responsive: true,
-	        	legend: {display: false},
-	        	scales: {yAxes: [{ticks: {beginAtZero: true}}]}
+		        responsive: true,legend: {display: false},scales: {yAxes: [{ticks: {beginAtZero: true}}]}
 	    	}
 	  	});
 	});
@@ -185,25 +180,38 @@
 		},500);
 	}
 
-	function changeMapel(id) {
-		getNilaiMapel(id);
-	}
-
 	function getNilaiMapel(id) {
+		semester = <?php echo $this->uri->segment(4); ?>;
 		$.ajax({
-			url: '<?php echo base_url('nilai/getAllNilaiKD'); ?>',
+			url: '<?php echo base_url('kd/getKD'); ?>',
 			type: 'GET',
 			dataType: 'json',
-			data: 'id_mapel='+id+'&semester='+<?php echo $this->uri->segment(4); ?>,
-			success: function(r) {
-				datas = []; labels = [];
-				$.each(r, function(key,data) {
-					labels.push(data.nama_kd);
-					datas.push(data.nilai);
+			data: 'semester='+semester+'&id_mapel='+$('#mapel').val(),
+			success: function(kr) {
+				$.ajax({
+					url: '<?php echo base_url('nilai/getAllNilaiKD'); ?>',
+					type: 'GET',
+					dataType: 'json',
+					data: 'id_mapel='+id+'&semester='+semester,
+					success: function(r) {
+						datas = []; labels = []; bg = [];
+						$.each(kr, function(kkey,kdata) {
+							dataval = 0;
+							labels.push(kdata.nama_kd);
+							bg.push(color(getRandomColor()).rgbString());
+							$.each(r, function(key,data) {
+								if (data.id_kelas_siswa == <?php echo $this->uri->segment(3); ?> && data.id_kd == kdata.id_kd) {
+									dataval = data.nilai;
+								}
+							});
+							datas.push(dataval);
+						})
+						canvasKD.data.labels = labels;
+						canvasKD.data.datasets[0].data = datas;
+						canvasKD.data.datasets[0].backgroundColor = bg;
+						canvasKD.update();
+					}
 				});
-				canvasKD.data.labels = labels;
-				canvasKD.data.datasets[0].data = datas;
-				canvasKD.update();
 			}
 		});
 
