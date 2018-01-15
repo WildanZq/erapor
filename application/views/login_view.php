@@ -35,9 +35,9 @@
           <div class="card text-white bg-primary py-5 d-md-down-none" style="width:44%">
             <div class="card-body text-center">
               <div>
-                <img class="mb-2" src="<?php echo base_url('assets/img'); ?>/putih.png" height="50px">
-                <h2>E-Rapor</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                <img class="mb-2 mt-4" src="<?php echo base_url('assets/img'); ?>/putih.png" height="50px">
+                <h2 class="mb-0">E-Raport</h2>
+                <p>Aplikasi pemantau nilai siswa</p>
               </div>
             </div>
           </div>
