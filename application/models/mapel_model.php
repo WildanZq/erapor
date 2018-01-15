@@ -10,6 +10,7 @@ class Mapel_model extends CI_Model {
 		->join('kelompok_kelas', 'kelompok_kelas.id_kelompok_kelas = mapel_kelas.id_kelompok_kelas')
 		->join('kelas', 'kelas.id_kelompok_kelas = kelompok_kelas.id_kelompok_kelas')
 		->join('kelas_siswa', 'kelas_siswa.id_kelas = kelas.id_kelas')
+		->join('jenis_mapel', 'jenis_mapel.id_jenis_mapel = mapel.id_jenis_mapel')
 		->where('id_kelas_siswa', $this->db->escape_str($idKelasSiswa))
 		->get('mapel')->result();
 	}

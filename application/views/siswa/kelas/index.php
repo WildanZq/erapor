@@ -8,10 +8,7 @@
 		<div class="card">
 			<div class="card-header font-weight-bold">Mapel</div>
 			<div class="form-group m-0">
-			  <select name="semester" class="form-control select2" id="mapel" onchange="changeMapel($(this).val())">
-			  	<option value="1">Bahasa Indonesia</option>
-			  	<option value="2">Matematika</option>
-			  </select>
+			  <select name="mapel" class="form-control select2" id="mapel" onchange="changeMapel($(this).val())"></select>
 			</div>
 		</div>
 	</div>
@@ -72,18 +69,7 @@
 						<th>Ranking Kelas</th>
 						<th></th>
 					</thead>
-					<tbody>
-						<tr>
-							<td>Bahasa Indonesia</td>
-							<td>75</td>
-							<td>80</td>
-							<td>80</td>
-							<td>25</td>
-							<td>
-								<button onclick="showDetailMapel(1)" class="btn btn-primary"><span class="icon-eye"></span> Detail</button>
-							</td>
-						</tr>
-					</tbody>
+					<tbody></tbody>
 				</table>
 			</div>
 		</div>
@@ -92,6 +78,7 @@
 <script>
 	$(document).ready(function() {
 		$('#tabel-mapel').dataTable();
+		refreshMapel();
 
 		color = Chart.helpers.color;
 		canvasKD = new Chart(document.getElementById("canvas-kd").getContext("2d"), {
@@ -113,6 +100,76 @@
 	  	});
 	});
 
+	function refreshMapel() {
+		idKelasSiswa = <?php echo $this->uri->segment(3); ?>;
+		semester = <?php echo $this->uri->segment(4); ?>;
+		$.ajax({
+			url: '<?php echo base_url('mapel/getMapelByKelasSiswa'); ?>',
+			type: 'GET',
+			dataType: 'json',
+			data: 'id_kelas_siswa='+idKelasSiswa,
+			success: function(r) {
+				$.ajax({
+					url: '<?php echo base_url('nilai/getNilaiByKelasSiswaAndSemester'); ?>',
+					type: 'GET',
+					dataType: 'json',
+					data: 'id_kelas_siswa='+idKelasSiswa+'&semester='+semester,
+					success: function(nr) {
+						$.ajax({
+							url: '<?php echo base_url('nilai/getAVGNilaiKelas'); ?>',
+							type: 'GET',
+							dataType: 'json',
+							data: 'id_kelas='+r[0].id_kelas+'&semester='+semester+'&th_ajar='+r[0].th_ajar,
+							success: function(anr) {
+								avgnkelas = anr;
+								nkelas = nr;
+								mapelkelas = r;
+								mr = groupBy(r,'nama_jenis_mapel'); html = '';
+								$.each(mr, function(key,data) {
+									html += '<optgroup label="'+key+'">';
+									$.each(data, function(key,data) {
+										html += '<option value="'+data.id_mapel+'">'+data.nama_mapel+'</option>';
+									});
+									html += '</optgroup>';
+								});
+								$('#mapel').html(html);
+								$('.select2').select2();
+				  				$('.select2').css('width','100%');
+								html = '';
+								$.each(r, function(key,data) {
+									na = 0;
+									$.each(nr, function(nkey,ndata) {
+										if (data.id_mapel == ndata.id_mapel) {
+											na = ndata.nilai_akhir;
+										}
+									});
+									clsna = '';
+									if (na == data.kkm) {clsna = ' class="table-warning"';}
+									else if (na < data.kkm) {clsna = ' class="table-danger"';}
+
+									rk = 0; pos = '-';
+									$.each(anr, function(ankey,andata) {
+										if (data.id_mapel == andata.id_mapel) {
+											rk = Math.round(andata.nilai_akhir);
+											pos = andata.position;
+										}
+									});
+									clsrk = '';
+									if (rk == data.kkm) {clsrk = ' class="table-warning"';}
+									else if (rk < data.kkm) {clsrk = ' class="table-danger"';}
+
+									html += '<tr><td>'+data.nama_mapel+'</td><td>'+data.kkm+'</td><td'+clsna+'>'+na+'</td><td'+clsrk+'>'+rk+'</td><td>'+pos+'</td><td><button onclick="showDetailMapel('+data.id_mapel+')" class="btn btn-primary"><span class="icon-eye"></span> Detail</button></td></tr>';
+								});
+								$('#tabel-mapel tbody').html(html);
+								tabelMapel = $('#tabel-mapel').dataTable();
+							}
+						});
+					}
+				});
+			}
+		});
+	}
+
 	function showMapel() {
 		$('.card-mapel-detail').slideUp();
 		setTimeout(function() {
@@ -129,6 +186,51 @@
 	}
 
 	function changeMapel(id) {
-		
+		getNilaiMapel(id);
+	}
+
+	function getNilaiMapel(id) {
+		$.ajax({
+			url: '<?php echo base_url('nilai/getAllNilaiKD'); ?>',
+			type: 'GET',
+			dataType: 'json',
+			data: 'id_mapel='+id+'&semester='+<?php echo $this->uri->segment(4); ?>,
+			success: function(r) {
+				datas = []; labels = [];
+				$.each(r, function(key,data) {
+					labels.push(data.nama_kd);
+					datas.push(data.nilai);
+				});
+				canvasKD.data.labels = labels;
+				canvasKD.data.datasets[0].data = datas;
+				canvasKD.update();
+			}
+		});
+
+		na = 0; kkm = ''; rank = '-'; na = 0; uas = 0; uts = 0;
+		$.each(nkelas, function(key,data) {
+			if (data.id_mapel == id) {
+				na = data.nilai_akhir;
+				uas = data.nilai_uas;
+				uts = data.nilai_uts;
+			}
+		});
+		$.each(mapelkelas, function(key,data) {
+			if (data.id_mapel == id) {
+				kkm = data.kkm;
+			}
+		});
+		$.each(avgnkelas, function(key,data) {
+			if (data.id_mapel == id) {
+				na = Math.round(data.nilai_akhir);
+				rank = data.position;
+			}
+		});
+		$('#uts').html(uts);
+		$('#uas').html(uas);
+		$('#na').html(na);
+		$('#kkm').html(kkm);
+		$('#rk').html(na);
+		$('#rank').html(rank);
 	}
 </script>
