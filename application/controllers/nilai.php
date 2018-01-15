@@ -15,11 +15,11 @@ class Nilai extends CI_Controller {
 
 	public function editNilaiSikap()
 	{
-		// if(! $this->input->is_ajax_request()) {
-		// 	$data['title'] = '404 Page Not Found';
-  //   		$this->load->view('error404_view',$data);
-  //   		return;
-		// }
+		if(! $this->input->is_ajax_request()) {
+			$data['title'] = '404 Page Not Found';
+    		$this->load->view('error404_view',$data);
+    		return;
+		}
 
 		$r = array('status' => false, 'error' => '', 'ns' => '-');
 
