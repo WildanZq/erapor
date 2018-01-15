@@ -6,7 +6,7 @@
   <meta name="description" content="E-Rapor">
   <link rel="shortcut icon" href="<?php echo base_url(); ?>assets/img/favicon.png">
 
-  <title><?php echo $title; ?> - E-Rapor</title>
+  <title><?php echo $title; ?> - E-Raport</title>
 
   <!-- Icons -->
   <link href="<?php echo base_url(); ?>assets/vendors/css/font-awesome.min.css" rel="stylesheet">

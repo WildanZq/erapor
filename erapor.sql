@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 11 Jan 2018 pada 17.28
+-- Generation Time: 15 Jan 2018 pada 03.05
 -- Versi Server: 10.1.21-MariaDB
 -- PHP Version: 7.1.1
 
@@ -112,7 +112,8 @@ INSERT INTO `kd` (`id_kd`, `nama_kd`, `urutan`, `semester`, `id_mapel`) VALUES
 (8, 'procedure', 2, 2, 2),
 (9, 'report', 3, 2, 2),
 (10, 'puisi', 1, 1, 5),
-(11, 'majas', 2, 1, 5);
+(11, 'majas', 2, 1, 5),
+(12, 'pantun', 3, 1, 5);
 
 -- --------------------------------------------------------
 
@@ -155,7 +156,10 @@ CREATE TABLE `kelas_siswa` (
 
 INSERT INTO `kelas_siswa` (`id_kelas_siswa`, `id_siswa`, `id_kelas`, `th_ajar`) VALUES
 (1, 1, 1, 2017),
-(2, 2, 1, 2017);
+(2, 2, 1, 2017),
+(3, 1, 1, 2016),
+(4, 7, 2, 2017),
+(5, 8, 2, 2017);
 
 -- --------------------------------------------------------
 
@@ -257,14 +261,13 @@ CREATE TABLE `mapel_kelas` (
 --
 
 INSERT INTO `mapel_kelas` (`id_mapel_kelas`, `id_mapel`, `id_kelompok_kelas`) VALUES
-(1, 1, 1),
-(2, 1, 1),
-(3, 2, 2),
-(4, 5, 1),
-(5, 6, 2),
-(6, 6, 2),
-(7, 7, 2),
-(8, 7, 1);
+(12, 2, 2),
+(13, 5, 2),
+(14, 7, 2),
+(15, 1, 1),
+(16, 2, 1),
+(17, 5, 1),
+(18, 6, 1);
 
 -- --------------------------------------------------------
 
@@ -278,18 +281,20 @@ CREATE TABLE `nilai` (
   `id_kelas_siswa` int(11) NOT NULL,
   `nilai_uts` int(11) NOT NULL,
   `nilai_uas` int(11) NOT NULL,
-  `nilai_sikap` int(11) NOT NULL,
   `nilai_akhir` int(11) NOT NULL,
-  `semester` int(11) NOT NULL
+  `semester` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data untuk tabel `nilai`
 --
 
-INSERT INTO `nilai` (`id_nilai`, `id_mapel`, `id_kelas_siswa`, `nilai_uts`, `nilai_uas`, `nilai_sikap`, `nilai_akhir`, `semester`) VALUES
-(1, 5, 1, 80, 0, 0, 80, 1),
-(2, 5, 2, 0, 90, 0, 0, 1);
+INSERT INTO `nilai` (`id_nilai`, `id_mapel`, `id_kelas_siswa`, `nilai_uts`, `nilai_uas`, `nilai_akhir`, `semester`) VALUES
+(1, 5, 1, 88, 0, 80, 1),
+(2, 5, 2, 0, 90, 0, 1),
+(3, 5, 1, 89, 77, 0, 2),
+(4, 5, 2, 0, 0, 0, 2),
+(5, 2, 2, 90, 0, 90, 1);
 
 -- --------------------------------------------------------
 
@@ -309,8 +314,31 @@ CREATE TABLE `nilai_kd` (
 --
 
 INSERT INTO `nilai_kd` (`id_nilai_kd`, `id_kd`, `id_kelas_siswa`, `nilai`) VALUES
-(2, 11, 1, 80),
-(3, 10, 2, 75);
+(2, 11, 1, 70),
+(3, 10, 2, 75),
+(4, 3, 1, 78),
+(5, 3, 2, 75),
+(6, 4, 2, 87),
+(7, 10, 1, 0),
+(8, 12, 1, 0),
+(9, 4, 1, 80),
+(10, 11, 2, 0),
+(11, 12, 2, 90),
+(12, 5, 2, 0),
+(13, 6, 2, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `nilai_sikap`
+--
+
+CREATE TABLE `nilai_sikap` (
+  `id_nilai_sikap` int(11) NOT NULL,
+  `id_kelas_siswa` int(11) NOT NULL,
+  `semester` int(11) NOT NULL,
+  `nilai` varchar(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -359,7 +387,7 @@ CREATE TABLE `siswa` (
 INSERT INTO `siswa` (`id_siswa`, `nisn`, `nis`, `nama_siswa`, `tempat_lahir`, `tgl_lahir`, `jk`, `foto_siswa`, `id_kelas_siswa`, `id_guru`, `password`, `th_kelulusan`) VALUES
 (1, 'nisn1', 'nis1', 'Abc Def', 'Malang', '2000-12-04', 1, NULL, 1, 2, 'nisn1', NULL),
 (2, 'nisn2', 'nis2', 'Ghi Jkl', 'Surabaya', '1999-12-28', 0, NULL, 2, NULL, 'nisn2', NULL),
-(7, 'nisn3', 'nis3', 'Mno Pqr', 'Bandung', '2017-12-04', 0, NULL, 1, NULL, 'nisn3', NULL),
+(7, 'nisn3', 'nis3', 'Mno Pqr', 'Bandung', '2017-12-04', 0, NULL, 1, 2, 'nisn3', NULL),
 (8, 'nisn4', 'nis4', 'Stu Vwx', 'Bogor', '2000-06-14', 1, NULL, 2, NULL, 'nisn4', NULL);
 
 --
@@ -460,6 +488,13 @@ ALTER TABLE `nilai_kd`
   ADD KEY `id_siswa` (`id_kelas_siswa`);
 
 --
+-- Indexes for table `nilai_sikap`
+--
+ALTER TABLE `nilai_sikap`
+  ADD PRIMARY KEY (`id_nilai_sikap`),
+  ADD KEY `id_kelas_siswa` (`id_kelas_siswa`);
+
+--
 -- Indexes for table `siswa`
 --
 ALTER TABLE `siswa`
@@ -490,7 +525,7 @@ ALTER TABLE `jenis_mapel`
 -- AUTO_INCREMENT for table `kd`
 --
 ALTER TABLE `kd`
-  MODIFY `id_kd` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id_kd` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 --
 -- AUTO_INCREMENT for table `kelas`
 --
@@ -500,7 +535,7 @@ ALTER TABLE `kelas`
 -- AUTO_INCREMENT for table `kelas_siswa`
 --
 ALTER TABLE `kelas_siswa`
-  MODIFY `id_kelas_siswa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_kelas_siswa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `kelompok_kelas`
 --
@@ -525,17 +560,22 @@ ALTER TABLE `mapel_guru`
 -- AUTO_INCREMENT for table `mapel_kelas`
 --
 ALTER TABLE `mapel_kelas`
-  MODIFY `id_mapel_kelas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id_mapel_kelas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 --
 -- AUTO_INCREMENT for table `nilai`
 --
 ALTER TABLE `nilai`
-  MODIFY `id_nilai` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_nilai` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `nilai_kd`
 --
 ALTER TABLE `nilai_kd`
-  MODIFY `id_nilai_kd` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_nilai_kd` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+--
+-- AUTO_INCREMENT for table `nilai_sikap`
+--
+ALTER TABLE `nilai_sikap`
+  MODIFY `id_nilai_sikap` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `siswa`
 --
@@ -598,6 +638,12 @@ ALTER TABLE `nilai`
 ALTER TABLE `nilai_kd`
   ADD CONSTRAINT `nilai_kd_ibfk_2` FOREIGN KEY (`id_kd`) REFERENCES `kd` (`id_kd`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `nilai_kd_ibfk_3` FOREIGN KEY (`id_kelas_siswa`) REFERENCES `kelas_siswa` (`id_kelas_siswa`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Ketidakleluasaan untuk tabel `nilai_sikap`
+--
+ALTER TABLE `nilai_sikap`
+  ADD CONSTRAINT `nilai_sikap_ibfk_1` FOREIGN KEY (`id_kelas_siswa`) REFERENCES `kelas_siswa` (`id_kelas_siswa`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Ketidakleluasaan untuk tabel `siswa`
