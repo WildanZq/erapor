@@ -13,11 +13,6 @@ class Jenis_mapel extends CI_Controller {
 		$this->load->model('service_model');
 	}
 
-	public function index()
-	{
-		
-	}
-
 	public function getAllJenisMapel()
 	{
 		if(! $this->input->is_ajax_request()) {

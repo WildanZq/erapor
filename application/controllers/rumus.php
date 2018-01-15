@@ -19,7 +19,11 @@ class Rumus extends CI_Controller {
 			$data['title'] = 'Rumus';
 			$data['main'] = 'admin/rumus/index';
 			$this->load->view('template', $data);
+			return;
 		}
+
+		$data['title'] = '404 Page Not Found';
+    	$this->load->view('error404_view',$data);
 	}
 
 	public function getAllRumus()

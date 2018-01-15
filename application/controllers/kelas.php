@@ -23,6 +23,12 @@ class Kelas extends CI_Controller {
 		}
 
 		if ($this->session->userdata('role') == 'siswa') {
+			if (! $this->kelas_model->cekKelasSiswa( $this->uri->segment(3), $this->session->userdata('userid') ) || $this->uri->segment(4) > 2 || $this->uri->segment(4) < 1) {
+				$data['title'] = '404 Page Not Found';
+    			$this->load->view('error404_view',$data);
+				return;
+			}
+
 			$data['title'] = 'Kelas';
 			$data['main'] = 'siswa/kelas/index';
 			$this->load->view('template', $data);

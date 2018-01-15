@@ -19,7 +19,11 @@ class Siswa extends CI_Controller {
 			$data['title'] = 'Dashboard';
 			$data['main'] = 'admin/siswa/index';
 			$this->load->view('template', $data);
+			return;
 		}
+
+		$data['title'] = '404 Page Not Found';
+    	$this->load->view('error404_view',$data);
 	}
 
 	public function getAllSiswa()

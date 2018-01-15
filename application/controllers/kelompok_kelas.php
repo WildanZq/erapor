@@ -13,11 +13,6 @@ class Kelompok_kelas extends CI_Controller {
 		$this->load->model('service_model');
 	}
 
-	public function index()
-	{
-		
-	}
-
 	public function getAllKelompokKelas()
 	{
 		if(! $this->input->is_ajax_request()) {

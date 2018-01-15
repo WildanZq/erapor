@@ -11,6 +11,14 @@ class Kelas_model extends CI_Model {
 		->get('kelas')->result();
 	}
 
+	public function cekKelasSiswa($idKelasSiswa,$id)
+	{
+		return $this->db
+		->where('id_kelas_siswa', $this->db->escape_str($idKelasSiswa))
+		->where('id_siswa', $this->db->escape_str($id))
+		->count_all_results('kelas_siswa');
+	}
+
 	public function addKelas($data)
 	{
 		$this->db->insert('kelas', $data);

@@ -19,7 +19,11 @@ class Admin extends CI_Controller {
 			$data['title'] = 'Admin';
 			$data['main'] = 'admin/admin/index';
 			$this->load->view('template', $data);
+			return;
 		}
+
+		$data['title'] = '404 Page Not Found';
+    	$this->load->view('error404_view',$data);
 	}
 
 	public function getAllAdmin()

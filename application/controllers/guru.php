@@ -19,7 +19,11 @@ class Guru extends CI_Controller {
 			$data['title'] = 'Guru';
 			$data['main'] = 'admin/guru/index';
 			$this->load->view('template', $data);
-		}	
+			return;
+		}
+
+		$data['title'] = '404 Page Not Found';
+    	$this->load->view('error404_view',$data);
 	}
 
 	public function getAllGuru()

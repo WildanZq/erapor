@@ -13,15 +13,6 @@ class Kd extends CI_Controller {
 		$this->load->model('kd_model');
 	}
 
-	public function index()
-	{
-		if(! $this->input->is_ajax_request()) {
-			$data['title'] = '404 Page Not Found';
-    		$this->load->view('error404_view',$data);
-    		return;
-		}
-	}
-
 	public function getKD()
 	{
 		if(! $this->input->is_ajax_request()) {
