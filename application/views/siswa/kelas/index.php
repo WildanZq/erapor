@@ -56,6 +56,18 @@
 			</div>
 		</div>
 	</div>
+	<div class="col-sm-3 pr-sm-1 card-mapel">
+		<div class="card mb-2">
+			<div class="card-header font-weight-bold">Ranking Kelas</div>
+			<span class="pl-3 p-2" id="rank">-</span>
+		</div>
+	</div>
+	<div class="col-sm-3 pl-sm-1 pr-sm-1 card-mapel">
+		<div class="card mb-2">
+			<div class="card-header font-weight-bold">Nilai Sikap</div>
+			<span class="pl-3 p-2" id="ns">-</span>
+		</div>
+	</div>
 	<div class="col-12 card-mapel">
 		<div class="card">
 			<div class="card-header font-weight-bold">Nilai Mapel</div>
@@ -79,6 +91,7 @@
 	$(document).ready(function() {
 		$('#tabel-mapel').dataTable();
 		refreshMapel();
+		getNilaiSikap();
 
 		color = Chart.helpers.color;
 		canvasKD = new Chart(document.getElementById("canvas-kd").getContext("2d"), {
@@ -94,6 +107,23 @@
 	    	}
 	  	});
 	});
+
+	function getNilaiSikap() {
+		$.ajax({
+			url: '<?php echo base_url('nilai/getNilaiSikap'); ?>',
+			type: 'GET',
+			dataType: 'json',
+			data: 'id_kelas_siswa='+<?php echo $this->uri->segment(3); ?>+'&semester='+<?php echo $this->uri->segment(4); ?>,
+			success: function(r) {
+				if (r[0]) {
+					$('#ns').html(r[0].nilai);
+				} else {
+					$('#ns').html('-');
+				}
+			}
+		});
+
+	}
 
 	function refreshMapel() {
 		idKelasSiswa = <?php echo $this->uri->segment(3); ?>;

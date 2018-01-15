@@ -50,13 +50,13 @@
 	<div class="col-sm-3 pr-sm-1 card-mapel" style="display: none">
 		<div class="card mb-2">
 			<div class="card-header font-weight-bold">Ranking Kelas</div>
-			<span class="pl-3 p-2" id="rank">3</span>
+			<span class="pl-3 p-2" id="rank">-</span>
 		</div>
 	</div>
 	<div class="col-sm-3 pl-sm-1 pr-sm-1 card-mapel" style="display: none">
 		<div class="card mb-2">
 			<div class="card-header font-weight-bold">Nilai Sikap</div>
-			<span class="pl-3 p-2" id="ns">A</span>
+			<span class="pl-3 p-2" id="ns">-</span>
 		</div>
 	</div>
 	<div class="col-sm-3 pl-sm-1 card-mapel" style="display: none">
