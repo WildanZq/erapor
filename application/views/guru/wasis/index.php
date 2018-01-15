@@ -55,13 +55,24 @@
 	</div>
 	<div class="col-sm-3 pl-sm-1 pr-sm-1 card-mapel" style="display: none">
 		<div class="card mb-2">
-			<div class="card-header font-weight-bold">Nilai Sikap</div>
+			<div class="card-header font-weight-bold">Nilai Sikap
+				<button onclick="showModalEditNilaiSikap()" class="btn btn-sm btn-primary float-right">
+					<i class="fa fa-pencil"></i>&nbsp;Edit
+				</button>
+			</div>
 			<span class="pl-3 p-2" id="ns">-</span>
+		</div>
+	</div>
+	<div class="col-sm-3 pl-sm-1 pr-sm-1 card-mapel" style="display: none">
+		<div class="card mb-2">
+			<div class="card-header font-weight-bold">Jumlah Nilai</div>
+			<span class="pl-3 p-2" id="jn">-</span>
 		</div>
 	</div>
 	<div class="col-sm-3 pl-sm-1 card-mapel" style="display: none">
 		<div class="card mb-2">
-			<button class="btn btn-primary" onclick="showModalEditNilaiSikap()"><i class="fa fa-pencil"></i> Edit Nilai Sikap</button>
+			<div class="card-header font-weight-bold">Rata" Nilai</div>
+			<span class="pl-3 p-2" id="rn">-</span>
 		</div>
 	</div>
 	<div class="col-12 card-mapel" style="display: none">
@@ -248,12 +259,13 @@
 							dataType: 'json',
 							data: 'id_kelas='+r[0].id_kelas+'&semester='+semester+'&th_ajar='+r[0].th_ajar,
 							success: function(anr) {
-								html = '';
+								html = ''; totalna = 0;
 								$.each(r, function(key,data) {
 									na = 0;
 									$.each(nr, function(nkey,ndata) {
 										if (data.id_mapel == ndata.id_mapel) {
 											na = ndata.nilai_akhir;
+											totalna += parseInt(ndata.nilai_akhir);
 										}
 									});
 									clsna = '';
@@ -273,6 +285,8 @@
 
 									html += '<tr><td>'+data.nama_mapel+'</td><td>'+data.kkm+'</td><td'+clsna+'>'+na+'</td><td'+clsrk+'>'+rk+'</td><td>'+pos+'</td></tr>';
 								});
+								$('#jn').html(totalna);
+								$('#rn').html(Math.round(totalna/r.length));
 								$('#tabel-mapel tbody').html(html);
 								tabelMapel = $('#tabel-mapel').dataTable();
 							}

@@ -68,6 +68,18 @@
 			<span class="pl-3 p-2" id="ns">-</span>
 		</div>
 	</div>
+	<div class="col-sm-3 pl-sm-1 pr-sm-1 card-mapel">
+		<div class="card mb-2">
+			<div class="card-header font-weight-bold">Jumlah Nilai</div>
+			<span class="pl-3 p-2" id="jn">-</span>
+		</div>
+	</div>
+	<div class="col-sm-3 pl-sm-1 card-mapel">
+		<div class="card mb-2">
+			<div class="card-header font-weight-bold">Rata" Nilai</div>
+			<span class="pl-3 p-2" id="rn">-</span>
+		</div>
+	</div>
 	<div class="col-12 card-mapel">
 		<div class="card">
 			<div class="card-header font-weight-bold">Nilai Mapel</div>
@@ -149,6 +161,7 @@
 								avgnkelas = anr;
 								nkelas = nr;
 								mapelkelas = r;
+								totalna = 0;
 								mr = groupBy(r,'nama_jenis_mapel'); html = '';
 								$.each(mr, function(key,data) {
 									html += '<optgroup label="'+key+'">';
@@ -166,6 +179,7 @@
 									$.each(nr, function(nkey,ndata) {
 										if (data.id_mapel == ndata.id_mapel) {
 											na = ndata.nilai_akhir;
+											totalna += parseInt(ndata.nilai_akhir);
 										}
 									});
 									clsna = '';
@@ -185,6 +199,8 @@
 
 									html += '<tr><td>'+data.nama_mapel+'</td><td>'+data.kkm+'</td><td'+clsna+'>'+na+'</td><td'+clsrk+'>'+rk+'</td><td>'+pos+'</td><td><button onclick="showDetailMapel('+data.id_mapel+')" class="btn btn-primary"><span class="icon-eye"></span> Detail</button></td></tr>';
 								});
+								$('#jn').html(totalna);
+								$('#rn').html(Math.round(totalna/r.length));
 								$('#tabel-mapel tbody').html(html);
 								tabelMapel = $('#tabel-mapel').dataTable();
 							}
