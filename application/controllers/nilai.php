@@ -13,6 +13,61 @@ class Nilai extends CI_Controller {
 		$this->load->model('service_model');
 	}
 
+	public function editNilaiSikap()
+	{
+		// if(! $this->input->is_ajax_request()) {
+		// 	$data['title'] = '404 Page Not Found';
+  //   		$this->load->view('error404_view',$data);
+  //   		return;
+		// }
+
+		$r = array('status' => false, 'error' => '', 'ns' => '-');
+
+		if ($this->input->post('nilai') == '-') {
+			$r['error'] = 'Masukkan nilai!';
+			echo json_encode($r);
+			return;
+		}
+
+		if ($this->nilai_model->getNilaiSikap($this->input->post('id_kelas_siswa'),$this->input->post('semester'))) {
+			$data = array('nilai' => $this->input->post('nilai'));
+			$data = $this->service_model->escape_array($data);
+			if ($this->nilai_model->updateNilaiSikap($data,$this->input->post('id_kelas_siswa'),$this->input->post('semester'))) {
+				$r['status'] = true;
+			}
+		} else {
+			$data = array(
+				'nilai' => $this->input->post('nilai'),
+				'id_kelas_siswa' => $this->input->post('id_kelas_siswa'),
+				'semester' => $this->input->post('semester')
+			);
+			$data = $this->service_model->escape_array($data);
+			if ($this->nilai_model->addNilaiSikap($data,$this->input->post('id_kelas_siswa'),$this->input->post('semester'))) {
+				$r['status'] = true;
+			}
+		}
+		if ($r['status']) {
+			$r['ns'] = $this->input->post('nilai');
+		} else {
+			$r['error'] = 'Gagal edit Nilai sikap';
+		}
+
+		echo json_encode($r);
+	}
+
+	public function getNilaiSikap()
+	{
+		if(! $this->input->is_ajax_request()) {
+			$data['title'] = '404 Page Not Found';
+    		$this->load->view('error404_view',$data);
+    		return;
+		}
+
+		$r = $this->nilai_model->getNilaiSikap($this->input->get('id_kelas_siswa'),$this->input->get('semester'));
+
+		echo json_encode($r);
+	}
+
 	public function getAVGNilaiKelas()
 	{
 		if(! $this->input->is_ajax_request()) {

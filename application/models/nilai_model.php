@@ -3,6 +3,38 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Nilai_model extends CI_Model {
 
+	public function addNilaiSikap($data,$idKelasSiswa,$semester)
+	{
+		$this->db
+		->where('id_kelas_siswa', $this->db->escape_str($idKelasSiswa))
+		->where('semester', $this->db->escape_str($semester))
+		->insert('nilai_sikap', $data);
+		if ($this->db->affected_rows() == 0) {
+			return false;
+		}
+		return true;
+	}
+
+	public function updateNilaiSikap($data,$idKelasSiswa,$semester)
+	{
+		$this->db
+		->where('id_kelas_siswa', $this->db->escape_str($idKelasSiswa))
+		->where('semester', $this->db->escape_str($semester))
+		->update('nilai_sikap', $data);
+		if ($this->db->affected_rows() == 0) {
+			return false;
+		}
+		return true;
+	}
+
+	public function getNilaiSikap($idKelasSiswa,$semester)
+	{
+		return $this->db
+		->where('id_kelas_siswa', $this->db->escape_str($idKelasSiswa))
+		->where('semester', $this->db->escape_str($semester))
+		->get('nilai_sikap')->result();
+	}
+
 	public function getAVGNilaiKelas($idKelas,$semester,$thAjar)
 	{
 		return $this->db

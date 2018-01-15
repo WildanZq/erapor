@@ -47,6 +47,23 @@
 			</div>
 		</div>
 	</div>
+	<div class="col-sm-3 pr-sm-1 card-mapel" style="display: none">
+		<div class="card mb-2">
+			<div class="card-header font-weight-bold">Ranking Kelas</div>
+			<span class="pl-3 p-2" id="rank">3</span>
+		</div>
+	</div>
+	<div class="col-sm-3 pl-sm-1 pr-sm-1 card-mapel" style="display: none">
+		<div class="card mb-2">
+			<div class="card-header font-weight-bold">Nilai Sikap</div>
+			<span class="pl-3 p-2" id="ns">A</span>
+		</div>
+	</div>
+	<div class="col-sm-3 pl-sm-1 card-mapel" style="display: none">
+		<div class="card mb-2">
+			<button class="btn btn-primary" onclick="showModalEditNilaiSikap()"><i class="fa fa-pencil"></i> Edit Nilai Sikap</button>
+		</div>
+	</div>
 	<div class="col-12 card-mapel" style="display: none">
 		<div class="card">
 			<div class="card-header font-weight-bold">Nilai Mapel</div>
@@ -70,6 +87,52 @@
 		tabelMapel = false;
 		refreshSiswa();
 	});
+
+	function showModalEditNilaiSikap() {
+		idKelasSiswa = $('#kelas').val();
+		semester = $('#semester').val();
+		if (! idKelasSiswa) {return;}
+
+		body = '<div class="form-group">\
+			      <label>Nilai Sikap</label>\
+			      <select name="nilai" id="nilai" class="form-control">\
+			      	<option value="-">-</option>\
+					<option value="A">A</option>\
+					<option value="B">B</option>\
+					<option value="C">C</option>\
+					<option value="D">D</option>\
+					<option value="E">E</option>\
+					<option value="F">F</option>\
+				</select>\
+			    </div>';
+		updateModal('Edit Nilai Sikap', body, '<?php echo base_url('nilai/editNilaiSikap'); ?>', 'editNilaiSikap', null, 'md', 'primary');
+		$('#modal').modal('show');
+		$('#nilai').val(ns).trigger('change');
+	}
+
+	function editNilaiSikap() {
+		idKelasSiswa = $('#kelas').val();
+		semester = $('#semester').val();
+		event.preventDefault();
+		$.ajax({
+			url: $('.modal-form').attr('action'),
+			type: 'POST',
+			dataType: 'json',
+			data: $('.modal-form').serialize()+'&id_kelas_siswa='+idKelasSiswa+'&semester='+semester,
+			success: function(r) {
+				if (r.status) {
+					ns = r.ns;
+					$('#ns').html(r.ns);
+				    toastr.remove();
+				    toastr["success"]("Nilai sikap berhasil diedit");
+				    $('.modal').modal('hide');
+			    } else {
+			    	toastr.remove();
+			    	toastr["error"](r.error);
+			    }
+			}
+		});
+	}
 
 	function refreshSiswa() {
 		$.ajax({
@@ -128,6 +191,8 @@
 			$('.card-mapel').slideDown();
 			if (tabelMapel) {tabelMapel.fnDestroy();}
 			$('#tabel-mapel').html('<h5 class="text-danger text-center">Pilih kelas dahulu</h5>');
+			$('#rank').html('-');
+			$('#ns').html('-');
 		},500);
 	}
 
@@ -142,10 +207,28 @@
 		if (tabelMapel) {tabelMapel.fnDestroy();}
 		if (! idKelasSiswa) {
 			$('#tabel-mapel').html('<h5 class="text-danger text-center">Pilih kelas dahulu</h5>');
+			$('#rank').html('-');
+			$('#ns').html('-');
 			return;
 		} else {
 			$('#tabel-mapel').html('<thead><th>Mapel</th><th>KKM</th><th>Nilai Akhir</th><th>Rata" Kelas</th><th>Ranking Kelas</th></thead><tbody></tbody>');
 		}
+
+		$.ajax({
+			url: '<?php echo base_url('nilai/getNilaiSikap'); ?>',
+			type: 'GET',
+			dataType: 'json',
+			data: 'id_kelas_siswa='+idKelasSiswa+'&semester='+semester,
+			success: function(r) {
+				if (r[0]) {
+					ns = r[0].nilai;
+					$('#ns').html(r[0].nilai);
+				} else {
+					ns = '-';
+					$('#ns').html('-');
+				}
+			}
+		});
 
 		$.ajax({
 			url: '<?php echo base_url('mapel/getMapelByKelasSiswa'); ?>',
