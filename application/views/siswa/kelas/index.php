@@ -183,6 +183,8 @@
 										}
 									});
 									clsna = '';
+									na = parseInt(na);
+									data.kkm = parseInt(data.kkm);
 									if (na == data.kkm) {clsna = ' class="table-warning"';}
 									else if (na < data.kkm) {clsna = ' class="table-danger"';}
 
@@ -194,6 +196,7 @@
 										}
 									});
 									clsrk = '';
+									rk = parseInt(rk);
 									if (rk == data.kkm) {clsrk = ' class="table-warning"';}
 									else if (rk < data.kkm) {clsrk = ' class="table-danger"';}
 

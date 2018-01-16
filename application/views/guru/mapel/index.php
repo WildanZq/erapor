@@ -144,6 +144,8 @@
 	}
 
 	function cekKKM(data) {
+		data = parseInt(data);
+		kkm = parseInt(kkm);
 		if (data == kkm) {
 			return ' class="table-warning"';
 		} else if (data < kkm) {
