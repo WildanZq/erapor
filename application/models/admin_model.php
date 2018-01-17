@@ -16,10 +16,10 @@ class Admin_model extends CI_Model {
 
 	public function cekPassword($pass,$id)
 	{
-		return $this->db
-		->where('password', $this->db->escape_str($pass))
+		$admin = $this->db
 		->where('id_admin', $this->db->escape_str($id))
-		->count_all_results('admin');
+		->get('admin')->row_array();
+		return password_verify($pass, $admin['password']);
 	}
 
 	public function getAllAdmin()

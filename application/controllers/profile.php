@@ -63,7 +63,7 @@ class Profile extends CI_Controller {
 				return;
 			}
 
-			$data = array( 'password' => $this->input->post('password') );
+			$data = array( 'password' => password_hash($this->input->post('password'), PASSWORD_DEFAULT) );
 			$data = $this->service_model->escape_array($data);
 			if ($this->admin_model->editPassword($data, $this->session->userdata('userid'))) {
 				$r['status'] = true;

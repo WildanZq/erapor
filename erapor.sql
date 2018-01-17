@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 15 Jan 2018 pada 03.05
+-- Generation Time: 17 Jan 2018 pada 15.25
 -- Versi Server: 10.1.21-MariaDB
 -- PHP Version: 7.1.1
 
@@ -39,7 +39,9 @@ CREATE TABLE `admin` (
 --
 
 INSERT INTO `admin` (`id_admin`, `username`, `password`, `nama_admin`, `foto_admin`) VALUES
-(1, 'admin', 'admin', 'Admin Satu', NULL);
+(1, 'admin', '$2y$10$QnW9cBa6JLS/fgoON78x9O37HVgsSEcwaEtYzWkdQIKy57jg9ub9C', 'Admin Satu', NULL),
+(2, 'budi', '$2y$10$bTcjntxsA28PcaElHXrvgu3CUCOtAu2IHvaPSV4Y5/Ptgwo/wt6zO', 'Budi', NULL),
+(3, 'andi', '$2y$10$PwbDzv9Bh/Xg53Q.H3bRXuBFM3tcqmOfhIprUhjnh4gZWVi4uz..i', 'Andini', NULL);
 
 -- --------------------------------------------------------
 
@@ -63,8 +65,8 @@ CREATE TABLE `guru` (
 --
 
 INSERT INTO `guru` (`id_guru`, `nik`, `nama_guru`, `jk_guru`, `foto_guru`, `password_guru`, `telp_guru`, `alamat_guru`) VALUES
-(1, 'nik1', 'Zxc Vbn', 1, NULL, 'nik1', '09767', 'rfghj'),
-(2, 'nik2', 'Asd Fgh', 0, NULL, 'nik2', '00796759', 'rhvjbknm');
+(1, 'nik1', 'Zxc Vbn', 1, NULL, '$2y$10$nxEcpjlQm8fPH7UIWtRxXeeB5CSVjsU0qkatNj2wxgibtmpcyQdvO', '09767', 'rfghj'),
+(2, 'nik2', 'Asd Fgh', 0, NULL, '$2y$10$fm7.kltxxo.0RC7MmRPwNeuxsoDbQo1/s36um0/UIqSsKgXFM8HyK', '00796759', 'rhvjbknm');
 
 -- --------------------------------------------------------
 
@@ -113,7 +115,12 @@ INSERT INTO `kd` (`id_kd`, `nama_kd`, `urutan`, `semester`, `id_mapel`) VALUES
 (9, 'report', 3, 2, 2),
 (10, 'puisi', 1, 1, 5),
 (11, 'majas', 2, 1, 5),
-(12, 'pantun', 3, 1, 5);
+(12, 'pantun', 3, 1, 5),
+(13, 'sunting teks', 4, 1, 5),
+(14, 'teks ulasan', 5, 1, 5),
+(15, 'kata baku', 6, 1, 5),
+(16, 'report', 3, 1, 2),
+(17, 'listening', 4, 1, 2);
 
 -- --------------------------------------------------------
 
@@ -217,11 +224,9 @@ CREATE TABLE `mapel` (
 --
 
 INSERT INTO `mapel` (`id_mapel`, `id_kurikulum`, `id_jenis_mapel`, `nama_mapel`, `kkm`) VALUES
-(1, 1, 1, 'Matematika', 75),
 (2, 1, 1, 'Bahasa Inggris', 75),
 (5, 1, 1, 'Bahasa Indonesia', 75),
-(6, 1, 2, 'Pemrograman Dasar', 70),
-(7, 1, 2, 'Jaringan Dasar', 70);
+(6, 1, 2, 'Pemrograman Dasar', 70);
 
 -- --------------------------------------------------------
 
@@ -240,9 +245,9 @@ CREATE TABLE `mapel_guru` (
 --
 
 INSERT INTO `mapel_guru` (`id_mapel_guru`, `id_mapel`, `id_guru`) VALUES
-(1, 1, 1),
-(7, 2, 2),
-(8, 5, 2);
+(9, 2, 2),
+(10, 5, 2),
+(11, 6, 2);
 
 -- --------------------------------------------------------
 
@@ -263,11 +268,9 @@ CREATE TABLE `mapel_kelas` (
 INSERT INTO `mapel_kelas` (`id_mapel_kelas`, `id_mapel`, `id_kelompok_kelas`) VALUES
 (12, 2, 2),
 (13, 5, 2),
-(14, 7, 2),
-(15, 1, 1),
-(16, 2, 1),
-(17, 5, 1),
-(18, 6, 1);
+(21, 2, 1),
+(22, 5, 1),
+(23, 6, 1);
 
 -- --------------------------------------------------------
 
@@ -290,11 +293,12 @@ CREATE TABLE `nilai` (
 --
 
 INSERT INTO `nilai` (`id_nilai`, `id_mapel`, `id_kelas_siswa`, `nilai_uts`, `nilai_uas`, `nilai_akhir`, `semester`) VALUES
-(1, 5, 1, 88, 0, 80, 1),
+(1, 5, 1, 88, 80, 80, 1),
 (2, 5, 2, 0, 90, 0, 1),
 (3, 5, 1, 89, 77, 0, 2),
 (4, 5, 2, 0, 0, 0, 2),
-(5, 2, 2, 90, 0, 90, 1);
+(5, 2, 2, 90, 0, 90, 1),
+(6, 2, 1, 75, 75, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -319,13 +323,20 @@ INSERT INTO `nilai_kd` (`id_nilai_kd`, `id_kd`, `id_kelas_siswa`, `nilai`) VALUE
 (4, 3, 1, 78),
 (5, 3, 2, 75),
 (6, 4, 2, 87),
-(7, 10, 1, 0),
-(8, 12, 1, 0),
+(7, 10, 1, 80),
+(8, 12, 1, 75),
 (9, 4, 1, 80),
 (10, 11, 2, 0),
 (11, 12, 2, 90),
 (12, 5, 2, 0),
-(13, 6, 2, 0);
+(13, 6, 2, 0),
+(14, 13, 1, 86),
+(15, 14, 1, 88),
+(16, 15, 1, 90),
+(17, 5, 1, 80),
+(18, 6, 1, 60),
+(19, 16, 1, 90),
+(20, 17, 1, 100);
 
 -- --------------------------------------------------------
 
@@ -339,6 +350,14 @@ CREATE TABLE `nilai_sikap` (
   `semester` int(11) NOT NULL,
   `nilai` varchar(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `nilai_sikap`
+--
+
+INSERT INTO `nilai_sikap` (`id_nilai_sikap`, `id_kelas_siswa`, `semester`, `nilai`) VALUES
+(1, 1, 1, 'A'),
+(2, 3, 1, 'B');
 
 -- --------------------------------------------------------
 
@@ -385,10 +404,10 @@ CREATE TABLE `siswa` (
 --
 
 INSERT INTO `siswa` (`id_siswa`, `nisn`, `nis`, `nama_siswa`, `tempat_lahir`, `tgl_lahir`, `jk`, `foto_siswa`, `id_kelas_siswa`, `id_guru`, `password`, `th_kelulusan`) VALUES
-(1, 'nisn1', 'nis1', 'Abc Def', 'Malang', '2000-12-04', 1, NULL, 1, 2, 'nisn1', NULL),
-(2, 'nisn2', 'nis2', 'Ghi Jkl', 'Surabaya', '1999-12-28', 0, NULL, 2, NULL, 'nisn2', NULL),
-(7, 'nisn3', 'nis3', 'Mno Pqr', 'Bandung', '2017-12-04', 0, NULL, 1, 2, 'nisn3', NULL),
-(8, 'nisn4', 'nis4', 'Stu Vwx', 'Bogor', '2000-06-14', 1, NULL, 2, NULL, 'nisn4', NULL);
+(1, 'nisn1', 'nis1', 'Abc Def', 'Madiun', '2000-12-04', 1, NULL, 1, 2, '$2y$10$bE5B1m4kXirWVODfmW/n7uelUgfD1z4n.zjf6SFNTsfIJ8DehoUgC', NULL),
+(2, 'nisn2', 'nis2', 'Ghi Jkl', 'Surabaya', '1999-12-28', 0, NULL, 2, NULL, '$2y$10$6q7diIniGs8f.4kI29AiyuAyWLVt/aszq/iqhGauIXv6GqokSKpd2', NULL),
+(7, 'nisn3', 'nis3', 'Mno Pqr', 'Bandung', '2017-12-04', 0, NULL, 1, 2, '$2y$10$qY30mzVQyIaYtmnw.mF8muc8CLF0tpGKBaIqopPYi2GzrESxNHvHW', NULL),
+(8, 'nisn4', 'nis4', 'Stu Vwx', 'Bogor', '2000-06-14', 1, NULL, 2, NULL, '$2y$10$Q8RIaD7Vl82y/FOKf7euZOeuHInGKmuAKPv6VZEFV5mxcnvIMzD46', NULL);
 
 --
 -- Indexes for dumped tables
@@ -510,7 +529,7 @@ ALTER TABLE `siswa`
 -- AUTO_INCREMENT for table `admin`
 --
 ALTER TABLE `admin`
-  MODIFY `id_admin` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_admin` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `guru`
 --
@@ -525,7 +544,7 @@ ALTER TABLE `jenis_mapel`
 -- AUTO_INCREMENT for table `kd`
 --
 ALTER TABLE `kd`
-  MODIFY `id_kd` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id_kd` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 --
 -- AUTO_INCREMENT for table `kelas`
 --
@@ -550,32 +569,32 @@ ALTER TABLE `kurikulum`
 -- AUTO_INCREMENT for table `mapel`
 --
 ALTER TABLE `mapel`
-  MODIFY `id_mapel` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id_mapel` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT for table `mapel_guru`
 --
 ALTER TABLE `mapel_guru`
-  MODIFY `id_mapel_guru` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id_mapel_guru` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 --
 -- AUTO_INCREMENT for table `mapel_kelas`
 --
 ALTER TABLE `mapel_kelas`
-  MODIFY `id_mapel_kelas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id_mapel_kelas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 --
 -- AUTO_INCREMENT for table `nilai`
 --
 ALTER TABLE `nilai`
-  MODIFY `id_nilai` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_nilai` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT for table `nilai_kd`
 --
 ALTER TABLE `nilai_kd`
-  MODIFY `id_nilai_kd` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id_nilai_kd` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 --
 -- AUTO_INCREMENT for table `nilai_sikap`
 --
 ALTER TABLE `nilai_sikap`
-  MODIFY `id_nilai_sikap` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_nilai_sikap` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `siswa`
 --

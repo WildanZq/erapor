@@ -102,7 +102,7 @@ class Siswa extends CI_Controller {
 			'jk' => $this->input->post('jk'),
 			'tempat_lahir' => $this->input->post('tempat_lahir'),
 			'tgl_lahir' => $this->input->post('tgl_lahir'),
-			'password' => $this->input->post('nisn')
+			'password' => password_hash($this->input->post('nisn'), PASSWORD_DEFAULT)
 		);
 
 		if ($data['nisn'] == '' || $data['nis'] == '' || $data['nama_siswa'] == '' || $data['jk'] == '' || $data['tempat_lahir'] == '' || $data['tgl_lahir'] == '') {
@@ -140,7 +140,7 @@ class Siswa extends CI_Controller {
 			'jk' => $this->input->post('jk'),
 			'tempat_lahir' => $this->input->post('tempat_lahir'),
 			'tgl_lahir' => $this->input->post('tgl_lahir'),
-			'password' => $this->input->post('nisn')
+			'password' => password_hash($this->input->post('nisn'), PASSWORD_DEFAULT)
 		);
 
 		if ($this->input->post('id') == '' || $data['nisn'] == '' || $data['nis'] == '' || $data['nama_siswa'] == '' || $data['jk'] == '' || $data['tempat_lahir'] == '' || $data['tgl_lahir'] == '') {

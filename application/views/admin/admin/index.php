@@ -14,20 +14,21 @@ $(document).ready(function() {
 			ajax: '<?php echo base_url('admin/getAllAdmin'); ?>',
 			deferRender: true,
 	 		columns: [
-	  		{ data: 'username' },
-	  		{ data: 'nama_admin' },
+		  		{ data: 'username' },
+		  		{ data: 'nama_admin' },
 			],
 			columnDefs: [
-			{
-	  		targets: 2,
-	  		data: 'id_admin',
-	  		render: function(data, type, full) {
-	    		return '<div class="d-flex">\
-	  				<button onclick="showModalDeleteAdmin('+data+')" data-target="#modal" data-toggle="modal" class="btn btn-danger text-white"><i class="fa fa-trash"></i></button>\
-	  			</div>';
-	  		}
-			}
-		]
+				{
+			  		targets: 2,
+			  		data: 'id_admin',
+			  		render: function(data, type, full) {
+			  			if (data == <?php echo $this->session->userdata('userid'); ?>) {return '<span class="text-muted">This is you</span>';}
+			    		return '<div class="d-flex">\
+			  				<button onclick="showModalDeleteAdmin('+data+')" data-target="#modal" data-toggle="modal" class="btn btn-danger text-white"><i class="fa fa-trash"></i></button>\
+			  			</div>';
+			  		}
+				}
+			]
 		});
 	}
 

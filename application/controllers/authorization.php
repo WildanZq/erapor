@@ -53,6 +53,9 @@ class Authorization extends CI_Controller {
 		$this->session->unset_userdata('userid');
 		$this->session->unset_userdata('username');
 		$this->session->unset_userdata('foto');
+		$this->session->unset_userdata('admin');
+		$this->session->unset_userdata('guru');
+		$this->session->unset_userdata('siswa');
 
 		redirect('/');
 	}

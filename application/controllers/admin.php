@@ -52,7 +52,7 @@ class Admin extends CI_Controller {
 		$data = array(
 			'username' => $this->input->post('username'),
 			'nama_admin' => $this->input->post('nama_admin'),
-			'password' => $this->input->post('username')
+			'password' => password_hash($this->input->post('username'), PASSWORD_DEFAULT)
 		);
 
 		if ($data['username'] == '' || $data['nama_admin'] == '') {

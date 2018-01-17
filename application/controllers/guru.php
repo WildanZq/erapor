@@ -66,7 +66,7 @@ class Guru extends CI_Controller {
 			'nik' 			=> $this->input->post('nik'), 
 			'nama_guru'		=> $this->input->post('nama'),
 			'jk_guru'		=> $this->input->post('jk_guru'),
-			'password_guru'	=> $this->input->post('nik'),
+			'password_guru'	=> password_hash($this->input->post('nik'), PASSWORD_DEFAULT),
 			'telp_guru'		=> $this->input->post('telepon'),
 			'alamat_guru'	=> $this->input->post('alamat')
 		);
@@ -100,7 +100,7 @@ class Guru extends CI_Controller {
 			'nik' 			=> $this->input->post('nik'), 
 			'nama_guru'		=> $this->input->post('nama'),
 			'jk_guru'		=> $this->input->post('jk_guru'),
-			'password_guru'	=> $this->input->post('nik'),
+			'password_guru'	=> password_hash($this->input->post('nik'), PASSWORD_DEFAULT),
 			'telp_guru'		=> $this->input->post('telepon'),
 			'alamat_guru'	=> $this->input->post('alamat')
 		);

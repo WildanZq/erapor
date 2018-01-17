@@ -6,16 +6,14 @@ class Login_model extends CI_Model {
 	public function __construct()
 	{
 		parent::__construct();
-		$this->load->library('encryption');
 	}
 
 	public function login($username,$password)
 	{
 		$query = $this->db->where('nisn', $this->db->escape_str($username))
-		->where('password', $this->db->escape_str($password))
-		->get('siswa');
-		if ($this->db->affected_rows() == 1) {
-			$siswa = $query->row_array();
+		->get('siswa')->row_array();
+		if (password_verify($password, $query['password'])) {
+			$siswa = $query;
 
 			$session = array(
 				'logged_in' => TRUE,
@@ -31,10 +29,9 @@ class Login_model extends CI_Model {
 		}
 
 		$query = $this->db->where('nik', $this->db->escape_str($username))
-		->where('password_guru', $this->db->escape_str($password))
-		->get('guru');
-		if ($this->db->affected_rows() == 1) {
-			$guru = $query->row_array();
+		->get('guru')->row_array();
+		if (password_verify($password, $query['password_guru'])) {
+			$guru = $query;
 
 			$session = array(
 				'logged_in' => TRUE,
@@ -50,10 +47,9 @@ class Login_model extends CI_Model {
 		}
 
 		$query = $this->db->where('username', $this->db->escape_str($username))
-		->where('password', $this->db->escape_str($password))
-		->get('admin');
-		if ($this->db->affected_rows() == 1) {
-			$admin = $query->row_array();
+		->get('admin')->row_array();
+		if (password_verify($password, $query['password'])) {
+			$admin = $query;
 
 			$session = array(
 				'logged_in' => TRUE,
