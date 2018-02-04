@@ -46,12 +46,20 @@
 										if (data.id_kd == nkdata.id_kd) {
 											kd = nkdata.nilai;
 										}
-									})
+									});
+									clsKD = ''; infoKD = '';
+									if (cekKKM(kd) == ' class="table-danger"') {
+										clsKD = 'is-invalid';
+										infoKD = '<div class="invalid-feedback">Nilai di bawah KKM.</div>';
+									} else if (cekKKM(kd) == ' class="table-warning"') {
+										clsKD = 'is-invalid';
+										infoKD = '<div class="invalid-feedback">Nilai sama dengan KKM.</div>';
+									}
 									body += '<div class="col-12">\
 											    <div class="form-group">\
 											      <label>'+data.nama_kd+'</label>\
 											      <input type="number" class="d-none" name="kd[]" value="'+data.id_kd+'">\
-											      <input type="number" name="'+data.id_kd+'" class="form-control" id="'+data.id_kd+'" value="'+kd+'">\
+											      <input type="number" name="'+data.id_kd+'" class="form-control '+clsKD+'" id="'+data.id_kd+'" value="'+kd+'">'+infoKD+'\
 											    </div>\
 											  </div>';
 								});
@@ -61,17 +69,33 @@
 										uts = ndata.nilai_uts;
 										uas = ndata.nilai_uas;
 									}
-								})
+								});
+								clsUTS = ''; infoUTS = '';
+								if (cekKKM(uts) == ' class="table-danger"') {
+									clsUTS = 'is-invalid';
+									infoUTS = '<div class="invalid-feedback">Nilai di bawah KKM.</div>';
+								} else if (cekKKM(uts) == ' class="table-warning"') {
+									clsUTS = 'is-invalid';
+									infoUTS = '<div class="invalid-feedback">Nilai sama dengan KKM.</div>';
+								}
+								clsUAS = ''; infoUAS = '';
+								if (cekKKM(uas) == ' class="table-danger"') {
+									clsUAS = 'is-invalid';
+									infoUAS = '<div class="invalid-feedback">Nilai di bawah KKM.</div>';
+								} else if (cekKKM(uas) == ' class="table-warning"') {
+									clsUAS = 'is-invalid';
+									infoUAS = '<div class="invalid-feedback">Nilai sama dengan KKM.</div>';
+								}
 								body += '<div class="col-12">\
 										    <div class="form-group">\
 										      <label>UTS</label>\
-										      <input type="number" name="uts" class="form-control" id="uts" value="'+uts+'">\
+										      <input type="number" name="uts" class="form-control '+clsUTS+'" id="uts" value="'+uts+'">'+infoUTS+'\
 										    </div>\
 										  </div>\
 										  <div class="col-12">\
 										    <div class="form-group">\
 										      <label>UAS</label>\
-										      <input type="number" name="uas" class="form-control" id="uas" value="'+uas+'">\
+										      <input type="number" name="uas" class="form-control '+clsUAS+'" id="uas" value="'+uas+'">'+infoUAS+'\
 										    </div>\
 										  </div>\
 										</div>';
