@@ -71,7 +71,7 @@
 				htmlBody += '<td class="py-2">\
 					<div style="width: 100px;">\
 						<div class="mt-1 d-flex justify-content-center align-items-center">\
-							<button onclick="deleteKelasSiswa('+data.id_kelas_siswa+','+data.id_siswa+')" class="btn btn-danger text-white"><i class="fa fa-trash"></i></button>\
+							<button onclick="deleteKelasSiswa('+data.id_kelas_siswa+','+data.id_siswa+',event)" class="btn btn-danger text-white"><i class="fa fa-trash"></i></button>\
 						</div>\
 					</div>\
 				</td></tr>';
@@ -81,7 +81,7 @@
 		});
 	}
 
-	function deleteKelasSiswa(id,idSiswa) {
+	function deleteKelasSiswa(id,idSiswa,event) {
 		event.preventDefault();
 		$.ajax({
 			url: '<?php echo base_url('kelas_siswa/deleteKelasSiswa'); ?>',

@@ -167,7 +167,7 @@ function updateModal(title, body, action, onclick, param, size, type, button) {
   $('.modal-title').html(title);
   $('.modal-body').html(body);
   $('.modal-form').attr('action', action);
-  if (!param) {
+  if (!param || param == null) {
     $('.modal-btn-action').attr('onclick', onclick+'(event)');
   } else {
     $('.modal-btn-action').attr('onclick', onclick+'('+param+',event)');

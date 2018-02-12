@@ -38,7 +38,7 @@ $(document).ready(function() {
 	}
 
 	function showModalDeleteAdmin(idAdmin) {
-		updateModal('Delete Siswa?', '', '<?php echo base_url('admin/deleteAdmin'); ?>', 'deleteAdmin', idAdmin, 'sm', 'danger', 'Yes');
+		updateModal('Delete Admin?', '', '<?php echo base_url('admin/deleteAdmin'); ?>', 'deleteAdmin', idAdmin, 'sm', 'danger', 'Yes');
 	}
 
 	function addAdmin(event) {
