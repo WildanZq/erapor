@@ -167,7 +167,11 @@ function updateModal(title, body, action, onclick, param, size, type, button) {
   $('.modal-title').html(title);
   $('.modal-body').html(body);
   $('.modal-form').attr('action', action);
-  $('.modal-btn-action').attr('onclick', onclick+'('+param+')');
+  if (!param) {
+    $('.modal-btn-action').attr('onclick', onclick+'(event)');
+  } else {
+    $('.modal-btn-action').attr('onclick', onclick+'('+param+',event)');
+  }
   $('.modal-btn-action').addClass('btn-'+type);
   $('.modal-dialog').addClass('modal-'+size);
   $('.modal-dialog').addClass('modal-'+type);

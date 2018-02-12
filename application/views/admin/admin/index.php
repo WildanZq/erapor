@@ -41,7 +41,7 @@ $(document).ready(function() {
 		updateModal('Delete Siswa?', '', '<?php echo base_url('admin/deleteAdmin'); ?>', 'deleteAdmin', idAdmin, 'sm', 'danger', 'Yes');
 	}
 
-	function addAdmin() {
+	function addAdmin(event) {
 		event.preventDefault();
 		$.ajax({
 			url: $('.modal-form').attr('action'),
@@ -62,7 +62,7 @@ $(document).ready(function() {
 		});
 	}
 
-	function deleteAdmin(idAdmin)
+	function deleteAdmin(idAdmin,event)
 	{
 		event.preventDefault();
 		$.ajax({

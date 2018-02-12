@@ -121,7 +121,7 @@
 		$('#nilai').val(ns).trigger('change');
 	}
 
-	function editNilaiSikap() {
+	function editNilaiSikap(event) {
 		idKelasSiswa = $('#kelas').val();
 		semester = $('#semester').val();
 		event.preventDefault();

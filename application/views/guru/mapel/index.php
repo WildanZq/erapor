@@ -108,7 +108,7 @@
 		});
 	}
 
-	function editNilaiSiswa(id) {
+	function editNilaiSiswa(id,event) {
 		event.preventDefault();
 		$.ajax({
 			url: '<?php echo base_url('nilai/editNilai'); ?>',
@@ -355,7 +355,7 @@
 		updateModal('Delete KD?', '', '<?php echo base_url('kd/deleteKD'); ?>', 'deleteKD', idKD, 'sm', 'danger', 'Yes');
 	}
 
-	function addKD(idMapel) {
+	function addKD(idMapel,event) {
 		event.preventDefault();
 		$.ajax({
 			url: '<?php echo base_url('kd/addKD'); ?>',
@@ -377,7 +377,7 @@
 		});
 	}
 
-	function editKD(idKD) {
+	function editKD(idKD,event) {
 		event.preventDefault();
 		$.ajax({
 			url: '<?php echo base_url('kd/editKD'); ?>',
@@ -399,7 +399,7 @@
 		});
 	}
 
-	function deleteKD(idKD) {
+	function deleteKD(idKD,event) {
 		event.preventDefault();
 		$.ajax({
 			url: '<?php echo base_url('kd/deleteKD'); ?>',

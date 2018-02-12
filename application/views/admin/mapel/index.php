@@ -1,4 +1,3 @@
-
 <script type="text/javascript">
 $(document).ready(function() {
 		manageMapel();
@@ -9,35 +8,6 @@ $(document).ready(function() {
 		refreshTabelMapel();
 		refreshTabelKurikulum();
 		refreshTabelJenisMapel();
-	}
-
-	function addMapel(){
-		event.preventDefault();
-		$.ajax({
-			url: $('.modal-form').attr('action'),
-	    	type: 'POST',
-	    	dataType: 'json',
-	    	data: $('.modal-form').serialize(),
-	    	success: function(r) {
-			    if (r.status) {
-			    	toastr.remove();
-			      	toastr["success"]("Data mapel berhasil ditambahkan");
-			      	refreshTabelMapel();
-			      	$('.modal').modal('hide');
-			    } else {
-			      	toastr.remove();
-			     	toastr["error"](r.error);
-			    }
-	      	}
-		});
-	}
-
-	function showModalAddMapel() {
-			body = '<?php echo $this->load->view('admin/mapel/modal_body', '', TRUE); ?>';
-			updateModal('Tambah Mapel', body, '<?php echo base_url('mapel/addMapel'); ?>', 'addMapel', null, 'md', 'success');
-
-			refreshPilihanKurikulum();
-			refreshPilihanJenisMapel();
 	}
 
 	function refreshTabelMapel() {
@@ -66,6 +36,33 @@ $(document).ready(function() {
 		});
 	}
 
+	function addMapel(event){
+		event.preventDefault();
+		$.ajax({
+			url: $('.modal-form').attr('action'),
+	    	type: 'POST',
+	    	dataType: 'json',
+	    	data: $('.modal-form').serialize(),
+	    	success: function(r) {
+			    if (r.status) {
+			    	toastr.remove();
+			      	toastr["success"]("Data mapel berhasil ditambahkan");
+			      	refreshTabelMapel();
+			      	$('.modal').modal('hide');
+			    } else {
+			      	toastr.remove();
+			     	toastr["error"](r.error);
+			    }
+	      	}
+		});
+	}
+
+	function showModalAddMapel() {
+			updateModal('Tambah Mapel', 'Loading...', '', 'addMapel', null, 'md', 'success');
+
+			refreshPilihanKurikulum();
+	}
+
 	function refreshPilihanKurikulum(idMapel) {
 		$.ajax({
 			url: '<?php echo base_url('kurikulum/getAllKurikulum'); ?>',
@@ -76,7 +73,6 @@ $(document).ready(function() {
 				$.each(r.data, function(i, data) {
 					html += '<option value="'+data.id_kurikulum+'">'+data.nama_kurikulum+'</option>';
 				});
-				$('#kurikulum').html(html);
 
 				if (idMapel) {
 					$.ajax({
@@ -85,15 +81,17 @@ $(document).ready(function() {
 						dataType: 'json',
 						data: 'id='+idMapel,
 						success: function(r) {
-							$('#kurikulum').val(r.id_kurikulum).trigger('change');
+							refreshPilihanJenisMapel(html, idMapel, r.id_kurikulum);
 						}
 					});
+				} else {
+					refreshPilihanJenisMapel(html);
 				}
 			}
 		});
 	}
 
-	function refreshPilihanJenisMapel(idMapel) {
+	function refreshPilihanJenisMapel(kurikulum, idMapel, kurikulumVal) {
 		$.ajax({
 			url: '<?php echo base_url('jenis_mapel/getAllJenisMapel'); ?>',
 			type: 'GET',
@@ -103,7 +101,6 @@ $(document).ready(function() {
 				$.each(r.data, function(i, data) {
 					html += '<option value="'+data.id_jenis_mapel+'">'+data.nama_jenis_mapel+'</option>';
 				});
-				$('#jenis_mapel').html(html);
 
 				if (idMapel) {
 					$.ajax({
@@ -111,35 +108,45 @@ $(document).ready(function() {
 						type: 'GET',
 						dataType: 'json',
 						data: 'id='+idMapel,
-						success: function(r) {
-							$('#jenis_mapel').val(r.id_jenis_mapel).trigger('change');
+						success: function(rm) {
+							$.ajax({
+								url: '<?php echo base_url('mapel/getMapelById'); ?>',
+								type: 'GET',
+								dataType: 'json',
+								data: 'id='+idMapel,
+								success: function(r) {
+									body = '<?php echo $this->load->view('admin/mapel/modal_body', '', TRUE); ?>';
+									updateModal('Edit Mapel', body, '<?php echo base_url('mapel/editMapel'); ?>', 'editMapel', idMapel, 'md', 'primary');
+
+									$('#kurikulum').html(kurikulum);
+									$('#kurikulum').val(kurikulumVal).trigger('change');
+									$('#jenis_mapel').html(html);
+									$('#jenis_mapel').val(rm.id_jenis_mapel).trigger('change');
+
+									$('#nama_mapel').val(r.nama_mapel);
+									$('#kkm').val(r.kkm);
+								}
+							});
 						}
 					});
+				} else {
+					body = '<?php echo $this->load->view('admin/mapel/modal_body', '', TRUE); ?>';
+					updateModal('Tambah Mapel', body, '<?php echo base_url('mapel/addMapel'); ?>', 'addMapel', null, 'md', 'success');
+
+					$('#kurikulum').html(kurikulum);
+					$('#jenis_mapel').html(html);
 				}
 			}
 		});
 	}
 
 	function showModalEditMapel(idMapel) {
-		body = '<?php echo $this->load->view('admin/mapel/modal_body', '', TRUE); ?>';
-		updateModal('Edit Mapel', body, '<?php echo base_url('mapel/editMapel'); ?>', 'editMapel', idMapel, 'md', 'primary');
+		updateModal('Edit Mapel', 'Loading...', '', 'editMapel', null, 'md', 'primary');
 
-		refreshPilihanKurikulum(idMapel); 
-		refreshPilihanJenisMapel(idMapel); 
-
-		$.ajax({
-			url: '<?php echo base_url('mapel/getMapelById'); ?>',
-			type: 'GET',
-			dataType: 'json',
-			data: 'id='+idMapel,
-			success: function(r) {
-				$('#nama_mapel').val(r.nama_mapel);
-				$('#kkm').val(r.kkm);
-			}
-		});
+		refreshPilihanKurikulum(idMapel);
 	}
 
-	function editMapel(idMapel) {
+	function editMapel(idMapel,event) {
 		event.preventDefault();
 		$.ajax({
 			url: $('.modal-form').attr('action'),
@@ -164,7 +171,7 @@ $(document).ready(function() {
 		updateModal('Delete Mapel?', '', '<?php echo base_url('mapel/deleteMapel'); ?>', 'deleteMapel', idMapel, 'sm', 'danger', 'Yes');
 	}
 
-	function deleteMapel(idMapel) {
+	function deleteMapel(idMapel,event) {
 		event.preventDefault();
 		$.ajax({
 			url: '<?php echo base_url('mapel/deleteMapel'); ?>',
@@ -213,7 +220,7 @@ $(document).ready(function() {
 			updateModal('Tambah Kurikulum', body, '<?php echo base_url('kurikulum/addKurikulum'); ?>', 'addKurikulum', null, 'md', 'success');
 	}
 
-	function addKurikulum(){
+	function addKurikulum(event){
 		event.preventDefault();
 		$.ajax({
 			url: $('.modal-form').attr('action'),
@@ -235,22 +242,23 @@ $(document).ready(function() {
 	}
 
 	function showModalEditKurikulum(idKurikulum) {
-		body = '<?php echo $this->load->view('admin/mapel/modal_body_kurikulum', '', TRUE); ?>';
-		updateModal('Edit Kurikulum', body, '<?php echo base_url('kurikulum/editKurikulum'); ?>', 'editKurikulum', idKurikulum, 'md', 'primary');
-		setTimeout(function() {
-			$.ajax({
-				url: '<?php echo base_url('kurikulum/getKurikulumById'); ?>',
-				type: 'GET',
-				dataType: 'json',
-				data: 'id='+idKurikulum,
-				success: function(r) {
-					$('#nama_kurikulum').val(r.nama_kurikulum);
-				}
-			});
-		},100);
+		updateModal('Edit Kurikulum', 'Loading...', '', 'editKurikulum', null, 'md', 'primary');
+
+		$.ajax({
+			url: '<?php echo base_url('kurikulum/getKurikulumById'); ?>',
+			type: 'GET',
+			dataType: 'json',
+			data: 'id='+idKurikulum,
+			success: function(r) {
+				body = '<?php echo $this->load->view('admin/mapel/modal_body_kurikulum', '', TRUE); ?>';
+				updateModal('Edit Kurikulum', body, '<?php echo base_url('kurikulum/editKurikulum'); ?>', 'editKurikulum', idKurikulum, 'md', 'primary');
+
+				$('#nama_kurikulum').val(r.nama_kurikulum);
+			}
+		});
 	}
 
-	function editKurikulum(idKurikulum) {
+	function editKurikulum(idKurikulum,event) {
 		event.preventDefault();
 		$.ajax({
 			url: $('.modal-form').attr('action'),
@@ -276,7 +284,7 @@ $(document).ready(function() {
 		updateModal('Delete Kurikulum?', '', '<?php echo base_url('kurikulum/deleteKurikulum'); ?>', 'deleteKurikulum', idKurikulum, 'sm', 'danger', 'Yes');
 	}
 
-	function deleteKurikulum(idKurikulum) {
+	function deleteKurikulum(idKurikulum,event) {
 		event.preventDefault();
 		$.ajax({
 			url: '<?php echo base_url('kurikulum/deleteKurikulum'); ?>',
@@ -325,7 +333,7 @@ $(document).ready(function() {
 			updateModal('Tambah Jenis Mapel', body, '<?php echo base_url('jenis_mapel/addJenisMapel'); ?>', 'addJenisMapel', null, 'md', 'success');
 	}
 
-	function addJenisMapel(){
+	function addJenisMapel(event){
 		event.preventDefault();
 		$.ajax({
 			url: $('.modal-form').attr('action'),
@@ -347,22 +355,23 @@ $(document).ready(function() {
 	}
 
 	function showModalEditJenisMapel(idJenisMapel) {
-		body = '<?php echo $this->load->view('admin/mapel/modal_body_jenismapel', '', TRUE); ?>';
-		updateModal('Edit Jenis Mapel', body, '<?php echo base_url('jenis_mapel/editJenisMapel'); ?>', 'editJenisMapel', idJenisMapel, 'md', 'primary');
-		setTimeout(function() {
-			$.ajax({
-				url: '<?php echo base_url('jenis_mapel/getJenisMapelById'); ?>',
-				type: 'GET',
-				dataType: 'json',
-				data: 'id='+idJenisMapel,
-				success: function(r) {
-					$('#nama_jenis_mapel').val(r.nama_jenis_mapel);
-				}
-			});
-		},100);
+		updateModal('Edit Jenis Mapel', 'Loading...', '', 'editJenisMapel', null, 'md', 'primary');
+
+		$.ajax({
+			url: '<?php echo base_url('jenis_mapel/getJenisMapelById'); ?>',
+			type: 'GET',
+			dataType: 'json',
+			data: 'id='+idJenisMapel,
+			success: function(r) {
+				body = '<?php echo $this->load->view('admin/mapel/modal_body_jenismapel', '', TRUE); ?>';
+				updateModal('Edit Jenis Mapel', body, '<?php echo base_url('jenis_mapel/editJenisMapel'); ?>', 'editJenisMapel', idJenisMapel, 'md', 'primary');
+
+				$('#nama_jenis_mapel').val(r.nama_jenis_mapel);
+			}
+		});
 	}
 
-	function editJenisMapel(idJenisMapel) {
+	function editJenisMapel(idJenisMapel,event) {
 		event.preventDefault();
 		$.ajax({
 			url: $('.modal-form').attr('action'),
@@ -388,7 +397,7 @@ $(document).ready(function() {
 		updateModal('Delete Jenis Mapel?', '', '<?php echo base_url('jenis_mapel/deleteJenisMapel'); ?>', 'deleteJenisMapel', idJenisMapel, 'sm', 'danger', 'Yes');
 	}
 
-	function deleteJenisMapel(idJenisMapel) {
+	function deleteJenisMapel(idJenisMapel,event) {
 		event.preventDefault();
 		$.ajax({
 			url: '<?php echo base_url('jenis_mapel/deleteJenisMapel'); ?>',

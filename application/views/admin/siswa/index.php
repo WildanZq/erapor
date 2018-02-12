@@ -156,7 +156,7 @@
 		});
 	}
 
-	function addKelasSiswa(id){
+	function addKelasSiswa(id,event){
 		event.preventDefault();
 		$.ajax({
 			url : '<?php echo base_url('kelas_siswa/addKelasSiswa')?>',
@@ -237,7 +237,7 @@
 		});
 	}
 
-	function addSiswa() {
+	function addSiswa(event) {
 		event.preventDefault();
 		$.ajax({
 			url: $('.modal-form').attr('action'),
@@ -258,7 +258,7 @@
 		});
 	}
 
-	function editSiswa(idSiswa) {
+	function editSiswa(idSiswa,event) {
 		event.preventDefault();
 		$.ajax({
 			url: $('.modal-form').attr('action'),
@@ -279,7 +279,7 @@
 		});
 	}
 
-	function deleteSiswa(idSiswa) {
+	function deleteSiswa(idSiswa,event) {
 		event.preventDefault();
 		$.ajax({
 			url: '<?php echo base_url('siswa/deleteSiswa'); ?>',

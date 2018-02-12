@@ -26,7 +26,7 @@
               </div>
               <div class="row">
                 <div class="col-6">
-                  <button type="submit" class="btn btn-primary px-4" onclick="signin();">Login</button>
+                  <button type="submit" class="btn btn-primary px-4" onclick="signin(event);">Login</button>
                 </div>
               </div>
               </form>
@@ -47,7 +47,7 @@
   </div>
 
   <script type="text/javascript">
-    function signin() {
+    function signin(event) {
       event.preventDefault();
       $.ajax({
         url: $('#login-form').attr('action'),

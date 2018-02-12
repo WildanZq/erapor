@@ -32,43 +32,7 @@
 		});
 	}
 
-	function refreshPilihanMapel(id) {
-		$.ajax({
-			url: '<?php echo base_url('mapel/getAllMapel'); ?>',
-			type: 'GET',
-			dataType: 'json',
-			success: function(r) {
-				html = '';
-				r = groupBy(r.data,'nama_jenis_mapel');
-				$.each(r, function(key,data) {
-					html += '<optgroup label="'+key+'">';
-					$.each(data, function(key,data) {
-						html += '<option value="'+data.id_mapel+'">'+data.nama_mapel+'</option>';
-					});
-					html += '</optgroup>';
-				});
-				$('#mapel').html(html);
-				$('.select2').select2();
-  				$('.select2').css('width','100%');
-
-  				$.ajax({
-  					url: '<?php echo base_url('mapel_kelas/getMapelByKelasId') ?>',
-  					type: 'GET',
-  					dataType: 'json',
-  					data: 'id='+id,
-  					success: function(r) {
-  						val = [];
-  						$.each(r, function(key,data) {
-  							val.push(data.id_mapel);
-  						});
-  						$('#mapel').val(val).trigger('change');
-  					}
-  				});
-			}
-		});
-	}
-
-	function addKelas(){
+	function addKelas(event){
 		event.preventDefault();
 		$.ajax({
 			url: $('.modal-form').attr('action'),
@@ -90,8 +54,7 @@
 	}
 
 	function showModalAddKelas() { 
-			body = '<?php echo $this->load->view('admin/kelas/modal_body', '', TRUE); ?>';
-			updateModal('Tambah Kelas', body, '<?php echo base_url('kelas/addKelas'); ?>', 'addKelas', null, 'md', 'success');
+			updateModal('Tambah Kelas', 'Loading...', '', 'addKelas', null, 'md', 'success');
 
 			refreshPilihanKelompokKelas();
 	}
@@ -106,7 +69,6 @@
 				$.each(r.data, function(i, data) {
 					html += '<option value="'+data.id_kelompok_kelas+'">'+data.nama_kelompok_kelas+'</option>';
 				});
-				$('#kelompok_kelas').html(html);
 
 				if (idKelas) {
 					$.ajax({
@@ -115,23 +77,29 @@
 						dataType: 'json',
 						data: 'id='+idKelas,
 						success: function(r) {
+							body = '<?php echo $this->load->view('admin/kelas/modal_body', '', TRUE); ?>';
+							updateModal('Edit Kelas', body, '<?php echo base_url('kelas/editKelas'); ?>', 'editKelas', idKelas, 'md', 'primary');
+							$('#kelompok_kelas').html(html);
 							$('#kelompok_kelas').val(r.id_kelompok_kelas).trigger('change');
 							$('#nama_kelas').val(r.nama_kelas);
 						}
 					});
+				} else {
+					body = '<?php echo $this->load->view('admin/kelas/modal_body', '', TRUE); ?>';
+					updateModal('Tambah Kelas', body, '<?php echo base_url('kelas/addKelas'); ?>', 'addKelas', null, 'md', 'success');
+					$('#kelompok_kelas').html(html);
 				}
 			}
 		});
 	}
 
 	function showModalEditKelas(idKelas) {
-		body = '<?php echo $this->load->view('admin/kelas/modal_body', '', TRUE); ?>';
-		updateModal('Edit Kelas', body, '<?php echo base_url('kelas/editKelas'); ?>', 'editKelas', idKelas, 'md', 'primary');
+		updateModal('Edit Kelas', 'Loading...', '', 'editKelas', null, 'md', 'primary');
 
 		refreshPilihanKelompokKelas(idKelas);
 	}
 
-	function editKelas(idKelas) {
+	function editKelas(idKelas,event) {
 		event.preventDefault();
 		$.ajax({
 			url: $('.modal-form').attr('action'),
@@ -156,7 +124,7 @@
 		updateModal('Delete Kelas?', '', '<?php echo base_url('kelas/deleteKelas'); ?>', 'deleteKelas', idKelas, 'sm', 'danger', 'Yes');
 	}
 
-	function deleteKelas(idKelas) {
+	function deleteKelas(idKelas,event) {
 		event.preventDefault();
 		$.ajax({
 			url: '<?php echo base_url('kelas/deleteKelas'); ?>',
@@ -207,19 +175,57 @@
 	}
 
 	function showModalMapelKelompokKelas(id) {
-		body = '<div class="row">\
-				  <div class="col-sm-12">\
-				    <div class="form-group">\
-				      <select name="mapel[]" class="form-control select2" multiple="multiple" id="mapel"></select>\
-				    </div>\
-				  </div>\
-				</div>';
-		updateModal('List Mapel', body, '<?php echo base_url('mapel_kelompokkelas/editMapel'); ?>', 'editMapelKelompokKelas', id, 'md', 'warning');
+		updateModal('List Mapel', 'Loading...', '', 'editMapelKelompokKelas', null, 'md', 'warning');
 
 		refreshPilihanMapel(id);
 	}
 
-	function editMapelKelompokKelas(id) {
+	function refreshPilihanMapel(id) {
+		$.ajax({
+			url: '<?php echo base_url('mapel/getAllMapel'); ?>',
+			type: 'GET',
+			dataType: 'json',
+			success: function(rm) {
+  				$.ajax({
+  					url: '<?php echo base_url('mapel_kelompokkelas/getMapelByKelompokKelasId') ?>',
+  					type: 'GET',
+  					dataType: 'json',
+  					data: 'id='+id,
+  					success: function(r) {
+  						body = '<div class="row">\
+						  <div class="col-sm-12">\
+						    <div class="form-group">\
+						      <select name="mapel[]" class="form-control select2" multiple="multiple" id="mapel"></select>\
+						    </div>\
+						  </div>\
+						</div>';
+						updateModal('List Mapel', body, '<?php echo base_url('mapel_kelompokkelas/editMapel'); ?>', 'editMapelKelompokKelas', id, 'md', 'warning');
+
+						html = '';
+						rm = groupBy(rm.data,'nama_jenis_mapel');
+						$.each(rm, function(key,data) {
+							html += '<optgroup label="'+key+'">';
+							$.each(data, function(key,data) {
+								html += '<option value="'+data.id_mapel+'">'+data.nama_mapel+'</option>';
+							});
+							html += '</optgroup>';
+						});
+						$('#mapel').html(html);
+						$('.select2').select2();
+		  				$('.select2').css('width','100%');
+
+  						val = [];
+  						$.each(r, function(key,data) {
+  							val.push(data.id_mapel);
+  						});
+  						$('#mapel').val(val).trigger('change');
+  					}
+  				});
+			}
+		});
+	}
+
+	function editMapelKelompokKelas(id,event) {
 		event.preventDefault();
 		$.ajax({
 			url: $('.modal-form').attr('action'),
@@ -240,48 +246,12 @@
 		});
 	}
 
-	function refreshPilihanMapel(id) {
-		$.ajax({
-			url: '<?php echo base_url('mapel/getAllMapel'); ?>',
-			type: 'GET',
-			dataType: 'json',
-			success: function(r) {
-				html = '';
-				r = groupBy(r.data,'nama_jenis_mapel');
-				$.each(r, function(key,data) {
-					html += '<optgroup label="'+key+'">';
-					$.each(data, function(key,data) {
-						html += '<option value="'+data.id_mapel+'">'+data.nama_mapel+'</option>';
-					});
-					html += '</optgroup>';
-				});
-				$('#mapel').html(html);
-				$('.select2').select2();
-  				$('.select2').css('width','100%');
-
-  				$.ajax({
-  					url: '<?php echo base_url('mapel_kelompokkelas/getMapelByKelompokKelasId') ?>',
-  					type: 'GET',
-  					dataType: 'json',
-  					data: 'id='+id,
-  					success: function(r) {
-  						val = [];
-  						$.each(r, function(key,data) {
-  							val.push(data.id_mapel);
-  						});
-  						$('#mapel').val(val).trigger('change');
-  					}
-  				});
-			}
-		});
-	}
-
 	function showModalAddKelompokKelas() {
 			body = '<?php echo $this->load->view('admin/kelas/modal_body_kelompokkelas', '', TRUE); ?>';
 			updateModal('Tambah Kelompok Kelas', body, '<?php echo base_url('kelompok_kelas/addKelompokKelas'); ?>', 'addKelompokKelas', null, 'md', 'success');
 	}
 
-	function addKelompokKelas(){
+	function addKelompokKelas(event){
 		event.preventDefault();
 		$.ajax({
 			url: $('.modal-form').attr('action'),
@@ -303,22 +273,22 @@
 	}
 
 	function showModalEditKelompokKelas(idKelompokKelas) {
-		body = '<?php echo $this->load->view('admin/kelas/modal_body_kelompokkelas', '', TRUE); ?>';
-		updateModal('Edit Jurusan', body, '<?php echo base_url('kelompok_kelas/editKelompokKelas'); ?>', 'editKelompokKelas', idKelompokKelas, 'md', 'primary');
-		setTimeout(function() {
-			$.ajax({
-				url: '<?php echo base_url('kelompok_kelas/getKelompokKelasById'); ?>',
-				type: 'GET',
-				dataType: 'json',
-				data: 'id='+idKelompokKelas,
-				success: function(r) {
-					$('#nama_kelompok_kelas').val(r.nama_kelompok_kelas);
-				}
-			});
-		},100);
+		updateModal('Edit Jurusan', 'Loading...', '', 'editKelompokKelas', null, 'md', 'primary');
+
+		$.ajax({
+			url: '<?php echo base_url('kelompok_kelas/getKelompokKelasById'); ?>',
+			type: 'GET',
+			dataType: 'json',
+			data: 'id='+idKelompokKelas,
+			success: function(r) {
+				body = '<?php echo $this->load->view('admin/kelas/modal_body_kelompokkelas', '', TRUE); ?>';
+				updateModal('Edit Jurusan', body, '<?php echo base_url('kelompok_kelas/editKelompokKelas'); ?>', 'editKelompokKelas', idKelompokKelas, 'md', 'primary');
+				$('#nama_kelompok_kelas').val(r.nama_kelompok_kelas);
+			}
+		});
 	}
 
-	function editKelompokKelas(idKelompokKelas) {
+	function editKelompokKelas(idKelompokKelas,event) {
 		event.preventDefault();
 		$.ajax({
 			url: $('.modal-form').attr('action'),
@@ -344,7 +314,7 @@
 		updateModal('Delete Jurusan?', '', '<?php echo base_url('kelompok_kelas/deleteKelompokKelas'); ?>', 'deleteKelompokKelas', idKelompokKelas, 'sm', 'danger', 'Yes');
 	}
 
-	function deleteKelompokKelas(idKelompokKelas) {
+	function deleteKelompokKelas(idKelompokKelas,event) {
 		event.preventDefault();
 		$.ajax({
 			url: '<?php echo base_url('kelompok_kelas/deleteKelompokKelas'); ?>',

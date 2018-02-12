@@ -47,19 +47,53 @@
 	}
 
 	function showModalMapelGuru(id) {
-		body = '<div class="row">\
-				  <div class="col-sm-12">\
-				    <div class="form-group">\
-				      <select name="mapel[]" class="form-control select2" multiple="multiple" id="mapel"></select>\
-				    </div>\
-				  </div>\
-				</div>';
-		updateModal('List Mapel', body, '<?php echo base_url('mapel_guru/editMapel'); ?>', 'editMapelGuru', id, 'md', 'warning');
+		updateModal('List Mapel', 'Loading..', '', 'editMapelGuru', null, 'md', 'warning');
 
-		refreshPilihanMapel(id);
+		$.ajax({
+			url: '<?php echo base_url('mapel/getAllMapel'); ?>',
+			type: 'GET',
+			dataType: 'json',
+			success: function(r) {
+				html = '';
+				r = groupBy(r.data,'nama_jenis_mapel');
+				$.each(r, function(key,data) {
+					html += '<optgroup label="'+key+'">';
+					$.each(data, function(key,data) {
+						html += '<option value="'+data.id_mapel+'">'+data.nama_mapel+'</option>';
+					});
+					html += '</optgroup>';
+				});
+
+  				$.ajax({
+  					url: '<?php echo base_url('mapel_guru/getMapelByGuruId') ?>',
+  					type: 'GET',
+  					dataType: 'json',
+  					data: 'id='+id,
+  					success: function(r) {
+  						body = '<div class="row">\
+						  <div class="col-sm-12">\
+						    <div class="form-group">\
+						      <select name="mapel[]" class="form-control select2" multiple="multiple" id="mapel"></select>\
+						    </div>\
+						  </div>\
+						</div>';
+						updateModal('List Mapel', body, '<?php echo base_url('mapel_guru/editMapel'); ?>', 'editMapelGuru', id, 'md', 'warning');
+						$('#mapel').html(html);
+						$('.select2').select2();
+		  				$('.select2').css('width','100%');
+
+  						val = [];
+  						$.each(r, function(key,data) {
+  							val.push(data.id_mapel);
+  						});
+  						$('#mapel').val(val).trigger('change');
+  					}
+  				});
+			}
+		});
 	}
 
-	function editMapelGuru(id) {
+	function editMapelGuru(id,event) {
 		event.preventDefault();
 		$.ajax({
 			url: $('.modal-form').attr('action'),
@@ -80,73 +114,37 @@
 		});
 	}
 
-	function refreshPilihanMapel(id) {
-		$.ajax({
-			url: '<?php echo base_url('mapel/getAllMapel'); ?>',
-			type: 'GET',
-			dataType: 'json',
-			success: function(r) {
-				html = '';
-				r = groupBy(r.data,'nama_jenis_mapel');
-				$.each(r, function(key,data) {
-					html += '<optgroup label="'+key+'">';
-					$.each(data, function(key,data) {
-						html += '<option value="'+data.id_mapel+'">'+data.nama_mapel+'</option>';
-					});
-					html += '</optgroup>';
-				});
-				$('#mapel').html(html);
-				$('.select2').select2();
-  				$('.select2').css('width','100%');
-
-  				$.ajax({
-  					url: '<?php echo base_url('mapel_guru/getMapelByGuruId') ?>',
-  					type: 'GET',
-  					dataType: 'json',
-  					data: 'id='+id,
-  					success: function(r) {
-  						val = [];
-  						$.each(r, function(key,data) {
-  							val.push(data.id_mapel);
-  						});
-  						$('#mapel').val(val).trigger('change');
-  					}
-  				});
-			}
-		});
-	}
-
 	function showModalAddGuru(){
 		body = '<?php echo $this->load->view('admin/guru/modal_body', '', TRUE); ?>';
 			updateModal('Tambah Guru', body, '<?php echo base_url('guru/addGuru'); ?>', 'addGuru', null, 'md', 'success');
 	}
 
 	function showModalEditGuru(idGuru){
-		body = '<?php echo $this->load->view('admin/guru/modal_body', '', TRUE); ?>';
-		updateModal('Edit Guru', body, '<?php echo base_url('guru/editGuru'); ?>', 'editGuru', idGuru, 'md', 'primary');
+		updateModal('Edit Guru', 'Loading...', '', 'editGuru', null, 'md', 'primary');
 
-		setTimeout(function(){
-			$.ajax({
-				url: '<?php echo base_url('guru/getGuruById'); ?>',
-				type: 'GET',
-				dataType: 'json',
-				data: 'id='+idGuru,
-				success: function(r){
-					$('#nik').val(r.nik);
-					$('#nama').val(r.nama_guru);
-					$('#jk_guru').val(r.jk_guru);
-					$('#telepon').val(r.telp_guru);
-					$('#alamat').val(r.alamat_guru);
-				}
-			});
-		}, 100);
+		$.ajax({
+			url: '<?php echo base_url('guru/getGuruById'); ?>',
+			type: 'GET',
+			dataType: 'json',
+			data: 'id='+idGuru,
+			success: function(r){
+				body = '<?php echo $this->load->view('admin/guru/modal_body', '', TRUE); ?>';
+				updateModal('Edit Guru', body, '<?php echo base_url('guru/editGuru'); ?>', 'editGuru', idGuru, 'md', 'primary');
+				
+				$('#nik').val(r.nik);
+				$('#nama').val(r.nama_guru);
+				$('#jk_guru').val(r.jk_guru);
+				$('#telepon').val(r.telp_guru);
+				$('#alamat').val(r.alamat_guru);
+			}
+		});
 	}
 
 	function showModalDeleteGuru(idGuru){
 		updateModal('Delete Guru?', '', '<?php echo base_url('guru/deleteGuru'); ?>', 'deleteGuru', idGuru, 'sm', 'danger', 'Yes');
 	}
 
-	function addGuru(){
+	function addGuru(event){
 		event.preventDefault();
 		$.ajax({
 			url: $('.modal-form').attr('action'),
@@ -167,7 +165,7 @@
 		});
 	}
 
-	function editGuru(idGuru){
+	function editGuru(idGuru,event){
 		event.preventDefault();
 		$.ajax({
 			url: $('.modal-form').attr('action'),
@@ -188,7 +186,7 @@
 		});
 	}
 
-	function deleteGuru(idGuru){
+	function deleteGuru(idGuru,event){
 		event.preventDefault();
 		$.ajax({
 			url: '<?php echo base_url('guru/deleteGuru'); ?>',

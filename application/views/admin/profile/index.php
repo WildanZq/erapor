@@ -46,7 +46,7 @@
 		});
 	}
 
-	function cekPassword() {
+	function cekPassword(event) {
 		event.preventDefault();
 		$.ajax({
 			url: '<?php echo base_url('profile/cekPassword'); ?>',
@@ -74,7 +74,7 @@
 		});
 	}
 
-	function editPassword() {
+	function editPassword(event) {
 		event.preventDefault();
 		$.ajax({
 			url: $('.modal-form').attr('action'),
@@ -94,7 +94,7 @@
 		});
 	}
 
-	function editProfile() {
+	function editProfile(event) {
 		event.preventDefault();
 		$.ajax({
 			url: $('.modal-form').attr('action'),
