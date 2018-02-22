@@ -62,19 +62,21 @@
 			dataType: 'json',
 			data: 'id_siswa='+id,
 			success: function(r) {
-				htmlHead = ''; htmlBody = '';
-				htmlHead += '<th>Tahun Ajar</th><th>Kelas</th><th></th>';
-				$('#tabel-kelas-siswa thead').html(htmlHead);
+				if (r.data.length == 0) {
+					$('#tabel-kelas-siswa tbody').html('<tr><td colspan="3">Belum punya kelas<td></tr>');
+					return;
+				}
+				htmlBody = '';
 				$.each(r.data, function(i, data) {
-				htmlBody += '<tr><td>'+data.th_ajar+'/'+(parseInt(data.th_ajar)+1)+'</td>';
-				htmlBody += '<td>'+data.nama_kelas+'</td>';
-				htmlBody += '<td class="py-2">\
-					<div style="width: 100px;">\
-						<div class="mt-1 d-flex justify-content-center align-items-center">\
-							<button onclick="deleteKelasSiswa('+data.id_kelas_siswa+','+data.id_siswa+',event)" class="btn btn-danger text-white"><i class="fa fa-trash"></i></button>\
+					htmlBody += '<tr><td>'+data.th_ajar+'/'+(parseInt(data.th_ajar)+1)+'</td>';
+					htmlBody += '<td>'+data.nama_kelas+'</td>';
+					htmlBody += '<td class="py-2">\
+						<div style="width: 100px;">\
+							<div class="mt-1 d-flex justify-content-center align-items-center">\
+								<button onclick="deleteKelasSiswa('+data.id_kelas_siswa+','+data.id_siswa+',event)" class="btn btn-danger text-white"><i class="fa fa-trash"></i></button>\
+							</div>\
 						</div>\
-					</div>\
-				</td></tr>';
+					</td></tr>';
 				});
 				$('#tabel-kelas-siswa tbody').html(htmlBody);
 			}

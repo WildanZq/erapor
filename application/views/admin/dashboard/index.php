@@ -3,7 +3,7 @@
     <div class="card card-accent-primary">
       <div class="card-body p-3 clearfix">
         <i class="icon-graduation p-3 font-2xl mr-3 float-left"></i>
-        <div class="h5 mt-2 mb-0 text-primary" id="siswa">&nbsp;</div>
+        <div class="h5 mt-2 mb-0 text-primary" id="siswa"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i><span class="sr-only">Loading...</span></div>
         <div class="text-muted text-uppercase font-weight-bold font-xs">Siswa</div>
       </div>
       <div class="card-footer px-3 py-2 text-white bg-primary">
@@ -15,7 +15,7 @@
     <div class="card card-accent-primary">
       <div class="card-body p-3 clearfix">
         <i class="icon-people p-3 font-2xl mr-3 float-left"></i>
-        <div class="h5 mt-2 mb-0 text-primary" id="guru">&nbsp;</div>
+        <div class="h5 mt-2 mb-0 text-primary" id="guru"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i><span class="sr-only">Loading...</span></div>
         <div class="text-muted text-uppercase font-weight-bold font-xs">Guru</div>
       </div>
       <div class="card-footer px-3 py-2 text-white bg-primary">
@@ -27,7 +27,7 @@
     <div class="card card-accent-primary">
       <div class="card-body p-3 clearfix">
         <i class="icon-notebook p-3 font-2xl mr-3 float-left"></i>
-        <div class="h5 mt-2 mb-0 text-primary" id="mapel">&nbsp;</div>
+        <div class="h5 mt-2 mb-0 text-primary" id="mapel"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i><span class="sr-only">Loading...</span></div>
         <div class="text-muted text-uppercase font-weight-bold font-xs">Mapel</div>
       </div>
       <div class="card-footer px-3 py-2 text-white bg-primary">
@@ -39,7 +39,7 @@
     <div class="card card-accent-primary">
       <div class="card-body p-3 clearfix">
         <i class="icon-home p-3 font-2xl mr-3 float-left"></i>
-        <div class="h5 mt-2 mb-0 text-primary" id="kelas"></div>
+        <div class="h5 mt-2 mb-0 text-primary" id="kelas"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i><span class="sr-only">Loading...</span></div>
         <div class="text-muted text-uppercase font-weight-bold font-xs">Kelas</div>
       </div>
       <div class="card-footer px-3 py-2 text-white bg-primary">

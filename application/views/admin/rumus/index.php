@@ -39,7 +39,7 @@
 	}
 
 	function showModalEditRumus(rumus) {
-		updateModal('Edit Rumus (%)', 'Loading...', '', 'editRumus', null, 'md', 'primary');
+		updateModal('Edit Rumus (%)', '<p class="text-center"><i class="fa fa-circle-o-notch fa-spin fa-2x fa-fw"></i><span class="sr-only">Loading...</span><p>', '', 'editRumus', null, 'md', 'primary');
 
 		$.ajax({
 			url: '<?php echo base_url('rumus/getRumus'); ?>',

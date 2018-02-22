@@ -10,7 +10,9 @@
 						<th>Kelas</th>
 						<th></th>
 					</thead>
-					<tbody></tbody>
+					<tbody>
+						<tr><td colspan="4"><p class="text-center"><i class="fa fa-circle-o-notch fa-spin fa-2x fa-fw"></i><span class="sr-only">Loading...</span><p></td></tr>
+					</tbody>
 				</table>
 			</div>
 		</div>
@@ -222,7 +224,7 @@
 			$('#ns').html('-');
 			return;
 		} else {
-			$('#tabel-mapel').html('<thead><th>Mapel</th><th>KKM</th><th>Nilai Akhir</th><th>Rata" Kelas</th><th>Ranking Kelas</th></thead><tbody></tbody>');
+			$('#tabel-mapel').html('<thead><th>Mapel</th><th>KKM</th><th>Nilai Akhir</th><th>Rata" Kelas</th><th>Ranking Kelas</th></thead><tbody><tr><td colspan="5"><p class="text-center"><i class="fa fa-circle-o-notch fa-spin fa-2x fa-fw"></i><span class="sr-only">Loading...</span><p></td></tr></tbody>');
 		}
 
 		$.ajax({

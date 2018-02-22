@@ -58,7 +58,7 @@ $(document).ready(function() {
 	}
 
 	function showModalAddMapel() {
-			updateModal('Tambah Mapel', 'Loading...', '', 'addMapel', null, 'md', 'success');
+			updateModal('Tambah Mapel', '<p class="text-center"><i class="fa fa-circle-o-notch fa-spin fa-2x fa-fw"></i><span class="sr-only">Loading...</span><p>', '', 'addMapel', null, 'md', 'success');
 
 			refreshPilihanKurikulum();
 	}
@@ -141,7 +141,7 @@ $(document).ready(function() {
 	}
 
 	function showModalEditMapel(idMapel) {
-		updateModal('Edit Mapel', 'Loading...', '', 'editMapel', null, 'md', 'primary');
+		updateModal('Edit Mapel', '<p class="text-center"><i class="fa fa-circle-o-notch fa-spin fa-2x fa-fw"></i><span class="sr-only">Loading...</span><p>', '', 'editMapel', null, 'md', 'primary');
 
 		refreshPilihanKurikulum(idMapel);
 	}
@@ -242,7 +242,7 @@ $(document).ready(function() {
 	}
 
 	function showModalEditKurikulum(idKurikulum) {
-		updateModal('Edit Kurikulum', 'Loading...', '', 'editKurikulum', null, 'md', 'primary');
+		updateModal('Edit Kurikulum', '<p class="text-center"><i class="fa fa-circle-o-notch fa-spin fa-2x fa-fw"></i><span class="sr-only">Loading...</span><p>', '', 'editKurikulum', null, 'md', 'primary');
 
 		$.ajax({
 			url: '<?php echo base_url('kurikulum/getKurikulumById'); ?>',
@@ -355,7 +355,7 @@ $(document).ready(function() {
 	}
 
 	function showModalEditJenisMapel(idJenisMapel) {
-		updateModal('Edit Jenis Mapel', 'Loading...', '', 'editJenisMapel', null, 'md', 'primary');
+		updateModal('Edit Jenis Mapel', '<p class="text-center"><i class="fa fa-circle-o-notch fa-spin fa-2x fa-fw"></i><span class="sr-only">Loading...</span><p>', '', 'editJenisMapel', null, 'md', 'primary');
 
 		$.ajax({
 			url: '<?php echo base_url('jenis_mapel/getJenisMapelById'); ?>',

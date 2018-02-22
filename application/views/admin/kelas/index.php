@@ -54,7 +54,7 @@
 	}
 
 	function showModalAddKelas() { 
-			updateModal('Tambah Kelas', 'Loading...', '', 'addKelas', null, 'md', 'success');
+			updateModal('Tambah Kelas', '<p class="text-center"><i class="fa fa-circle-o-notch fa-spin fa-2x fa-fw"></i><span class="sr-only">Loading...</span><p>', '', 'addKelas', null, 'md', 'success');
 
 			refreshPilihanKelompokKelas();
 	}
@@ -94,7 +94,7 @@
 	}
 
 	function showModalEditKelas(idKelas) {
-		updateModal('Edit Kelas', 'Loading...', '', 'editKelas', null, 'md', 'primary');
+		updateModal('Edit Kelas', '<p class="text-center"><i class="fa fa-circle-o-notch fa-spin fa-2x fa-fw"></i><span class="sr-only">Loading...</span><p>', '', 'editKelas', null, 'md', 'primary');
 
 		refreshPilihanKelompokKelas(idKelas);
 	}
@@ -175,7 +175,7 @@
 	}
 
 	function showModalMapelKelompokKelas(id) {
-		updateModal('List Mapel', 'Loading...', '', 'editMapelKelompokKelas', null, 'md', 'warning');
+		updateModal('List Mapel', '<p class="text-center"><i class="fa fa-circle-o-notch fa-spin fa-2x fa-fw"></i><span class="sr-only">Loading...</span><p>', '', 'editMapelKelompokKelas', null, 'md', 'warning');
 
 		refreshPilihanMapel(id);
 	}
@@ -273,7 +273,7 @@
 	}
 
 	function showModalEditKelompokKelas(idKelompokKelas) {
-		updateModal('Edit Jurusan', 'Loading...', '', 'editKelompokKelas', null, 'md', 'primary');
+		updateModal('Edit Jurusan', '<p class="text-center"><i class="fa fa-circle-o-notch fa-spin fa-2x fa-fw"></i><span class="sr-only">Loading...</span><p>', '', 'editKelompokKelas', null, 'md', 'primary');
 
 		$.ajax({
 			url: '<?php echo base_url('kelompok_kelas/getKelompokKelasById'); ?>',

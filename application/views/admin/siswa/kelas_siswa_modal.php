@@ -1,6 +1,6 @@
 <table id="tabel-kelas-siswa" class="table table-striped table-hover" width="100%">\
-	<thead></thead>\
-	<tbody><tr></tr></tbody>\
+	<thead><th>Tahun Ajar</th><th>Kelas</th><th></th></thead>\
+	<tbody><tr><td colspan="3" class="text-center"><i class="fa fa-circle-o-notch fa-spin fa-2x fa-fw"></i><span class="sr-only">Loading...</span></td></tr></tbody>\
 </table>\
 <div class="row">\
 	<div class="col-md-6 pr-md-1">\

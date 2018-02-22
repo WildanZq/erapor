@@ -22,7 +22,7 @@ $(document).ready(function() {
 			  		targets: 2,
 			  		data: 'id_admin',
 			  		render: function(data, type, full) {
-			  			if (data == <?php echo $this->session->userdata('userid'); ?>) {return '<span class="text-muted">This is you</span>';}
+			  			if (data == <?php echo $this->session->userdata('userid'); ?>) {return '<span class="text-muted"><em>This is you</em></span>';}
 			    		return '<div class="d-flex">\
 			  				<button onclick="showModalDeleteAdmin('+data+')" data-target="#modal" data-toggle="modal" class="btn btn-danger text-white"><i class="fa fa-trash"></i></button>\
 			  			</div>';

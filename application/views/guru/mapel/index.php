@@ -201,13 +201,14 @@
 	}
 
 	function updateNilai() {
-		$('#tabel-nilai-siswa').html('');
 		idKelas = $('#kelas').val();
 		idMapel = <?php echo $this->uri->segment(3); ?>;
 		thAjar = $('#th_ajar').val();
 		semester = $('#semester').val();
 
 		if (tabelNilai) {tabelNilai.fnDestroy();}
+		$('#tabel-nilai-siswa').html('<tr><td><p class="text-center"><i class="fa fa-circle-o-notch fa-spin fa-2x fa-fw"></i><span class="sr-only">Loading...</span><p></td></tr>');
+		
 		if (! idKelas) {
 			$('#header-nilai').html('Nilai Siswa');
 			$('#tabel-nilai-siswa').html('<h5 class="text-danger text-center">Pilih kelas dahulu</h5>');
@@ -224,7 +225,8 @@
 				$.each(r, function(key,data) {
 					thtml += '<th>'+data.nama_kd+'</th>';
 				});
-				thtml += '<th>UTS</th><th>UAS</th><th>Nilai Akhir</th><th></th></thead><tbody></tbody><tfoot></tfoot>';
+				thtml += '<th>UTS</th><th>UAS</th><th>Nilai Akhir</th><th></th></thead><tbody><tr><td colspan="'+(r.length+6)+'"><p class="text-center"><i class="fa fa-circle-o-notch fa-spin fa-2x fa-fw"></i><span class="sr-only">Loading...</span><p></td></tr></tbody><tfoot></tfoot>';
+				$('#tabel-nilai-siswa').html(thtml);
 
 				$.ajax({
 					url: '<?php echo base_url('siswa/getSiswaByKelasIdAndThAjar') ?>',
@@ -237,7 +239,6 @@
 							return;
 						}
 
-						$('#tabel-nilai-siswa').html(thtml);
 						shtml = '';
 						$.ajax({
 							url: '<?php echo base_url('nilai/getAllNilaiKD'); ?>',
@@ -291,7 +292,7 @@
 	}
 
 	function refreshTabelKD(semester,idMapel) {
-		$('#tabel-kd').html('<thead></thead><tbody><tr></tr></tbody>');
+		$('#tabel-kd').html('<thead><th></th></thead><tbody><tr><td><p class="text-center"><i class="fa fa-circle-o-notch fa-spin fa-2x fa-fw"></i><span class="sr-only">Loading...</span><p></td></tr></tbody>');
 		$.ajax({
 			url: '<?php echo base_url('kd/getKD'); ?>',
 			type: 'GET',

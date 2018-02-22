@@ -47,7 +47,7 @@
 	}
 
 	function showModalMapelGuru(id) {
-		updateModal('List Mapel', 'Loading..', '', 'editMapelGuru', null, 'md', 'warning');
+		updateModal('List Mapel', '<p class="text-center"><i class="fa fa-circle-o-notch fa-spin fa-2x fa-fw"></i><span class="sr-only">Loading...</span><p>', '', 'editMapelGuru', null, 'md', 'warning');
 
 		$.ajax({
 			url: '<?php echo base_url('mapel/getAllMapel'); ?>',
@@ -120,7 +120,7 @@
 	}
 
 	function showModalEditGuru(idGuru){
-		updateModal('Edit Guru', 'Loading...', '', 'editGuru', null, 'md', 'primary');
+		updateModal('Edit Guru', '<p class="text-center"><i class="fa fa-circle-o-notch fa-spin fa-2x fa-fw"></i><span class="sr-only">Loading...</span><p>', '', 'editGuru', null, 'md', 'primary');
 
 		$.ajax({
 			url: '<?php echo base_url('guru/getGuruById'); ?>',
