@@ -14,6 +14,10 @@
 		refreshTabelKD($('#semester').val(), <?php echo $this->uri->segment(3); ?>);
 	});
 
+	function showModalPilihNilai() {
+		updateModal('Tambah Nilai', '', '', '', null, 'md', 'success');
+	}
+
 	function updateThAjar() {
 		updateNilai();
 	}
@@ -110,12 +114,14 @@
 
 	function editNilaiSiswa(id,event) {
 		event.preventDefault();
+		ladda.start();
 		$.ajax({
 			url: '<?php echo base_url('nilai/editNilai'); ?>',
 			type: 'POST',
 			dataType: 'json',
 			data: $('.modal-form').serialize()+'&id_kelas_siswa='+id+'&semester='+$('#semester').val()+'&id_mapel='+<?php echo $this->uri->segment(3); ?>,
 			success: function(r) {
+				ladda.stop();
 				if (r.status) {
 					updateNilai();
 			    	toastr.remove();
@@ -358,12 +364,14 @@
 
 	function addKD(idMapel,event) {
 		event.preventDefault();
+		ladda.start();
 		$.ajax({
 			url: '<?php echo base_url('kd/addKD'); ?>',
 			type: 'POST',
 			dataType: 'json',
 			data: $('.modal-form').serialize()+'&id_mapel='+idMapel+'&semester_kd='+$('#semester').val(),
 			success: function(r) {
+				ladda.stop();
 				if (r.status) {
 					updateNilai();
 			    	toastr.remove();
@@ -380,12 +388,14 @@
 
 	function editKD(idKD,event) {
 		event.preventDefault();
+		ladda.start();
 		$.ajax({
 			url: '<?php echo base_url('kd/editKD'); ?>',
 			type: 'POST',
 			dataType: 'json',
 			data: $('.modal-form').serialize()+'&id_kd='+idKD+'&id_mapel='+<?php echo $this->uri->segment(3); ?>,
 			success: function(r) {
+				ladda.stop();
 				if (r.status) {
 			      	updateNilai();
 			    	toastr.remove();
@@ -402,12 +412,14 @@
 
 	function deleteKD(idKD,event) {
 		event.preventDefault();
+		ladda.start();
 		$.ajax({
 			url: '<?php echo base_url('kd/deleteKD'); ?>',
 	      	type: 'POST',
 	      	dataType: 'json',
 	      	data: 'id='+idKD,
 	      	success: function(r) {
+	      		ladda.stop();
 		        if (r.status) {
 		        	updateNilai();
 		          	toastr.remove();

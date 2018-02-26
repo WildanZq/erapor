@@ -34,12 +34,14 @@
 
 	function addKelas(event){
 		event.preventDefault();
+		ladda.start();
 		$.ajax({
 			url: $('.modal-form').attr('action'),
 	    	type: 'POST',
 	    	dataType: 'json',
 	    	data: $('.modal-form').serialize(),
 	    	success: function(r) {
+	    		ladda.stop();
 			    if (r.status) {
 			    	toastr.remove();
 			      	toastr["success"]("Data kelas berhasil ditambahkan");
@@ -101,12 +103,14 @@
 
 	function editKelas(idKelas,event) {
 		event.preventDefault();
+		ladda.start();
 		$.ajax({
 			url: $('.modal-form').attr('action'),
 		  	type: 'POST',
 		  	dataType: 'json',
 		  	data: $('.modal-form').serialize()+'&id='+idKelas,
 		  	success: function(r) {
+		  		ladda.stop();
 			    if (r.status) {
 		      	toastr.remove();
 		      	toastr["success"]("Data kelas berhasil diedit");
@@ -126,12 +130,14 @@
 
 	function deleteKelas(idKelas,event) {
 		event.preventDefault();
+		ladda.start();
 		$.ajax({
 			url: '<?php echo base_url('kelas/deleteKelas'); ?>',
 	      	type: 'POST',
 	      	dataType: 'json',
 	      	data: 'id='+idKelas,
 	      	success: function(r) {
+	      		ladda.stop();
 		        if (r.status) {
 		          	toastr.remove();
 		          	toastr["success"]("Data kelas berhasil dihapus");
@@ -227,12 +233,14 @@
 
 	function editMapelKelompokKelas(id,event) {
 		event.preventDefault();
+		ladda.start();
 		$.ajax({
 			url: $('.modal-form').attr('action'),
 			type: 'POST',
 			dataType: 'json',
 			data: $('.modal-form').serialize()+'&id='+id,
 			success: function(r) {
+				ladda.stop();
 				if (r.status) {
 			    	toastr.remove();
 			      	toastr["success"]("Data mapel berhasil diedit");
@@ -253,12 +261,14 @@
 
 	function addKelompokKelas(event){
 		event.preventDefault();
+		ladda.start();
 		$.ajax({
 			url: $('.modal-form').attr('action'),
 	    	type: 'POST',
 	    	dataType: 'json',
 	    	data: $('.modal-form').serialize(),
 	    	success: function(r) {
+	    		ladda.stop();
 			    if (r.status) {
 			    	toastr.remove();
 			      	toastr["success"]("Data kelompok kelas berhasil ditambahkan");
@@ -290,12 +300,14 @@
 
 	function editKelompokKelas(idKelompokKelas,event) {
 		event.preventDefault();
+		ladda.start();
 		$.ajax({
 			url: $('.modal-form').attr('action'),
 		  	type: 'POST',
 		 	dataType: 'json',
 		  	data: $('.modal-form').serialize()+'&id='+idKelompokKelas,
 		  	success: function(r) {
+		  		ladda.stop();
 			    if (r.status) {
 			      toastr.remove();
 			      toastr["success"]("Data jurusan berhasil diedit");
@@ -316,12 +328,14 @@
 
 	function deleteKelompokKelas(idKelompokKelas,event) {
 		event.preventDefault();
+		ladda.start();
 		$.ajax({
 			url: '<?php echo base_url('kelompok_kelas/deleteKelompokKelas'); ?>',
 	      	type: 'POST',
 	      	dataType: 'json',
 	      	data: 'id='+idKelompokKelas,
 	      	success: function(r) {
+	      		ladda.stop();
 		        if (r.status) {
 		          	toastr.remove();
 		          	toastr["success"]("Data jurusan berhasil dihapus");

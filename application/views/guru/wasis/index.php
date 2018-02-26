@@ -124,15 +124,17 @@
 	}
 
 	function editNilaiSikap(event) {
+		event.preventDefault();
+		ladda.start();
 		idKelasSiswa = $('#kelas').val();
 		semester = $('#semester').val();
-		event.preventDefault();
 		$.ajax({
 			url: $('.modal-form').attr('action'),
 			type: 'POST',
 			dataType: 'json',
 			data: $('.modal-form').serialize()+'&id_kelas_siswa='+idKelasSiswa+'&semester='+semester,
 			success: function(r) {
+				ladda.stop();
 				if (r.status) {
 					ns = r.ns;
 					$('#ns').html(r.ns);

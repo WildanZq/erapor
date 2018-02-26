@@ -58,12 +58,14 @@
 
 	function editRumus(rumus,event) {
 		event.preventDefault();
+		ladda.start();
 		$.ajax({
 		url: $('.modal-form').attr('action'),
 		  type: 'POST',
 		  dataType: 'json',
 		  data: $('.modal-form').serialize()+'&id='+rumus,
 		  success: function(r) {
+		  	ladda.stop();
 		    if (r.status) {
 		      toastr.remove();
 		      toastr["success"]("Data rumus berhasil diedit");

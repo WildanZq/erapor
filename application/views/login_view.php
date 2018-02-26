@@ -26,7 +26,7 @@
               </div>
               <div class="row">
                 <div class="col-6">
-                  <button type="submit" class="btn btn-primary px-4" onclick="signin(event);">Login</button>
+                  <button type="submit" class="btn btn-primary px-4 ladda-button" data-style="zoom-out" onclick="signin(this,event);"><span class="ladda-label">Login</span></button>
                 </div>
               </div>
               </form>
@@ -47,14 +47,17 @@
   </div>
 
   <script type="text/javascript">
-    function signin(event) {
+    function signin(t,event) {
       event.preventDefault();
+      var l = Ladda.create(t);
+      l.start();
       $.ajax({
         url: $('#login-form').attr('action'),
         type: 'POST',
         dataType: 'json',
         data: $('#login-form').serialize(),
         success: function(r) {
+          l.stop();
           if (r.status) {
             toastr.remove();
             toastr["success"]("Login Success");

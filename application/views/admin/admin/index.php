@@ -43,12 +43,14 @@ $(document).ready(function() {
 
 	function addAdmin(event) {
 		event.preventDefault();
+		ladda.start();
 		$.ajax({
 			url: $('.modal-form').attr('action'),
 		    type: 'POST',
 		    dataType: 'json',
 		    data: $('.modal-form').serialize(),
 		    success: function(r) {
+		    	ladda.stop();
 		    	if (r.status) {
 		        	toastr.remove();
 		        	toastr["success"]("Data admin berhasil ditambahkan");
@@ -62,15 +64,16 @@ $(document).ready(function() {
 		});
 	}
 
-	function deleteAdmin(idAdmin,event)
-	{
+	function deleteAdmin(idAdmin,event) {
 		event.preventDefault();
+		ladda.start();
 		$.ajax({
 			url: '<?php echo base_url('admin/deleteAdmin'); ?>',
 	      	type: 'POST',
 	      	dataType: 'json',
 	      	data: 'id='+idAdmin,
 	      	success: function(r) {
+	      		ladda.stop();
 		        if (r.status) {
 		          	toastr.remove();
 		          	toastr["success"]("Data Admin berhasil dihapus");

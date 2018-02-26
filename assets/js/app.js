@@ -48,6 +48,7 @@ function setActiveCurNav() {
 }
 
 $(document).ready(function($){
+  ladda = false;
 
   $('a').click(function() {
     $('.card').css({
@@ -162,26 +163,30 @@ function init(url) {
 }
 
 function updateModal(title, body, action, onclick, param, size, type, button) {
-  $('.modal-dialog').attr('class', 'modal-dialog');
-  $('.modal-btn-action').attr('class', 'btn modal-btn-action ml-1 mr-0');
+  if (ladda) ladda.remove();
+
   $('.modal-title').html(title);
   $('.modal-body').html(body);
   $('.modal-form').attr('action', action);
+  $('.modal-dialog').attr('class', 'modal-dialog');
+  $('.modal-dialog').addClass('modal-'+size);
+  $('.modal-dialog').addClass('modal-'+type);
+  $('.modal-btn-action').attr('class', 'btn modal-btn-action ladda-button');
+  $('.modal-btn-action').addClass('btn-'+type);
   if (!param || param == null) {
     $('.modal-btn-action').attr('onclick', onclick+'(event)');
   } else {
     $('.modal-btn-action').attr('onclick', onclick+'('+param+',event)');
   }
-  $('.modal-btn-action').addClass('btn-'+type);
-  $('.modal-dialog').addClass('modal-'+size);
-  $('.modal-dialog').addClass('modal-'+type);
+  if (button) {
+    $('.modal-btn-action').html('<span class="ladda-label">'+button+'</span>');
+  } else {
+    $('.modal-btn-action').html('<span class="ladda-label"><i class="fa fa-save"></i>&nbsp;Save</span>');
+  }
   $('.select2').select2();
   $('.select2').css('width','100%');
-  if (button) {
-    $('.modal-btn-action').html(button);
-  } else {
-    $('.modal-btn-action').html('<i class="fa fa-save"></i>&nbsp;Save');
-  }
+
+  ladda = Ladda.create(document.querySelector('#modal-submit'));
 }
 
 function getRandomColor() {

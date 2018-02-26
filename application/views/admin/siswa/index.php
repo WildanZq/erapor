@@ -85,12 +85,14 @@
 
 	function deleteKelasSiswa(id,idSiswa,event) {
 		event.preventDefault();
+		ladda.start();
 		$.ajax({
 			url: '<?php echo base_url('kelas_siswa/deleteKelasSiswa'); ?>',
 			type: 'POST',
 			dataType: 'json',
 			data: 'id='+id,
 			success: function(r) {
+				ladda.stop();
 		        if (r.status) {
 		          	toastr.remove();
 		          	toastr["success"]("Data siswa berhasil dihapus");
@@ -160,12 +162,14 @@
 
 	function addKelasSiswa(id,event){
 		event.preventDefault();
+		ladda.start();
 		$.ajax({
 			url : '<?php echo base_url('kelas_siswa/addKelasSiswa')?>',
 			type: 'POST',
 			dataType: 'json',
 			data: 'th_ajar='+$('#th_ajar').val()+'&id_kelas='+$('#kelas').val()+'&id_siswa='+id,
 			success: function(r) {
+				ladda.stop();
 		    	if (r.status) {
 		        	toastr.remove();
 		        	toastr["success"]("Data kelas siswa berhasil ditambahkan");
@@ -241,12 +245,14 @@
 
 	function addSiswa(event) {
 		event.preventDefault();
+		ladda.start();
 		$.ajax({
 			url: $('.modal-form').attr('action'),
 		    type: 'POST',
 		    dataType: 'json',
 		    data: $('.modal-form').serialize(),
 		    success: function(r) {
+		    	ladda.stop();
 		    	if (r.status) {
 		        	toastr.remove();
 		        	toastr["success"]("Data siswa berhasil ditambahkan");
@@ -262,12 +268,14 @@
 
 	function editSiswa(idSiswa,event) {
 		event.preventDefault();
+		ladda.start();
 		$.ajax({
 			url: $('.modal-form').attr('action'),
 	      	type: 'POST',
 	      	dataType: 'json',
 	      	data: $('.modal-form').serialize()+'&id='+idSiswa,
 	      	success: function(r) {
+	      		ladda.stop();
 	        	if (r.status) {
 		          	toastr.remove();
 		          	toastr["success"]("Data siswa berhasil diedit");
@@ -283,12 +291,14 @@
 
 	function deleteSiswa(idSiswa,event) {
 		event.preventDefault();
+		ladda.start();
 		$.ajax({
 			url: '<?php echo base_url('siswa/deleteSiswa'); ?>',
 	      	type: 'POST',
 	      	dataType: 'json',
 	      	data: 'id='+idSiswa,
 	      	success: function(r) {
+	      		ladda.stop();
 		        if (r.status) {
 		          	toastr.remove();
 		          	toastr["success"]("Data siswa berhasil dihapus");

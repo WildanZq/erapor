@@ -132,7 +132,9 @@
       <form class="modal-form" action="" method="POST">
         <div class="modal-body"></div>
         <div class="modal-footer d-flex justify-content-start flex-row-reverse">
-          <button type="submit" class="btn modal-btn-action ml-1 mr-0"><i class="fa fa-save"></i>&nbsp;Save</button>
+          <button type="submit" class="btn modal-btn-action ladda-button" id="modal-submit" data-style="zoom-out">
+            <span class="ladda-label"><i class="fa fa-save"></i> Save</span>
+          </button>
           <button class="btn btn-secondary text-white mr-1" data-dismiss="modal">Close</button>
         </div>
       </form>

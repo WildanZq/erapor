@@ -95,12 +95,14 @@
 
 	function editMapelGuru(id,event) {
 		event.preventDefault();
+		ladda.start();
 		$.ajax({
 			url: $('.modal-form').attr('action'),
 			type: 'POST',
 			dataType: 'json',
 			data: $('.modal-form').serialize()+'&id='+id,
 			success: function(r) {
+				ladda.stop();
 				if (r.status) {
 			    	toastr.remove();
 			      	toastr["success"]("Data mapel berhasil diedit");
@@ -146,12 +148,14 @@
 
 	function addGuru(event){
 		event.preventDefault();
+		ladda.start();
 		$.ajax({
 			url: $('.modal-form').attr('action'),
 			type: 'POST',
 			dataType: 'json',
 			data: $('.modal-form').serialize(),
 			success: function(r) {
+				ladda.stop();
 				if(r.status){
 					toastr.remove();
 					toastr["success"]("Data guru berhasil ditambahkan");
@@ -167,12 +171,14 @@
 
 	function editGuru(idGuru,event){
 		event.preventDefault();
+		ladda.start();
 		$.ajax({
 			url: $('.modal-form').attr('action'),
 			type: 'POST',
 			dataType: 'json',
 			data: $('.modal-form').serialize()+'&id='+idGuru,
 			success: function(r){
+				ladda.stop();
 				if (r.status) {
 					toastr.remove();
 					toastr["success"]("Data Guru berhasil diedit");
@@ -188,12 +194,14 @@
 
 	function deleteGuru(idGuru,event){
 		event.preventDefault();
+		ladda.start();
 		$.ajax({
 			url: '<?php echo base_url('guru/deleteGuru'); ?>',
 			type: 'POST',
 			dataType: 'json',
 			data: 'id='+idGuru,
 			success: function(r){
+				ladda.stop();
 				if (r.status) {
 					toastr.remove();
 					toastr["success"]("Data guru berhasil dihapus");

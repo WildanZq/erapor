@@ -18,6 +18,7 @@
   <link rel="stylesheet" href="<?php echo base_url(); ?>assets/vendors/css/select2.min.css">
   <link rel="stylesheet" href="<?php echo base_url(); ?>assets/vendors/css/select2-bootstrap.min.css">
   <link rel="stylesheet" href="<?php echo base_url(); ?>assets/vendors/css/chart.min.css">
+  <link rel="stylesheet" href="<?php echo base_url(); ?>assets/vendors/css/ladda-themeless.min.css">
 
   <!-- Main styles for this application -->
   <link href="<?php echo base_url(); ?>assets/css/style.min.css" rel="stylesheet">
@@ -31,6 +32,8 @@
   <script src="<?php echo base_url(); ?>assets/vendors/js/datatables.min.js"></script>
   <script src="<?php echo base_url(); ?>assets/vendors/js/select2.min.js"></script>
   <script src="<?php echo base_url(); ?>assets/vendors/js/chart.min.js"></script>
+  <script src="<?php echo base_url(); ?>assets/vendors/js/spin.min.js"></script>
+  <script src="<?php echo base_url(); ?>assets/vendors/js/ladda.min.js"></script>
 
   <script src="<?php echo base_url(); ?>assets/js/constants.js"></script>
 

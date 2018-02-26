@@ -38,12 +38,14 @@ $(document).ready(function() {
 
 	function addMapel(event){
 		event.preventDefault();
+		ladda.start();
 		$.ajax({
 			url: $('.modal-form').attr('action'),
 	    	type: 'POST',
 	    	dataType: 'json',
 	    	data: $('.modal-form').serialize(),
 	    	success: function(r) {
+	    		ladda.stop();
 			    if (r.status) {
 			    	toastr.remove();
 			      	toastr["success"]("Data mapel berhasil ditambahkan");
@@ -148,12 +150,14 @@ $(document).ready(function() {
 
 	function editMapel(idMapel,event) {
 		event.preventDefault();
+		ladda.start();
 		$.ajax({
 			url: $('.modal-form').attr('action'),
 		  	type: 'POST',
 		 	dataType: 'json',
 		  	data: $('.modal-form').serialize()+'&id='+idMapel,
 		  	success: function(r) {
+		  		ladda.stop();
 			    if (r.status) {
 			      toastr.remove();
 			      toastr["success"]("Data mapel berhasil diedit");
@@ -173,12 +177,14 @@ $(document).ready(function() {
 
 	function deleteMapel(idMapel,event) {
 		event.preventDefault();
+		ladda.start();
 		$.ajax({
 			url: '<?php echo base_url('mapel/deleteMapel'); ?>',
 	      	type: 'POST',
 	      	dataType: 'json',
 	      	data: 'id='+idMapel,
 	      	success: function(r) {
+	      		ladda.stop();
 		        if (r.status) {
 		          	toastr.remove();
 		          	toastr["success"]("Data mapel berhasil dihapus");
@@ -222,12 +228,14 @@ $(document).ready(function() {
 
 	function addKurikulum(event){
 		event.preventDefault();
+		ladda.start();
 		$.ajax({
 			url: $('.modal-form').attr('action'),
 	    	type: 'POST',
 	    	dataType: 'json',
 	    	data: $('.modal-form').serialize(),
 	    	success: function(r) {
+	    		ladda.stop();
 			    if (r.status) {
 			    	toastr.remove();
 			      	toastr["success"]("Data kurikulum berhasil ditambahkan");
@@ -260,12 +268,14 @@ $(document).ready(function() {
 
 	function editKurikulum(idKurikulum,event) {
 		event.preventDefault();
+		ladda.start();
 		$.ajax({
 			url: $('.modal-form').attr('action'),
 		  	type: 'POST',
 		 	dataType: 'json',
 		  	data: $('.modal-form').serialize()+'&id='+idKurikulum,
 		  	success: function(r) {
+		  		ladda.stop();
 			    if (r.status) {
 			      toastr.remove();
 			      toastr["success"]("Data kurikulum berhasil diedit");
@@ -286,12 +296,14 @@ $(document).ready(function() {
 
 	function deleteKurikulum(idKurikulum,event) {
 		event.preventDefault();
+		ladda.start();
 		$.ajax({
 			url: '<?php echo base_url('kurikulum/deleteKurikulum'); ?>',
 	      	type: 'POST',
 	      	dataType: 'json',
 	      	data: 'id='+idKurikulum,
 	      	success: function(r) {
+	      		ladda.stop();
 		        if (r.status) {
 		          	toastr.remove();
 		          	toastr["success"]("Data kurikulum berhasil dihapus");
@@ -335,12 +347,14 @@ $(document).ready(function() {
 
 	function addJenisMapel(event){
 		event.preventDefault();
+		ladda.start();
 		$.ajax({
 			url: $('.modal-form').attr('action'),
 	    	type: 'POST',
 	    	dataType: 'json',
 	    	data: $('.modal-form').serialize(),
 	    	success: function(r) {
+	    		ladda.stop();
 			    if (r.status) {
 			    	toastr.remove();
 			      	toastr["success"]("Data jenis mapel berhasil ditambahkan");
@@ -373,12 +387,14 @@ $(document).ready(function() {
 
 	function editJenisMapel(idJenisMapel,event) {
 		event.preventDefault();
+		ladda.start();
 		$.ajax({
 			url: $('.modal-form').attr('action'),
 		  	type: 'POST',
 		 	dataType: 'json',
 		  	data: $('.modal-form').serialize()+'&id='+idJenisMapel,
 		  	success: function(r) {
+		  		ladda.stop();
 			    if (r.status) {
 			      toastr.remove();
 			      toastr["success"]("Data jenis mapel berhasil diedit");
@@ -399,12 +415,14 @@ $(document).ready(function() {
 
 	function deleteJenisMapel(idJenisMapel,event) {
 		event.preventDefault();
+		ladda.start();
 		$.ajax({
 			url: '<?php echo base_url('jenis_mapel/deleteJenisMapel'); ?>',
 	      	type: 'POST',
 	      	dataType: 'json',
 	      	data: 'id='+idJenisMapel,
 	      	success: function(r) {
+	      		ladda.stop();
 		        if (r.status) {
 		          	toastr.remove();
 		          	toastr["success"]("Data jenis mapel berhasil dihapus");

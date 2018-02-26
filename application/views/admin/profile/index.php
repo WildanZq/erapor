@@ -48,12 +48,14 @@
 
 	function cekPassword(event) {
 		event.preventDefault();
+		ladda.start();
 		$.ajax({
 			url: '<?php echo base_url('profile/cekPassword'); ?>',
 			type: 'POST',
 			dataType: 'json',
 			data: 'password='+$('#password').val(),
 			success: function(r) {
+				ladda.stop();
 				if (r.valid) {
 		          	body = '<div class="form-group">\
 						      <label>Password baru</label>\
@@ -76,12 +78,14 @@
 
 	function editPassword(event) {
 		event.preventDefault();
+		ladda.start();
 		$.ajax({
 			url: $('.modal-form').attr('action'),
 			type: 'POST',
 			dataType: 'json',
 			data: $('.modal-form').serialize(),
 			success: function(r) {
+				ladda.stop();
 				if (r.status) {
 		          	toastr.remove();
 		          	toastr["success"]("Data profile berhasil diedit");
@@ -96,12 +100,14 @@
 
 	function editProfile(event) {
 		event.preventDefault();
+		ladda.start();
 		$.ajax({
 			url: $('.modal-form').attr('action'),
 	      	type: 'POST',
 	      	dataType: 'json',
 	      	data: $('.modal-form').serialize()+'&id='+<?php echo $this->session->userdata('userid'); ?>,
 	      	success: function(r) {
+	      		ladda.stop();
 	        	if (r.status) {
 		          	toastr.remove();
 		          	toastr["success"]("Data profile berhasil diedit");
